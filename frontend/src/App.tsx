@@ -6,6 +6,7 @@ import { ProductDashboard } from "./pages/ProductDashboard";
 import { TempStatePage } from "./pages/TempStatePage";
 import { TempStatePage2 } from "./pages/TempStatePage2";
 import { TempGetStatePage } from "./pages/TempGetStatePage";
+import { ProductInfoPage } from "./pages/ProductInfoPage";
 // --------------------------
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="get-state" element={<TempGetStatePage />}/>
           {/* ------------------------ */}
         </Route>
+        <Route path="/product-info" element={<ProductInfoPage/>}></Route>
         <Route path="*" element={<p>OH NOES THIS NOT EXIST DUMBASS</p>} />
       </Routes>
     </>

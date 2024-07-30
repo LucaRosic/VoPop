@@ -3,12 +3,14 @@ import "./css/product-card.css";
 interface Props {
   productTitle: string;
   productImg: string;
+  productId: number;
   onClick?: () => void;
 }
 
 export const ProductCard = ({
   productTitle,
   productImg,
+  productId,
   onClick = () => null,
 }: Props) => {
   return (
