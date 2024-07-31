@@ -1,6 +1,11 @@
+import { Form } from "../components/Form"
+
 
 export const Register = () => {
   return (
-    <div>Register</div>
+    <Form 
+        route="/api/user/register/"
+        method="register"
+    />
   )
 }

@@ -1,6 +1,11 @@
+import { Form } from "../components/Form"
+
 
 export const Login = () => {
   return (
-    <div>Login</div>
+    <Form
+        route="/api/token/"
+        method="login" 
+    />
   )
 }

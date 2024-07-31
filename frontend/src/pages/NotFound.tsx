@@ -1,6 +1,9 @@
 
 export const NotFound = () => {
   return (
-    <p>OH NOES THIS NOT EXIST DUMBASS</p>
+    <>
+        <h1>404 Not Found</h1>
+        <p>OH NOES THIS NOT EXIST DUMBASS</p>   
+    </>
   )
 }
