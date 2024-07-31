@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 // Pages --------------------
 import { Home } from "./pages/Home";
@@ -7,7 +7,35 @@ import { TempStatePage } from "./pages/TempStatePage";
 import { TempStatePage2 } from "./pages/TempStatePage2";
 import { TempGetStatePage } from "./pages/TempGetStatePage";
 import { ProductInfoPage } from "./pages/ProductInfoPage";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { NotFound } from "./pages/NotFound";
 // --------------------------
+import ProtectedRoute from "./components/ProtectedRoute";
+import { TempProtectedPage } from "./pages/TempProtectedPage";
+
+// TODO:
+// When refactoring rename function to have function clause
+
+
+const Logout = () => {
+  localStorage.clear();
+  return <Navigate to="/login" />
+}
+
+const RegisterAndLogout = () => {
+  localStorage.clear()
+  return <Register />
+}
+
+// Wrap anything that should not be accessible without authentication
+// with a <ProtectedRoute> tag
+
+// Things that need to become protected:
+/*
+  - /dashboard (dashboard page)
+  - /product-info (product information page)
+*/
 
 const App = () => {
   return (
@@ -30,7 +58,7 @@ const App = () => {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<ProductDashboard />} />
+        <Route path="/dashboard" element={<ProductDashboard />} /> 
         <Route path="/state">
           <Route index element={<TempStatePage />}/>
           <Route path=":id" element={<TempStatePage />}/>
@@ -39,8 +67,16 @@ const App = () => {
           <Route path="get-state" element={<TempGetStatePage />}/>
           {/* ------------------------ */}
         </Route>
-        <Route path="/product-info" element={<ProductInfoPage/>}></Route>
-        <Route path="*" element={<p>OH NOES THIS NOT EXIST DUMBASS</p>} />
+        <Route path="/product-info" element={<ProductInfoPage/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/not-found" element={<NotFound />} />
+        <Route path="/test-protected" element={
+          <ProtectedRoute>
+            <TempProtectedPage />
+          </ProtectedRoute>
+        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
