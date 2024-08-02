@@ -16,10 +16,10 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
     // </div>
 
     <div
-      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 py-4 flex shadow-sm dark:shadow-gray-800"
+      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 py-4 flex shadow-sm dark:shadow-gray-800 gap-4"
       onClick={onClick}
     >
-      <div className="product-snippet flex flex-col">
+      <div className="product-snippet flex flex-col w-64">
         <h1 className="w-64 text-xl text-center">{productInfo.title}</h1>
         <img
           className="w-64 h-48 object-cover rounded-lg shadow-sm dark:shadow-gray-800"
@@ -27,7 +27,17 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
         ></img>
       </div>
 
-      <div className="cx-info-brief"></div>
+      <div className="cx-info-brief flex flex-col w-3/5">
+        <p>Test</p>
+        <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800">
+          <legend className="float-none w-auto px-3 text-center text-xl bg-black text-white rounded-lg">Brief Summary ✨</legend>
+          <p>{productInfo.brief}</p>
+        </fieldset>
+        
+
+        
+        
+      </div>
 
       <div className="updated-delete"></div>
     </div>
