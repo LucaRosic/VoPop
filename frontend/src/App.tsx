@@ -41,7 +41,8 @@ const App = () => {
   return (
     <>
       {/* Create navbar here */}
-      <nav>
+      
+      {/* <nav>
         <ul>
           <li>
             <Link to="/home">Home</Link>
@@ -53,7 +54,8 @@ const App = () => {
             <Link to="/state">State</Link>
           </li>
         </ul>
-      </nav>
+      </nav> */}
+
       {/* Only things inside routes component changes ^ Nav bar above is bing chilling */}
       <Routes>
         <Route index element={<Home />} />

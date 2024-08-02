@@ -2,46 +2,22 @@ import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 
 export const ProductDashboard = () => {
-  const product1 = {
-    id: 0,
-    title: "Phone Charger",
-    img: "/images/phone_charger_test_img.png",
-  };
-  const product2 = {
-    id: 1,
-    title: "Fart Test",
-    img: "/images/whoopee_cushion_test.png",
-  };
-  const product3 = {
-    id: 2,
-    title: "Tooty",
-    img: "/images/whoopee_cushion_test.png",
-  };
-  const product4 = {
-    id: 3,
-    title: "Diffy Shock",
-    img: "/images/phone_charger_test_img.png",
-  };
-
-  const productsList = [product1, product2, product3, product4];
-
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
-    navigate('/product-info', { state: { product: productsList[prodId], meaning : 'test' } }); 
+    navigate('/product-info', { state: { prodId: prodId, meaning : 'test' } }); 
   }
 
+  const productsList = [0,1,2];
   return (
     <>
-      <h1>ProductDashboard</h1>
-      <div className="dashboard-container">
+      <h1 className="text-center">Product Dashboard</h1>
+      <div className="flex flex-col items-center gap-4 px-32">
         {productsList.map((product) => (
           <ProductCard
-            key={product.title}
-            productTitle={product.title}
-            productImg={product.img}
-            productId={product.id}
-            onClick={() => navFunc(product.id)}
+            key={product}
+            productId={product}
+            onClick={() => navFunc(product)}
           />
         ))}
       </div>
