@@ -27,10 +27,10 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
         ></img>
       </div>
 
-      <div className="cx-info-brief flex flex-col w-3/5">
+      <div className="cx-info-brief flex flex-col justify-around w-3/5">
         <p>Test</p>
         <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800">
-          <legend className="float-none w-auto px-3 text-center text-xl bg-black text-white rounded-lg">Brief Summary ✨</legend>
+          <legend className="float-none w-auto px-3 text-center text-lg bg-gray-700 text-white rounded-lg pb-1">Brief Summary ✨</legend>
           <p>{productInfo.brief}</p>
         </fieldset>
         
