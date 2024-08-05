@@ -20,7 +20,7 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
 
   // Style arrow icon
   const StyledArrowRightAltIcon = styled(ArrowRightAltIcon)(() => ({
-    fontSize: '100px', // Adjust the size as needed
+    fontSize: '50px', // Adjust the size as needed
     // Add other custom styles here
   }));
 
@@ -39,11 +39,13 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
 
       <div className="cx-info-brief flex flex-col justify-between w-3/5">
         <div className="flex justify-center mt-2 items-center">
-          <div className="bg-gray-700 rounded-lg text-white text-center flex items-center p-4">
-            Customer Sentiment
+          <div className="bg-gray-700 rounded-lg text-white text-center flex items-center p-3 w-full justify-center">
+            <span className="text-lg">Customer Sentiment</span>
+            <StyledArrowRightAltIcon fontSize="large"></StyledArrowRightAltIcon>
+            <span className="text-5xl">{productInfo.sentimoji}</span>
           </div>
-          <StyledArrowRightAltIcon fontSize="large"></StyledArrowRightAltIcon>
-          <p className="text-7xl">{productInfo.sentimoji}</p>
+          
+          
         </div>
 
         <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800 bg-slate-200">
