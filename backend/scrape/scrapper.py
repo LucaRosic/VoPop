@@ -38,7 +38,7 @@ def scrape_amazon_reviews(url):
     start_time = time.time()
 
     # Specify the path to your GeckoDriver executable
-    gecko_driver_path = r'C:\Users\Matth\OneDrive\Documents\FDM training\pond\dashboard_project\geckodriver.exe'
+    gecko_driver_path = r''
 
     # Configure Firefox options
     options = webdriver.FirefoxOptions()

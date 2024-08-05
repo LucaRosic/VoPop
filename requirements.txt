@@ -11,5 +11,5 @@ python-dotenv~=1.0.1
 transformers~=4.43.3
 torch
 numpy==1.26.4
+pandas
 selenium
-json

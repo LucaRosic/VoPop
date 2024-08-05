@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from .serializers import UserSerializer, ProductSerializer, UserProductSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product, User_Products, Product_Summary, Product_Reviews
+from scrape.scrapper import scrape_reviews
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -46,8 +47,9 @@ class CreateProductView(generics.ListCreateAPIView):
                 ##data = scraper(serializer.validated_data['url'])
                 ##cleaned_data = transform_data(data)
                 # 
+            print(scrape_reviews(serializer.validated_data['url']))
             
-            serializer.save(name='prod', category='prod cat', description='prod descript', image='prod img')
+            #serializer.save(name='prod', category='prod cat', description='prod descript', image='prod img')
             print(serializer.data)
         else:
             print(serializer.errors)
@@ -117,7 +119,7 @@ class GetUserProduct_HomePage(generics.ListAPIView):
     
     def get_queryset(self):
         
-        product_ids = User_Products.objects.filter(user=1).values_list('product', flat=True)
+        product_ids = User_Products.objects.filter(user=self.request.user).values_list('product', flat=True)
         
         print(Product_Summary.objects.all().values())
         

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Product(models.Model):
     name = models.CharField("Name", max_length=240)
     category = models.CharField("Category", max_length=240)
-    url = models.CharField("URL", max_length=240)
+    url = models.CharField("URL", max_length=500)
     description = models.CharField("Description", max_length=240)
     image = models.CharField("Image", max_length=240)
     
