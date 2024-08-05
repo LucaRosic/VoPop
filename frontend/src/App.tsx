@@ -13,6 +13,7 @@ import { NotFound } from "./pages/NotFound";
 // --------------------------
 import ProtectedRoute from "./components/ProtectedRoute";
 import { TempProtectedPage } from "./pages/TempProtectedPage";
+import APITest from "./pages/APITest";
 
 // TODO:
 // When refactoring rename function to have function clause
@@ -79,6 +80,7 @@ const App = () => {
             <TempProtectedPage />
           </ProtectedRoute>
         } />
+        <Route path="/api" element={<APITest />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
