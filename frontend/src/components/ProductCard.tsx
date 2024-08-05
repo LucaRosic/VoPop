@@ -10,13 +10,8 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
   const productInfo = DummyData(productId);
 
   return (
-    // <div className="product-card-container" onClick={onClick}>
-    //   <h1>{productTitle}</h1>
-    //   <img className="product-image" src={productImg}></img>
-    // </div>
-
     <div
-      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 py-4 flex shadow-sm dark:shadow-gray-800 gap-4"
+      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 border-gray-200"
       onClick={onClick}
     >
       <div className="product-snippet flex flex-col w-64">
@@ -27,16 +22,20 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
         ></img>
       </div>
 
-      <div className="cx-info-brief flex flex-col justify-around w-3/5">
-        <p>Test</p>
-        <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800">
-          <legend className="float-none w-auto px-3 text-center text-lg bg-gray-700 text-white rounded-lg pb-1">Brief Summary ✨</legend>
+      <div className="cx-info-brief flex flex-col justify-between w-3/5">
+        <div className="flex justify-around mt-2 items-center">
+          <div className="bg-gray-700 rounded-lg text-white text-center flex items-center p-4">
+            Customer Sentiment
+          </div>
+          <p className="text-7xl">{productInfo.sentimoji}</p>
+        </div>
+
+        <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800 bg-slate-200">
+          <legend className="float-none w-auto px-3 text-center text-lg bg-gray-700 text-white rounded-lg pb-1">
+            Brief Summary ✨
+          </legend>
           <p>{productInfo.brief}</p>
         </fieldset>
-        
-
-        
-        
       </div>
 
       <div className="updated-delete"></div>
