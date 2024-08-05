@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 
 interface Props {
@@ -15,6 +15,10 @@ interface Props {
 
 function ProtectedRoute({children} : Props) {
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        auth().catch(() => setIsAuthorized(false));
+    }, [])
 
     const refreshToken = async () => {
         // Get refresh token
