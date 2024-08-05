@@ -47,10 +47,10 @@ class CreateProductView(generics.ListCreateAPIView):
                 ##data = scraper(serializer.validated_data['url'])
                 ##cleaned_data = transform_data(data)
                 # 
-            print(scrape_reviews(serializer.validated_data['url']))
+            scraped = (scrape_reviews(serializer.validated_data['url']))
             
-            #serializer.save(name='prod', category='prod cat', description='prod descript', image='prod img')
-            print(serializer.data)
+            serializer.save(name=scraped['Product Name'], category='amazon', description='prod descript', image=scraped['Product Image'])
+            #print(serializer.data)
         else:
             print(serializer.errors)
         
@@ -115,7 +115,7 @@ class GetProductDetails(APIView):
 # INFO FOR HOME
 class GetUserProduct_HomePage(generics.ListAPIView):
     serializer_class = ProductSumSerializer_HOME
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         
