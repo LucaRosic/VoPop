@@ -3,8 +3,8 @@ import DummyData from "../DummyData";
 
 //--------------
 // MUI ui stuff:
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 //--------------
 
@@ -13,20 +13,21 @@ interface Props {
   onClick?: () => void;
 }
 
-// Look into MUI typography for better text 
+// Look into MUI typography for better text
 
 export const ProductCard = ({ productId, onClick = () => null }: Props) => {
   const productInfo = DummyData(productId);
 
   // Style arrow icon
   const StyledArrowRightAltIcon = styled(ArrowRightAltIcon)(() => ({
-    fontSize: '50px', // Adjust the size as needed
+    fontSize: "50px", // Adjust the size as needed
     // Add other custom styles here
   }));
 
   return (
     <div
-      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 pr-0 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 border-gray-200"
+      className="product-card bg-slate-100 w-4/5 rounded-lg px-8 pr-0 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 
+      border-gray-200 transform hover:scale-105"
       onClick={onClick}
     >
       <div className="product-snippet flex flex-col w-64">
@@ -44,8 +45,6 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
             <StyledArrowRightAltIcon fontSize="large"></StyledArrowRightAltIcon>
             <span className="text-5xl">{productInfo.sentimoji}</span>
           </div>
-          
-          
         </div>
 
         <fieldset className="px-3 border rounded-lg shadow-sm dark:shadow-gray-800 bg-slate-200">
@@ -57,8 +56,13 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
       </div>
 
       <div className="updated-delete flex flex-col items-center">
-        <p className="text-xs text-center text-gray-400">Last Updated {productInfo.lastUpdated}</p>
-        <div className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2 rounded-lg" onClick={() => null}>
+        <p className="text-xs text-center text-gray-400">
+          Last Updated {productInfo.lastUpdated}
+        </p>
+        <div
+          className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2 rounded-lg"
+          onClick={() => null}
+        >
           <DeleteIcon></DeleteIcon>
         </div>
       </div>
