@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
+import NavbarTop from "../components/NavbarTop";
 
 export const ProductDashboard = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ export const ProductDashboard = () => {
   const productsList = [0,1,2];
   return (
     <>
-      <h1 className="text-center">Product Dashboard</h1>
+      {/* <h1 className="text-center">Product Dashboard</h1> */}
+      <NavbarTop title="Product Dashboard"/>
       <div className="flex flex-col items-center gap-4 px-32">
         {productsList.map((product) => (
           <ProductCard

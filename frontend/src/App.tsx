@@ -84,7 +84,7 @@ const App = () => {
           <ProtectedRoute>
             <APITest />
           </ProtectedRoute>
-          } />
+        } />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
