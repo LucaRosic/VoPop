@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import api from "../api"
+import { data } from "../components/BarGraph"
 
 const APITest = () => {
 
@@ -19,9 +20,22 @@ const APITest = () => {
   }
 
   const getProduct = async () => {
-    console.log("Testing Django")
+    console.log("Testing Django");
     try {
       const res = await api.get("/api/user/product/home/");
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const sendUrl = async () => {
+    console.log("Sending URL api");
+    try {
+      const urlData = {url:"google.com"};
+      console.log("Sending api:");
+      const res = await api.get("/api/product/",urlData);
+      console.log("DONE!");
       console.log(res.data);
     } catch (error) {
       console.log(error);
@@ -44,6 +58,16 @@ const APITest = () => {
         /api/user/product/home
       </button>
       <br></br>
+
+      <br></br>
+      <button 
+      onClick={sendUrl}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Send URL Test
+      </button>
+      <br></br>
+
       <br></br>
       <button
         onClick={clearCache}

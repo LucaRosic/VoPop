@@ -15,8 +15,7 @@ export const ProductDashboard = () => {
       {/* <h1 className="text-center">Product Dashboard</h1> */}
       <NavbarTop title="Product Dashboard"/>
       <div 
-        className="flex flex-col items-center gap-4 px-32"
-        style={{background: "radial-gradient(circle, rgba(234,250,233,1) 0%, rgba(250,254,255,1) 100%)"}}
+        className="flex flex-col items-center gap-4 px-32 pt-4"
       >
         {productsList.map((product) => (
           <ProductCard
