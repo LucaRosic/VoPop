@@ -1,14 +1,21 @@
 from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from lsg_converter import LSGConverter
 
 #sentiment_task = pipeline("sentiment-analysis", model=f"cardiffnlp/twitter-roberta-base-sentiment-latest",
                           #tokenizer=f"cardiffnlp/twitter-roberta-base-sentiment-latest")
 def start_model():
-    sentiment_task = pipeline("sentiment-analysis", model=f"cardiffnlp/twitter-roberta-base-sentiment-latest",
-                          tokenizer=f"cardiffnlp/twitter-roberta-base-sentiment-latest")
+    
+    MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+    converter = LSGConverter(max_sequence_length=4096)
+
+    transformedModel, transformedTokenizer = converter.convert_from_pretrained(MODEL_NAME, num_global_tokens=7)
+    sentiment_task = pipeline("sentiment-analysis", model=transformedModel,
+                            tokenizer=transformedTokenizer)
     return sentiment_task
 
 def analyseSentiment(sentiment_task, text):
-    
     sentiment = sentiment_task(text)
     return round(sentiment[0]['score'],2)
 

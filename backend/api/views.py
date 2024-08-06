@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import generics, status
 from .serializers import UserSerializer, ProductSerializer, UserProductSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product, User_Products, Product_Summary, Product_Reviews
@@ -54,6 +54,7 @@ class CreateProductView(generics.ListCreateAPIView):
                 
                 user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
                 user_prod.save()
+                return Response(status=status.H)
                 # add to user product table
             else:
                 #scrape data 
@@ -74,9 +75,10 @@ class CreateProductView(generics.ListCreateAPIView):
                 sent_model = start_model()
                 for review in scraped['Reviews']:
                     
-                    tokens = nltk.word_tokenize(review['Review Text'])
-                    if len(tokens) > 500:
-                        continue
+                    #tokens = nltk.word_tokenize(review['Review Text'])
+                    #if len(tokens) > 500:
+                        #print('here')
+                        #continue
                     
                     date = review['Date'].split('on ')[-1].split(' ')
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
