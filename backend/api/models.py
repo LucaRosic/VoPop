@@ -16,14 +16,26 @@ class Product(models.Model):
 class User_Products(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+<<<<<<< Updated upstream
     
     
+=======
+
+    def __str__(self):
+        return "%s - %s" %(self.user, self.product.name)
+
+
+# product_reviews table   
+>>>>>>> Stashed changes
 class Product_Reviews(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     review = models.CharField(max_length=8000)
     sentiment = models.DecimalField(max_digits=3, decimal_places=2)
     rating = models.DecimalField(max_digits=2, decimal_places=0)
     date = models.DateField()
+
+    def __str__(self):
+        return "%s - %s" %(self.pk,self.product.name)
  
     
 class Product_Summary(models.Model):
@@ -32,4 +44,8 @@ class Product_Summary(models.Model):
     avg_sentiment = models.DecimalField(max_digits=3, decimal_places=2)
     avg_rating = models.DecimalField(max_digits=4, decimal_places=2)
     date = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.product.name
+ 
     
