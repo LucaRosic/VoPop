@@ -16,17 +16,12 @@ class Product(models.Model):
 class User_Products(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-<<<<<<< Updated upstream
-    
-    
-=======
 
     def __str__(self):
         return "%s - %s" %(self.user, self.product.name)
 
 
 # product_reviews table   
->>>>>>> Stashed changes
 class Product_Reviews(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     review = models.CharField(max_length=8000)

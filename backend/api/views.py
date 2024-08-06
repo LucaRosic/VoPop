@@ -3,16 +3,12 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from .serializers import UserSerializer, ProductSerializer, UserProductSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-<<<<<<< Updated upstream
-from .models import Product, User_Products
-=======
 from .models import Product, User_Products, Product_Summary, Product_Reviews
 from scrape.scrapper import scrape_reviews
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
 import datetime
 
->>>>>>> Stashed changes
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -45,10 +41,6 @@ class CreateProductView(generics.ListCreateAPIView):
             # Perfrom scraping and elt here
             # add to db 
             
-<<<<<<< Updated upstream
-            # add relevant attributes
-            serializer.save(name='prod', category='prod cat', description='prod descript', image='prod img')
-=======
             # If product is already in database, only add to user_product table
             if Product.objects.filter(url=serializer.validated_data['url']).exists():
                 user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
@@ -86,7 +78,6 @@ class CreateProductView(generics.ListCreateAPIView):
                 avg_rating = round(avg_rating/len(scraped['Reviews']),2)
                 prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
->>>>>>> Stashed changes
         else:
             print(serializer.errors)
 
@@ -104,11 +95,6 @@ class DeleteUserProduct(generics.DestroyAPIView):
     
     permission_classes = [AllowAny]
     
-<<<<<<< Updated upstream
-    #def get_queryset(self):
-        #user = self.request.user
-        #return User_Products.objects.filter(user=user)      
-=======
     
 class GetProds(generics.RetrieveAPIView):
     
@@ -201,4 +187,3 @@ class GetProductSum_Dash(APIView):
                                
         
         
->>>>>>> Stashed changes
