@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
 import api from "../api"
-import ProtectedRoute from "../components/ProtectedRoute"
 
 const APITest = () => {
 
@@ -38,12 +37,12 @@ const APITest = () => {
     <div>
       <button onClick={getQuote}>Get Quote</button>
       <p>{quote}</p>
-      <ProtectedRoute>
-        <button 
-        onClick={getProduct}
-        className="bg-gray-600 rounded-lg p-2 text-white"
-      >/api/user/product/home</button>
-      </ProtectedRoute>
+      <button 
+      onClick={getProduct}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        /api/user/product/home
+      </button>
       <br></br>
       <br></br>
       <button

@@ -80,7 +80,11 @@ const App = () => {
             <TempProtectedPage />
           </ProtectedRoute>
         } />
-        <Route path="/api" element={<APITest />} />
+        <Route path="/api" element={
+          <ProtectedRoute>
+            <APITest />
+          </ProtectedRoute>
+          } />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
