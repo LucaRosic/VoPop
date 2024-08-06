@@ -26,19 +26,26 @@ def get_site(url):
         return None
 
 def scrape_amazon_reviews(url):
+    count=0
     def clean_url(url):
-        if "/dp/" in url:
+        if "/product-reviews/" in url:
+            url = url.replace("/product-reviews/", "/dp/")
+        elif "/dp/" in url:
             parts = url.split("/dp/")
-            clean_part = parts[1].split("?")[0]  
-            return parts[0] + "/dp/" + clean_part, clean_part
+            if "/ref" in parts[1]:
+                clean_part = parts[1].split("/ref")[0]
+            else:
+                clean_part = parts[1].split("?")[0]
+            url = parts[0] + "/dp/" + clean_part, clean_part
+        return url 
         
-
+    
 
     print("Amazon detected")
     start_time = time.time()
 
     # Specify the path to your GeckoDriver executable
-    gecko_driver_path = r''
+    gecko_driver_path = r'backend\scrape\geckodriver.exe'
 
     # Configure Firefox options
     options = webdriver.FirefoxOptions()
@@ -86,6 +93,7 @@ def scrape_amazon_reviews(url):
 
             # Iterate over each review element
             for review in review_elements:
+                
                 try:
                     # Extract review text
                     review_text = review.find_element(By.CSS_SELECTOR, '.review-text-content').text
@@ -93,13 +101,14 @@ def scrape_amazon_reviews(url):
                     review_date = review.find_element(By.CSS_SELECTOR, '.review-date').text
                     # Extract star rating
                     review_stars = review.find_element(By.CSS_SELECTOR, '.a-icon-alt').get_attribute('textContent')
-
+                    count+=1
                     # Append the extracted data to the reviews list
                     reviews_list.append({
                         'Date': review_date,
                         'Stars': review_stars,
                         'Review Text': review_text
                     })
+                    
                 except Exception as e:
                     print("Error extracting review details:", e)
 
@@ -114,6 +123,7 @@ def scrape_amazon_reviews(url):
                     EC.invisibility_of_element((By.CSS_SELECTOR, 'div.a-section.cr-list-loading.reviews-loading'))
                 )  # Wait for loading overlay to disappear
             except Exception as e:
+                print(count)
                 print("No more pages or error navigating to next page:", e)
                 break
 
@@ -222,9 +232,9 @@ def scrape_etsy_reviews(url):
 
     return df
 
-def scrape_alibaba_reviews(url):
-    print("Alibaba detected")
-    # Implement Alibaba scraping here
+def scrape_ali_express_reviews(url):
+    print("AliExpress detected")
+    # Implement Alibaba scraping herev
     pass
 
 def scrape_reviews(url):
@@ -237,8 +247,8 @@ def scrape_reviews(url):
         return scrape_amazon_reviews(url)
     elif site == 'etsy':
         return scrape_etsy_reviews(url)
-    elif site == 'alibaba':
-        return scrape_alibaba_reviews(url)
+    elif site == 'aliexpress':
+        return scrape_ali_express_reviews(url)
     else:
         print("Unsupported site")
         return None
@@ -247,7 +257,7 @@ def scrape_reviews(url):
 if __name__ == "__main__":
     # url = "https://www.etsy.com/au/listing/1518307138/personalized-travel-jewelry-box-small?click_key=e840c0f4cb9842b5b33c7993184a9c63c837c426%3A1518307138&click_sum=dd8b8e24&ref=hp_prn-1&pro=1&sts=1"
     # url = "https://www.alibaba.com/product-detail/2020-Innovation-Smart-Watch-Band-Fitness_62471952214.html?spm=a27aq.27039648.4955574140.39.19db3ccf02rzO0 "
-    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
+    url = 'https://www.amazon.com.au/Lip-Smacker-Coca-Cola-Party-Glosses/dp/B00CXK623E/?_encoding=UTF8&pd_rd_w=2LQ0T&content-id=amzn1.sym.619da892-3961-430f-af2a-2290db51abf0&pf_rd_p=619da892-3961-430f-af2a-2290db51abf0&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&ref_=pd_hp_d_btf_ags-gateway-trending-item&th=1'
     reviews_df = scrape_reviews(url)
-    # if reviews_df is not None:
-    #     print(reviews_df)
+    
+    
