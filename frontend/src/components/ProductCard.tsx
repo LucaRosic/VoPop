@@ -26,8 +26,8 @@ export const ProductCard = ({ productId, onClick = () => null }: Props) => {
 
   return (
     <div
-      className="product-card bg-slate-100 w-[60vw] h-60 rounded-lg px-8 pr-0 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 
-      border-gray-200 transform hover:scale-105 transition-transform"
+      className="product-card bg-gradient-to-t from-slate-100 to-slate-200 w-[60vw] h-60 rounded-lg px-8 pr-0 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 
+      border-gray-200 transform hover:scale-[1.02] transition-transform"
       onClick={onClick}
     >
       <div className="product-snippet flex flex-col w-[20vw]">
