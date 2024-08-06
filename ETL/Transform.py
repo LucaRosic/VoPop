@@ -9,11 +9,11 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-# Ensure Django settings are configured properly
+# Django settings
 import django
 django.setup()
 
-# Define Django models (adjust to your actual model structure)
+# Define Django models 
 class Review(models.Model):
     review_text = models.TextField()
     date = models.DateTimeField()
