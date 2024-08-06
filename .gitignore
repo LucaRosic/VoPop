@@ -2,4 +2,4 @@
 .DS_Store
 venv/
 .DS_Store
-backend\scrape\__pycache__
+/backend/api/__pycache__
