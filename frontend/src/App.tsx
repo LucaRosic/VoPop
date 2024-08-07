@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { TempProtectedPage } from "./pages/TempProtectedPage";
 import APITest from "./pages/APITest";
 
+import "./index.css"
 // TODO:
 // When refactoring rename function to have function clause
 

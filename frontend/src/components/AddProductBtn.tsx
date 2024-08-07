@@ -33,7 +33,7 @@ const AddProductBtn = () => {
   return(
     <div className="flex flex-col">
       <div 
-        className="bg-green-700 hover:bg-green-800 p-1 rounded-sm cursor-pointer absolute top-[0.4rem] w-40 text-center select-none"
+        className="bg-green-700 hover:bg-green-800 p-1 rounded-sm cursor-pointer w-40 text-center select-none"
         onClick={toggleState}
       >
       <span><AddIcon /></span>  Add Product
