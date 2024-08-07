@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddIcon from '@mui/icons-material/Add';
 
 const AddProductBtn = () => {
   const [url, setUrl] = useState<string>("");
@@ -11,7 +12,7 @@ const AddProductBtn = () => {
   const urlForm = () => {
     return (
       <div className="bg-slate-300 rounded-lg absolute max-h-[40vh] top-[3.2rem] w-[400px] p-2 text-black">
-        Dropdown Box
+        Enter URL of Product:
         <form onSubmit={handleSubmit}>
           <input 
           className="form-input"
@@ -32,10 +33,10 @@ const AddProductBtn = () => {
   return(
     <div className="flex flex-col">
       <div 
-        className="bg-green-800 p-2 rounded-sm cursor-pointer absolute top-1 w-28"
+        className="bg-green-800 p-1 rounded-sm cursor-pointer absolute top-[0.4rem] w-40 text-center"
         onClick={toggleState}
       >
-      Add Product
+      <span><AddIcon /></span>Add Product
       </div>
       {showForm && urlForm()}
     </div>
