@@ -49,13 +49,15 @@ class CreateProductView(generics.ListCreateAPIView):
         if serializer.is_valid():
             # elt here
             
+            if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
+                return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+            
             # If product is already in database, only add to user_product table
-            if Product.objects.filter(url=serializer.validated_data['url']).exists():
-                
-                user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
+            elif Product.objects.filter(url=serializer.validated_data['url']).exists():
+                user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=serializer.validated_data['url']))
                 user_prod.save()
-                return Response(status=status.H)
-                # add to user product table
+                serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
+                return Response(data=serializer.data, status=status.HTTP_100_CONTINUE)
             else:
                 #scrape data 
                 scraped = (scrape_reviews(serializer.validated_data['url']))  
@@ -75,11 +77,6 @@ class CreateProductView(generics.ListCreateAPIView):
                 sent_model = start_model()
                 for review in scraped['Reviews']:
                     
-                    #tokens = nltk.word_tokenize(review['Review Text'])
-                    #if len(tokens) > 500:
-                        #print('here')
-                        #continue
-                    
                     date = review['Date'].split('on ')[-1].split(' ')
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
                     rating = float(review['Stars'].split(' ')[0])
@@ -98,6 +95,7 @@ class CreateProductView(generics.ListCreateAPIView):
                 avg_rating = round(avg_rating/len(scraped['Reviews']),2)
                 prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
+                return Response(status=status.HTTP_100_CONTINUE)
         else:
             print(serializer.errors)
 
