@@ -34,9 +34,8 @@ const APITest = () => {
     try {
       const urlData = {url:"google.com"};
       console.log("Sending api:");
-      const res = await api.get("/api/product/",urlData);
+      const res = await axios.post("/api/product/",urlData);
       console.log("DONE!");
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
