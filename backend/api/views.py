@@ -34,26 +34,18 @@ class CreateProductView(generics.ListCreateAPIView):
     
     permission_classes = [AllowAny]
     
-    #def get_queryset(self):
-        #return Product.objects.filter()
-    
-    
-    
-    
-    
-    
-    
     # creates everything 
     def perform_create(self, serializer):
         
         if serializer.is_valid():
             # elt here
             
-            if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
-                return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-            
             # If product is already in database, only add to user_product table
-            elif Product.objects.filter(url=serializer.validated_data['url']).exists():
+            if Product.objects.filter(url=serializer.validated_data['url']).exists():
+                
+                if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
+                    return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+                
                 user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=serializer.validated_data['url']))
                 user_prod.save()
                 serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
@@ -63,8 +55,7 @@ class CreateProductView(generics.ListCreateAPIView):
                 scraped = (scrape_reviews(serializer.validated_data['url']))  
                 
                 # add to product table          
-                serializer.save(name=scraped['Product Name'], category='amazon', description='prod descript', image=scraped['Product Image'])
-                
+                serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
                 # adds to user_product table
                 user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
                 
@@ -82,20 +73,26 @@ class CreateProductView(generics.ListCreateAPIView):
                     rating = float(review['Stars'].split(' ')[0])
                     avg_rating += rating
                     avg_sentiment += sentiment
+                    if sentiment >= 0.5:
+                        sentiment_label = 'Positive'
+                    elif sentiment <= -0.5:
+                        sentiment_label = 'Negative'
+                    else: 
+                        sentiment_label = 'Neutral'
                     
                     if date[0].isdigit():
                         prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])))
+                            sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])))
                     else:
                         prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
+                            sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
                     prod_rev.save()
                     
                 avg_sentiment = round(avg_sentiment/len(scraped['Reviews']),2)
                 avg_rating = round(avg_rating/len(scraped['Reviews']),2)
                 prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
-                return Response(status=status.HTTP_100_CONTINUE)
+                
         else:
             print(serializer.errors)
 

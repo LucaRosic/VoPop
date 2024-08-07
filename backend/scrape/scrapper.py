@@ -77,7 +77,7 @@ def scrape_amazon_reviews(url):
         ).get_attribute('src')
 
         try:
-            product_brand = WebDriverWait(driver, 3).until(
+            product_brand = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="productOverview_feature_div"]/div/table/tbody/tr[1]/td[2]/span'))
             ).text
         except:

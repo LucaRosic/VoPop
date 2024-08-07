@@ -138,19 +138,19 @@ if __name__ == '__main__':
     """ 
     Tests review summary function
     """
-    print('testing model...')
+    #print('testing model...')
     
     ##df = pd.read_csv('/Users/gillyrosic/Downloads/Gemini_stuff/data/test_data.csv')
     ##df = df.rename(columns={"reviews.text": "reviewText"})
     ##print(summarize(df[df['asins']=="B00QJDU3KY"][['asins', 'reviewText']]))
     
-    review_dict = get_review_dict()
-    review_list = []
+    #review_dict = get_review_dict()
+    #review_list = []
 
-    for i,v in review_dict.items():
-        review_list += v
+    #for i,v in review_dict.items():
+        #review_list += v
     
-    print(summarize(review_list))
+    #print(summarize(review_list))
 
     
     

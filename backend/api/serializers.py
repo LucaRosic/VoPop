@@ -5,9 +5,9 @@ from .models import Product, User_Products, Product_Summary, Product_Reviews
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["id", "name", "category", "url", "description", "image"]
+        fields = ["id", "name", "category", "url", "brand", "image"]
         extra_kwargs = {"name": {"read_only": True}, \
-            "category": {"read_only": True}, "description": {"read_only": True}, \
+            "category": {"read_only": True}, "brand": {"read_only": True}, \
                 "image": {"read_only": True}, "image": {"read_only": True}}
         
         
@@ -62,15 +62,15 @@ class SentimentDataSerializer_Dash(serializers.ModelSerializer):
     
     class Meta:
         model = Product_Reviews
-        fields = ['sentiment', 'date']
-        extra_kwargs = {"sentiment": {"read_only": True}, "date": {"read_only": True}}
+        fields = ['sentiment', 'sentiment_label', 'date']
+        extra_kwargs = {"sentiment": {"read_only": True}, "sentiment_label": {"read_only": True}, "date": {"read_only": True}}
   
         
 class ProductSerializer_Dash(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["name", "image", 'description']
-        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "description": {"read_only": True}}
+        fields = ["name", "image", 'brand']
+        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "brand": {"read_only": True}}
 
 class ProductSumSerializer_Dash(serializers.ModelSerializer):
     
