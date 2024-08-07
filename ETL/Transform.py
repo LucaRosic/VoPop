@@ -1,62 +1,70 @@
-import pandas as pd
+import os
 import json
-import re
-from profanity_check import predict
-from textblob import TextBlob
-import unicodedata
+import pandas as pd
 from langdetect import detect
-from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
+from better_profanity import profanity
+from textblob import TextBlob
+import re
 
-# Django settings
-import django
-django.setup()
+# import sqlalchemy
+# from sqlalchemy import create_engine
+import psycopg2
 
-# Define Django models 
-class Review(models.Model):
-    review_text = models.TextField()
-    date = models.DateTimeField()
-    stars = models.IntegerField()
 
-def clean_review_text(text):
+
+# Initialize the better-profanity library
+profanity.load_censor_words()
+
+# Define a function to clean and transform the data
+def clean_transform_data(reviews):
+    
+    # Remove duplicates
+    reviews = reviews.drop_duplicates(subset=['review'])
+
+    # Remove Non-English reviews
+    reviews = reviews[reviews['cleaned_text'].apply(lambda x: detect(x) == 'en')]
+
     # Filter out profanity
-    text = text if not predict([text])[0] else TextBlob(text).words
+    reviews['cleaned_text'] = reviews['review'].apply(lambda x: profanity.censor(x))
+
     # Correct spelling and grammar
-    text = str(TextBlob(text).correct())
+    reviews['cleaned_text'] = reviews['cleaned_text'].apply(lambda x: str(TextBlob(x).correct()))
+
     # Normalize text (handling Unicode)
-    text = unicodedata.normalize('NFKD', text).encode('ascii', errors='ignore').decode('utf-8')
+    reviews['cleaned_text'] = reviews['cleaned_text'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
+
     # Identify and remove noise
-    text = re.sub(r'[^a-zA-Z\s]', '', text)
-    return text
+    reviews['cleaned_text'] = reviews['cleaned_text'].apply(lambda x: re.sub(r'[^a-zA-Z\s]', '', x))
 
-def clean_reviews():
-    # Fetch reviews from the database
-    reviews = Review.objects.all()
-    
-    # Create a DataFrame
-    df = pd.DataFrame(list(reviews.values('id', 'review_text', 'date', 'stars')))
-    
-    # Drop null values
-    df = df.dropna()
-    
-    # Clean and transform review text
-    df['cleaned_text'] = df['review_text'].apply(clean_review_text)
-    
-    # Remove non-English reviews
-    df = df[df['cleaned_text'].apply(lambda x: detect(x) == 'en')]
-    
-    # Update the original data with cleaned reviews
-    cleaned_reviews = df[['id', 'date', 'stars', 'cleaned_text']].rename(columns={'cleaned_text': 'review_text'})
-    
-    # Save cleaned data back to the database
-    for _, row in cleaned_reviews.iterrows():
-        try:
-            review = Review.objects.get(id=row['id'])
-            review.review_text = row['review_text']
-            review.save()
-        except ObjectDoesNotExist:
-            pass  # Handle if the review ID no longer exists
+    return reviews
 
-# Call the function
-clean_reviews()
+# Function to load data into the PostgreSQL database
+def load_to_db(df, db_engine, table_name):
+    df.to_sql(table_name, db_engine, if_exists='append', index=False)
+
+
+
+# Set up PostgreSQL database connection
+db_username = 'your_username'
+db_password = 'your_password'
+db_host = 'localhost'
+db_port = '5432'
+db_name = 'your_database'
+engine = create_engine(f'postgresql+psycopg2://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}')
+table_name = 'your_table'
+
+# Path to the directory containing JSON files
+directory = '/path/to/dir/of/json/files'
+
+# Process each JSON file in the directory
+for filename in os.listdir(directory):
+    if filename.endswith('.json'):
+        file_path = os.path.join(directory, filename)
+        with open(file_path, 'r') as file:
+
+            data = json.load(file)
+            df = pd.DataFrame(data)
+            cleaned_df = clean_transform_data(df)
+            load_to_db(cleaned_df, engine, table_name)
+
+
