@@ -43,7 +43,7 @@ def clean_transform_data(data):
                 'September': 9, 'October': 10, 'November': 11, 'December': 12
             }.get(month_str, None)
             if month:
-                review_date = f"{int(day)}/{int(month)}/{int(year)}"  # Format as DD/MM/YYYY
+                review_date = [int(day),int(month),int(year)]  
             else:
                 review_date = None  # Handle cases where month is not valid
         else:
@@ -56,35 +56,33 @@ def clean_transform_data(data):
             review_rating = None  # Handle cases where rating is not a valid float
 
         cleaned_review = {
-            'review': review_text,
-            'date': review_date,
-            'rating': review_rating
+            'Review Text': review_text,
+            'Date': review_date,
+            'Stars': review_rating
         }
         cleaned_reviews.append(cleaned_review)
     
     # Return the complete data including product info and cleaned reviews
     return {
-        'product_name': product_name,
-        'product_image': product_image,
-        'unique_key': unique_key,
-        'reviews': cleaned_reviews
+        'Product Name': product_name,
+        'Product Image': product_image,
+        'Unique Key': unique_key,
+        'Reviews': cleaned_reviews
     }
 
-# Path to the directory containing JSON files
-directory = "path/to/input/directory"
-output_directory = "path/to/out/directory"
 
-# Process each JSON file in the directory
-for filename in os.listdir(directory):
-    if filename.endswith('.json'):
-        file_path = os.path.join(directory, filename)
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-            cleaned_data = clean_transform_data(data)
+if __name__ == '__main__':
+    # Path to the directory containing JSON files
+    directory = "Input_Data/"
+    output_directory = "Output_Data/"
 
-            # Save the cleaned data back to a JSON file
-            output_file_path = os.path.join(output_directory, filename)
-            with open(output_file_path, 'w') as output_file:
-                json.dump(cleaned_data, output_file, indent=4)
+    # Process each JSON file in the directory
+    for filename in os.listdir(directory):
+        if filename.endswith('.json'):
+            file_path = os.path.join(directory, filename)
+            with open(file_path, 'r') as file:
+                data = json.load(file)
+                print(clean_transform_data(data))
 
+           
 
