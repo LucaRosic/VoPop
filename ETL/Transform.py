@@ -1,70 +1,90 @@
-import os
+import re
 import json
-import pandas as pd
+import os
 from langdetect import detect
 from better_profanity import profanity
-from textblob import TextBlob
-import re
-
-# import sqlalchemy
-# from sqlalchemy import create_engine
-import psycopg2
-
-
 
 # Initialize the better-profanity library
 profanity.load_censor_words()
 
-# Define a function to clean and transform the data
-def clean_transform_data(reviews):
+def clean_transform_data(data):
+    cleaned_reviews = []
     
-    # Remove duplicates
-    reviews = reviews.drop_duplicates(subset=['review'])
+    # Extract product information
+    product_name = data.get("Product Name", "")
+    product_image = data.get("Product Image", "")
+    unique_key = data.get("Unique Key", "")
+    
+    # Extract the reviews
+    reviews = data.get("Reviews", [])  # Access the list of reviews
 
-    # Remove Non-English reviews
-    reviews = reviews[reviews['cleaned_text'].apply(lambda x: detect(x) == 'en')]
+    for review in reviews:
+        review_text = review.get('Review Text', '')  # Access review text with a default empty string
+        review_date = review.get('Date', '')  # Access review date with a default empty string
+        review_rating = review.get('Stars', '')  # Access review rating with a default empty string
 
-    # Filter out profanity
-    reviews['cleaned_text'] = reviews['review'].apply(lambda x: profanity.censor(x))
+        # Remove Non-English reviews
+        if detect(review_text) != 'en':
+            continue
 
-    # Correct spelling and grammar
-    reviews['cleaned_text'] = reviews['cleaned_text'].apply(lambda x: str(TextBlob(x).correct()))
+        # Filter out profanity
+        review_text = profanity.censor(review_text)
 
-    # Normalize text (handling Unicode)
-    reviews['cleaned_text'] = reviews['cleaned_text'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
+        # Normalize text (handling Unicode)
+        review_text = re.sub(r'[^\x00-\x7F]+', '', review_text)
 
-    # Identify and remove noise
-    reviews['cleaned_text'] = reviews['cleaned_text'].apply(lambda x: re.sub(r'[^a-zA-Z\s]', '', x))
+        # Clean the date
+        date_match = re.search(r'on (\d{1,2}) (\w+) (\d{4})', review_date)
+        if date_match:
+            day, month_str, year = date_match.groups()
+            month = {
+                'January': 1, 'February': 2, 'March': 3, 'April': 4,
+                'May': 5, 'June': 6, 'July': 7, 'August': 8,
+                'September': 9, 'October': 10, 'November': 11, 'December': 12
+            }.get(month_str, None)
+            if month:
+                review_date = f"{int(day)}/{int(month)}/{int(year)}"  # Format as DD/MM/YYYY
+            else:
+                review_date = None  # Handle cases where month is not valid
+        else:
+            review_date = None  # Handle cases where date is not in the expected format
 
-    return reviews
+        # Clean the rating
+        try:
+            review_rating = float(re.findall(r'\d+\.\d+', review_rating)[0])
+        except (ValueError, IndexError):
+            review_rating = None  # Handle cases where rating is not a valid float
 
-# Function to load data into the PostgreSQL database
-def load_to_db(df, db_engine, table_name):
-    df.to_sql(table_name, db_engine, if_exists='append', index=False)
-
-
-
-# Set up PostgreSQL database connection
-db_username = 'your_username'
-db_password = 'your_password'
-db_host = 'localhost'
-db_port = '5432'
-db_name = 'your_database'
-engine = create_engine(f'postgresql+psycopg2://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}')
-table_name = 'your_table'
+        cleaned_review = {
+            'review': review_text,
+            'date': review_date,
+            'rating': review_rating
+        }
+        cleaned_reviews.append(cleaned_review)
+    
+    # Return the complete data including product info and cleaned reviews
+    return {
+        'product_name': product_name,
+        'product_image': product_image,
+        'unique_key': unique_key,
+        'reviews': cleaned_reviews
+    }
 
 # Path to the directory containing JSON files
-directory = '/path/to/dir/of/json/files'
+directory = "path/to/input/directory"
+output_directory = "path/to/out/directory"
 
 # Process each JSON file in the directory
 for filename in os.listdir(directory):
     if filename.endswith('.json'):
         file_path = os.path.join(directory, filename)
         with open(file_path, 'r') as file:
-
             data = json.load(file)
-            df = pd.DataFrame(data)
-            cleaned_df = clean_transform_data(df)
-            load_to_db(cleaned_df, engine, table_name)
+            cleaned_data = clean_transform_data(data)
+
+            # Save the cleaned data back to a JSON file
+            output_file_path = os.path.join(output_directory, filename)
+            with open(output_file_path, 'w') as output_file:
+                json.dump(cleaned_data, output_file, indent=4)
 
 
