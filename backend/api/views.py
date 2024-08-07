@@ -35,12 +35,12 @@ class CreateProductView(generics.ListCreateAPIView):
         #return User_Products.objects.filter(user=user).select_related('Product')
     
     def perform_create(self, serializer):
-        print(self.request.get('url'))
+        #print(self.request.get('url'))
         
         if serializer.is_valid():
             
             print(serializer.validated_data['url'])
-            print(self.request.get('url'))
+            #print(self.request.get('url'))
             # Perfrom scraping and elt here
             # add to db 
             
@@ -53,7 +53,7 @@ class CreateProductView(generics.ListCreateAPIView):
                 # 
             #scraped = (scrape_reviews(serializer.validated_data['url']))
             
-            serializer.save(name=scraped['Product Name'], category='amazon', description='prod descript', image=scraped['Product Image'])
+            serializer.save(name='gogle', category='amazon', description='prod descript', image='Product Image')
             #print(serializer.data)
         else:
             print(serializer.errors)
