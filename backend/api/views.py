@@ -27,7 +27,7 @@ class CreateUserView(generics.CreateAPIView):
     
     
     
-class CreateProductView(generics.ListCreateAPIView):
+class CreateProduct(generics.ListCreateAPIView):
     
     queryset = Product.objects.all()
     
@@ -177,7 +177,7 @@ class GetReviewSent_Dash(APIView):
         return Response(serializer.data)
         
    
-class GetProduct_Meta_Dash(APIView):
+class GetProductMeta_Dash(APIView):
     permission_classes = [AllowAny]
     
     def get(self, request, product_id):
