@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from scrape.scrapper import scrape_reviews
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
+from Clean.Transform import clean_transform_data
 import datetime
 import nltk 
 
@@ -38,7 +39,6 @@ class CreateProductView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         
         if serializer.is_valid():
-            # elt here
             
             # If product is already in database, only add to user_product table
             if Product.objects.filter(url=serializer.validated_data['url']).exists():
@@ -51,27 +51,27 @@ class CreateProductView(generics.ListCreateAPIView):
                 serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
                 return Response(data=serializer.data, status=status.HTTP_100_CONTINUE)
             else:
-                #scrape data 
+                # scrape and clean data 
                 scraped = (scrape_reviews(serializer.validated_data['url']))  
+                cleaned = clean_transform_data(scraped)
                 
                 # add to product table          
-                serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
+                serializer.save(name=scraped['Product Name'], category='amazon', brand=cleaned['Brand'], image=cleaned['Product Image'])
+                
                 # adds to user_product table
                 user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
-                
-                # adds to product summary table
-                user_prod.save()
+                user_prod.save() 
                 
                 avg_sentiment = 0
                 avg_rating = 0
-                month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
+                ##month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
                 sent_model = start_model()
-                for review in scraped['Reviews']:
+                for review in cleaned['Reviews']:
                     
-                    date = review['Date'].split('on ')[-1].split(' ')
+                    # date = review['Date'].split('on ')[-1].split(' ')
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
-                    rating = float(review['Stars'].split(' ')[0])
-                    avg_rating += rating
+                    # rating = float(review['Stars'].split(' ')[0])
+                    avg_rating += review['Stars']
                     avg_sentiment += sentiment
                     if sentiment >= 0.5:
                         sentiment_label = 'Positive'
@@ -80,17 +80,17 @@ class CreateProductView(generics.ListCreateAPIView):
                     else: 
                         sentiment_label = 'Neutral'
                     
-                    if date[0].isdigit():
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])))
-                    else:
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
+                    # if date[0].isdigit():
+                    prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                        sentiment=sentiment, sentiment_label=sentiment_label, rating=review['Stars'], date=datetime.date(review['Date'][-1], review['Date'][1], review['Date'][0]) )
+                    # else:
+                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                    #         sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
                     prod_rev.save()
                     
-                avg_sentiment = round(avg_sentiment/len(scraped['Reviews']),2)
-                avg_rating = round(avg_rating/len(scraped['Reviews']),2)
-                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+                avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
+                avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(cleaned['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
                 
         else:
