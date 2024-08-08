@@ -1,0 +1,15 @@
+asgiref
+Django~=4.2.14
+django-cors-headers
+djangorestframework~=3.15.2
+djangorestframework-simplejwt
+PyJWT
+pytz
+sqlparse
+psycopg2-binary
+python-dotenv~=1.0.1
+transformers~=4.43.3
+torch
+numpy==1.26.4
+pandas
+selenium
