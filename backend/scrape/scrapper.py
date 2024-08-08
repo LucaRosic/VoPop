@@ -45,7 +45,7 @@ def scrape_amazon_reviews(url):
     start_time = time.time()
 
     # Specify the path to your GeckoDriver executable
-    gecko_driver_path = r'backend\scrape\geckodriver.exe'
+    gecko_driver_path = r''
 
     # Configure Firefox options
     options = webdriver.FirefoxOptions()
@@ -75,6 +75,13 @@ def scrape_amazon_reviews(url):
         product_image = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'landingImage'))
         ).get_attribute('src')
+
+        try:
+            product_brand = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="productOverview_feature_div"]/div/table/tbody/tr[1]/td[2]/span'))
+            ).text
+        except:
+            product_brand = "NA"
 
         # Click on the "See more reviews" link if present
         try:
@@ -131,17 +138,12 @@ def scrape_amazon_reviews(url):
         # Close the WebDriver
         driver.quit()
 
-    # # Create a DataFrame from the reviews list
-    # df = pd.DataFrame(reviews_list)
-
-    # # Save the reviews DataFrame as a JSON file
-    # df.to_json('amazon_reviews.json', orient='records', lines=True)
-
     # Create a product details dictionary
     product_details = {
         'Product Name': product_name,
         'Product Image': product_image,
         'Unique Key': unique_key,
+        'Brand': product_brand,
         'Reviews': reviews_list
     }
 
@@ -155,82 +157,6 @@ def scrape_amazon_reviews(url):
 
     return product_details
 
-
-
-def scrape_etsy_reviews(url):
-    print("Etsy detected")
-    # Specify the path to your GeckoDriver executable
-    gecko_driver_path = r'C:\Users\Matth\OneDrive\Documents\FDM training\pond\dashboard_project\geckodriver.exe'
-
-    # Configure Firefox options
-    options = webdriver.FirefoxOptions()
-    options.add_argument('--ignore-certificate-errors')
-    # options.add_argument('--incognito')
-
-    # Initialize FirefoxDriver service
-    service = Service(gecko_driver_path)
-
-    # Initialize Firefox WebDriver with service and options
-    driver = webdriver.Firefox(service=service, options=options)
-    driver.get(url)
-
-    # Initialize an empty list to store reviews
-    reviews_list = []
-
-    try:
-        while True:
-            # Extract review elements
-            review_elements = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.review'))
-            )
-
-            # Iterate over each review element
-            for review in review_elements:
-                try:
-                    # Extract review text
-                    review_text = review.find_element(By.CSS_SELECTOR, '.review-text').text
-                    # Extract review date
-                    review_date = review.find_element(By.CSS_SELECTOR, '.review-date').text
-                    # Extract star rating
-                    review_stars = review.find_element(By.CSS_SELECTOR, '.star-rating').get_attribute('textContent')
-
-                    # Append the extracted data to the reviews list
-                    reviews_list.append({
-                        'Date': review_date,
-                        'Stars': review_stars,
-                        'Review Text': review_text
-                    })
-                except Exception as e:
-                    print("Error extracting review details:", e)
-
-            # Check for the "Next page" link and click if found
-            try:
-                next_page = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, '.pagination-next'))
-                )
-                driver.execute_script("arguments[0].scrollIntoView(true);", next_page)  # Ensure element is in view
-                next_page.click()
-                WebDriverWait(driver, 10).until(
-                    EC.invisibility_of_element((By.CSS_SELECTOR, 'div.a-section.cr-list-loading.reviews-loading'))
-                )  # Wait for loading overlay to disappear
-            except Exception as e:
-                print("No more pages or error navigating to next page:", e)
-                break
-
-    finally:
-        # Add a delay before quitting to inspect any error messages
-        time.sleep(10)
-        
-        # Close the WebDriver
-        driver.quit()
-
-    # Create a DataFrame from the reviews list
-    df = pd.DataFrame(reviews_list)
-
-    # Save the DataFrame as a JSON file
-    df.to_json('etsy_reviews.json', orient='records', lines=True)
-
-    return df
 
 def scrape_ali_express_reviews(url):
     print("AliExpress detected")
@@ -257,7 +183,5 @@ def scrape_reviews(url):
 if __name__ == "__main__":
     # url = "https://www.etsy.com/au/listing/1518307138/personalized-travel-jewelry-box-small?click_key=e840c0f4cb9842b5b33c7993184a9c63c837c426%3A1518307138&click_sum=dd8b8e24&ref=hp_prn-1&pro=1&sts=1"
     # url = "https://www.alibaba.com/product-detail/2020-Innovation-Smart-Watch-Band-Fitness_62471952214.html?spm=a27aq.27039648.4955574140.39.19db3ccf02rzO0 "
-    url = 'https://www.amazon.com.au/Lip-Smacker-Coca-Cola-Party-Glosses/dp/B00CXK623E/?_encoding=UTF8&pd_rd_w=2LQ0T&content-id=amzn1.sym.619da892-3961-430f-af2a-2290db51abf0&pf_rd_p=619da892-3961-430f-af2a-2290db51abf0&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&ref_=pd_hp_d_btf_ags-gateway-trending-item&th=1'
+    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
     reviews_df = scrape_reviews(url)
-    
-    
