@@ -7,21 +7,21 @@ const AddProductBtn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page from reloading
     console.log(`URL Sent: ${url}`);
+    setUrl(""); // Clear url field
   }
 
   const urlForm = () => {
     return (
       <div className="bg-slate-300 rounded-lg absolute max-h-[40vh] top-[3.2rem] w-[400px] p-2 text-black">
-        Enter URL of Product:
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="text-center">
           <input 
-          className="form-input"
+          className="form-input w-[350px]"
           type="text"
           value={url}
           onChange={(e) => {setUrl(e.target.value)}}
-          placeholder="URL"
+          placeholder="Enter URL of Product:"
         />
-        <button className="form-button" type="submit">Send</button>
+        <button className="form-button w-[350px]" type="submit">Add</button>
         </form>
       </div>
     )
