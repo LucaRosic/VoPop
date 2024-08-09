@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 import NavbarTop from "../components/NavbarTop";
+import Footer from "../components/Footer";
 
 export const ProductDashboard = () => {
   const navigate = useNavigate();
@@ -25,9 +26,7 @@ export const ProductDashboard = () => {
           />
         ))}
       </div>
-      <p>
-        <a href="/home">Back Home</a>
-      </p>
+      <Footer />
     </>
   );
 };

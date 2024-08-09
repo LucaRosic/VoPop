@@ -1,7 +1,9 @@
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import BarGraph from "../components/BarGraph.tsx"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import DummyData from "../DummyData.ts";
+import { Button } from "@mui/material";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -23,13 +25,24 @@ export const ProductInfoPage = () => {
     return (
       <div className="flex h-[100vh]">
         {/* Sidebar left */}
-        <div className="w-1/3 bg-green-100 flex flex-col items-center">
-        <span className="text-xl">{productInfo.title}</span>
-        <img
-          className="object-cover w-[60%] h-64 rounded-lg"
-          src={productInfo.img}
-        >
-        </img>
+        <div className="w-1/3 bg-slate-800 flex flex-col items-center gap-4">
+          <div className="self-start mt-2 ml-2">
+            <Button 
+              variant="contained" 
+              startIcon={<ArrowBackIosNewIcon />}
+              href="/dashboard"
+            >
+              Dashboard
+            </Button>
+          </div>
+          
+
+          <span className="text-xl bg-slate-100 px-4 py-2 rounded-lg">{productInfo.title}</span>
+          <img
+            className="object-cover w-[60%] h-64 rounded-lg"
+            src={productInfo.img}
+          >
+          </img>
         </div>
 
         {/* Sidebar right */}

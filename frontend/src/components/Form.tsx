@@ -20,13 +20,14 @@ export const Form = ({route, method} : Props) => {
   const handleSubmit = async (e : React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
+    console.log(loading); // Change this for loading animation in future
 
     try {
       const res = await api.post(route, {username, password}); // Send username and password to the api endpoint
       if (method === "login") { // for login
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/"); // Navigate back to home
+        navigate("/api"); // Navigate back to home
       } else { // For register
         navigate("/login");
       }

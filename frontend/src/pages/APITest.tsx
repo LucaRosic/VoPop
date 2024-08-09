@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import api from "../api"
-import { data } from "../components/BarGraph"
+// import { data } from "../components/BarGraph"
 
 const APITest = () => {
 
@@ -26,6 +26,7 @@ const APITest = () => {
       console.log(res.data);
     } catch (error) {
       console.log(error);
+      window.location.href = "/login"; // Back to login page on failure
     }
   }
 

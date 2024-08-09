@@ -1,8 +1,8 @@
-import ReactDOM from 'react-dom'
-import React from 'react'
+// import ReactDOM from 'react-dom'
+// import React from 'react'
 import {Bar} from 'react-chartjs-2'
 import {Chart, registerables} from 'chart.js'
-import {Chart as ChartJS} from 'chart.js'
+// import {Chart as ChartJS} from 'chart.js'
 
 Chart.register(...registerables)
 
