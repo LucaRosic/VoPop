@@ -37,7 +37,7 @@ export const ProductInfoPage = () => {
           </div>
           
 
-          <span className="text-xl bg-slate-100 px-4 py-2 rounded-lg">{productInfo.title}</span>
+          <span className="text-xl bg-white px-4 py-2 rounded-lg">{productInfo.title}</span>
           <img
             className="object-cover w-[60%] h-64 rounded-lg"
             src={productInfo.img}
@@ -46,10 +46,9 @@ export const ProductInfoPage = () => {
         </div>
 
         {/* Sidebar right */}
-        <div className="w-2/3 bg-red-200 flex flex-col items-center">
-          <span className="">Sentiment</span>
+        <div className="w-2/3 bg-slate-100 flex flex-col gap-4 pt-16 items-center">
+          <span className="text-xl bg-slate-800 px-4 py-2 rounded-lg text-white">Product Sentiment</span>
           <div className="bg-white rounded-lg"><BarGraph /></div>
-          
         </div>
       </div>
 
