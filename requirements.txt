@@ -13,3 +13,6 @@ torch
 numpy==1.26.4
 pandas
 selenium
+google-generativeai
+nltk
+lsg_converter
