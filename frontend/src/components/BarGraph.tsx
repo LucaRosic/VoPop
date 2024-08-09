@@ -1,47 +1,83 @@
-// import ReactDOM from 'react-dom'
-// import React from 'react'
-import {Bar} from 'react-chartjs-2'
-import {Chart, registerables} from 'chart.js'
-// import {Chart as ChartJS} from 'chart.js'
+import {Bar, Line } from 'react-chartjs-2'
+import { BarElement } from 'chart.js'
+import {Chart as ChartJS} from 'chart.js'
 
-Chart.register(...registerables)
+ChartJS.register(
+  BarElement
+  );
 
-export const options = {
+ export const barOptions = {
   responsive: true,
   plugins: {
     legend: {
-      display: false,
+      display: true,
     },
     title: {
-      display: false,
+      display: true,
+      text: "Review counts from past 12 months"
     },
     colors: {
       enabled: true,
     },
+    
+    
 
   },
   scales: {
     x: {
       display: false,
+      stacked: false
     },
     y: {
       grid: {
         display: true,
       },
       border: {
-        display: false,
+        display: true,
       },
       ticks: {
-        display: false,
+        display: true,
       },
     },
   },
-}
+ }
 
-const graphData = Array.from({length: 40}, () =>
-  Math.floor(Math.random() * 100),
-)
+ export const lineOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      text: "NPS from past 12 months",
+    },
+    colors: {
+      enabled: true,
+    },
+    
 
+  },
+  scales: {
+    x: {
+      display: true,
+    },
+    y: {
+      display:true,
+      min: -100,
+      max: 100,
+      grid: {
+        display: true,
+      },
+      border: {
+        display: true,
+      },
+      ticks: {
+        display: true,
+      },
+    },
+  },
+ }
 const months = [
   'January',
   'February',
@@ -56,24 +92,50 @@ const months = [
   'November',
   'December',
 ]
-const labels = graphData.map((_, index) => months[index % 12])
-export const data = {
-  labels,
+
+const data =
+  {
+    labels: months,
+    datasets: [
+    {
+      label: "Positive",
+      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      backgroundColor: '#1c8000'
+    },
+    {
+      label: "Negative",
+      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      backgroundColor: '#eb3434'
+    },
+    {
+      label: "Neutral",
+      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      backgroundColor: '#db8412',
+      
+    },
+    ]
+  }
+  
+const lineData =
+{
+  labels: months,
   datasets: [
     {
-      backgroundColor: '#5052ff',
-      data: graphData,
-      barPercentage: 1,
-      borderRadius: 100,
-      borderSkipped: false,
-    },
-  ],
+      label: "NPS",
+      data: [...Array(12)].map(e=>~~(Math.random()*100)),
+      backgroundColor: '#db8412',
+      borderColor: '#0b13a3',
+      tension: 0.1
+
+    }, 
+  ]
 }
+
 
 const BarGraph = () => {
   const graphStyle = {
-    minHeight: '10rem',
-    maxWidth: '540px',
+    minHeight: '20rem',
+    minWidth: '600px',
     width: '100%',
     border: '1px solid #C4C4C4',
     borderRadius: '0.375rem',
@@ -81,8 +143,11 @@ const BarGraph = () => {
   }
 
   return (
+    <div>
     <div style={graphStyle}>
-      <Bar data={data} options={options} />
+      <Bar data={data} options={barOptions} />
+      <Line data={lineData} options={lineOptions}/>
+    </div>
     </div>
   )
 }
