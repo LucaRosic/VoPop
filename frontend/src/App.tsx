@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // Pages --------------------
 import { Home } from "./pages/Home";
 import { ProductDashboard } from "./pages/ProductDashboard";
@@ -60,7 +60,7 @@ const App = () => {
 
       {/* Only things inside routes component changes ^ Nav bar above is bing chilling */}
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={<Navigate to="/dashboard" />} />
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<ProductDashboard />} /> 
         <Route path="/state">
