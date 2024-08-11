@@ -22,10 +22,11 @@ const APITest = () => {
   const getProduct = async () => {
     console.log("Testing Django");
     try {
-      const res = await api.get("/api/user/product/home/");
+      const res = await api.get("/api/product/home/");
       console.log(res.data);
     } catch (error) {
       console.log(error);
+      console.log("Redirecting to login page");
       window.location.href = "/login"; // Back to login page on failure
     }
   }
@@ -49,14 +50,12 @@ const APITest = () => {
   }
 
   return (
-    <div>
-      <button onClick={getQuote}>Get Quote</button>
-      <p>{quote}</p>
-      <button 
+    <div className="flex flex-col justify-center items-center p-16">
+      <button  
       onClick={getProduct}
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
-        /api/user/product/home
+        Send Request for Products
       </button>
       <br></br>
 
