@@ -115,7 +115,6 @@ def summarize(reviews):
     
     # output the product summary
     if len(batch_sums) > 1:
-        print('got to this point...')
         
         # if multiple summaries are made for a product, combine them
         query_sum = ' || '.join(batch_sums)

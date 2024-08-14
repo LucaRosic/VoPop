@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
 class Product(models.Model):
     name = models.CharField("Name", max_length=240)
     category = models.CharField("Category", max_length=240)
@@ -22,6 +23,7 @@ class User_Products(models.Model):
 
 
 # product_reviews table   
+
 class Product_Reviews(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     review = models.CharField(max_length=8000)
@@ -31,7 +33,7 @@ class Product_Reviews(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return "%s - %s" %(self.pk,self.product.name)
+        return "%s - %s - %s" %(self.pk,self.sentiment_label, self.product.name)
  
     
 class Product_Summary(models.Model):
