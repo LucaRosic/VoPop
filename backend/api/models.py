@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import backend.settings
 
 # Create your models here.
 

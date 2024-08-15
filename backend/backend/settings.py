@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -107,7 +108,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.mysql',  
 #         'NAME': 'Vopop',  
 #         'USER': 'root',  
-#         'PASSWORD': 'Darwin12',  
+#         'PASSWORD': ####,  
 #         'HOST': '127.0.0.1',  
 #         'PORT': '3306'
 #     }  
@@ -135,13 +136,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "Australia/Sydney"
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = False
+
+
+DATE_INPUT_FORMATS  = ['%d/%m/%y']
 
 
 # Static files (CSS, JavaScript, Images)
