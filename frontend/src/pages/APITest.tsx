@@ -51,6 +51,7 @@ const APITest = () => {
 
   return (
     <div className="flex flex-col justify-center items-center p-16">
+      <h1 className="mb-20">API Test</h1>
       <button  
       onClick={getProduct}
       className="bg-gray-600 rounded-lg p-2 text-white"
@@ -59,14 +60,14 @@ const APITest = () => {
       </button>
       <br></br>
 
-      <br></br>
+      {/* <br></br>
       <button 
       onClick={sendUrl}
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
         Send URL Test
       </button>
-      <br></br>
+      <br></br> */}
 
       <br></br>
       <button
