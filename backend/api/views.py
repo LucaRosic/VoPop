@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from scrape.scrapper import scrape_reviews
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
-#from Clean.Transform import clean_transform_data
+from Clean.Transform import clean_transform_data
 import datetime
 
 
@@ -53,7 +53,12 @@ class CreateProduct(generics.CreateAPIView):
             else:
                 # scrape and clean data 
                 scraped = (scrape_reviews(serializer.validated_data['url']))  
-                ##cleaned = clean_transform_data(scraped)
+                
+                if scraped is None:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                
+                cleaned = clean_transform_data(scraped)
+                
                 
                 # add to product table          
                 serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
@@ -64,35 +69,38 @@ class CreateProduct(generics.CreateAPIView):
                 
                 avg_sentiment = 0
                 avg_rating = 0
-                month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
+                ##month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
                 sent_model = start_model()
-                for review in scraped['Reviews']:
+                for review in cleaned['Reviews']:
                     
-                    ##avg_rating += review['Stars']
+                    avg_rating += review['Stars']
                     
-                    date = review['Date'].split('on ')[-1].split(' ')
-                    rating = float(review['Stars'].split(' ')[0])
-                    avg_rating += rating
+                    ##date = review['Date'].split('on ')[-1].split(' ')
+                    ##rating = float(review['Stars'].split(' ')[0])
+                    ##avg_rating += rating
                     
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
                     avg_sentiment += sentiment['score']
                     
                         
-                    ##prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                        ##sentiment=sentiment, sentiment_label=sentiment_label, rating=review['Stars'], date=datetime.date(int(['Date'][-1], review['Date'][1], review['Date'][0]) )
+                    prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                        sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                     
-                    if date[0].isdigit():
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])) )
-                    else:
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
+                    # if date[0].isdigit():
+                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])) )
+                    # else:
+                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
                     
                     prod_rev.save()
                     
-                avg_sentiment = round(avg_sentiment/len(scraped['Reviews']),2)
-                avg_rating = round(avg_rating/len(scraped['Reviews']),2)
-                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+                avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
+                avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+                summary=summarize(scraped['Reviews'])
+                overview = summary.split('Overall:')[-1].replace('*', '').replace('\n', '')
+                
+                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
                 
         else:
@@ -101,7 +109,8 @@ class CreateProduct(generics.CreateAPIView):
     
 ## DELETE USER_PRODUCT
 
-#class DeleteProduct:    
+#class DeleteProduct(APIView)   
+#    def delete()    
     
 ## GET STUFF
 
@@ -170,7 +179,10 @@ class GetProductDetails(APIView):
     def delete(self, request, product_id):
 
         # delete for user table, not whole product
-        Product.objects.filter(id=product_id).delete()
+        User_Products.objects.filter(user=2,product=product_id).delete()
+        
+        if User_Products.objects.filter(product=product_id).exists() == False:
+            Product.objects.filter(pk=product_id).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
     
