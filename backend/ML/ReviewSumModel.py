@@ -63,7 +63,7 @@ def batch_summary(model, query_revs):
     # try gemini query until successful
     while True:
         try:
-            batch_sum = model.generate_content(f"Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}. Can you give the review summary with this format: Likes:, Dislikes: and Overall:")
+            batch_sum = model.generate_content(f"Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}. Can you give the review summary with this format: Likes:, Dislikes: and Overall:. Make sure the Overall section is only a sentence (max 200 characters).")
             break
         except:
             ##print('something went wrong. Retrying...')
