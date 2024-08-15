@@ -102,6 +102,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {  
+#     'default': {  
+#         'ENGINE': 'django.db.backends.mysql',  
+#         'NAME': 'Vopop',  
+#         'USER': 'root',  
+#         'PASSWORD': 'Darwin12',  
+#         'HOST': '127.0.0.1',  
+#         'PORT': '3306'
+#     }  
+# }  
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -127,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Australia/Sydney"
 
 USE_I18N = True
 
