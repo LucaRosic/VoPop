@@ -46,7 +46,7 @@ export const ProductInfoPage = () => {
         </div>
 
         {/* Sidebar right */}
-        <div className="w-2/3 bg-slate-100 flex flex-col gap-4 pt-16 pb-16 items-center border-1 border-white">
+        <div className="w-2/3 bg-slate-100 flex flex-col gap-4 pt-16 pb-16 items-center border-1 border-white overflow-scroll">
           <span className="text-xl bg-slate-800 px-4 py-2 rounded-lg text-white">Product Sentiment</span>
           <div className="bg-white rounded-lg"><BarGraph /></div>
         </div>

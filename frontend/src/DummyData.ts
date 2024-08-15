@@ -3,7 +3,7 @@ const product1 = {
   title: "Dummy Product 1",
   img: "/images/phone_charger_test_img.png",
   sentimoji: "😎",
-  brief: "The Dummy Charger delivers lightning-fast charging speeds without overheating for a stress-free battery boost.",
+  brief: "Reviewers praised the phone charger for its fast charging speed and durable build, but some complained of overheating issues and lack of included charging cable.",
   lastUpdated: "?/?/?",
 };
 const product2 = {
@@ -11,7 +11,7 @@ const product2 = {
   title: "Dummy Product 2",
   img: "/images/dummy_watch.png",
   sentimoji: "😁",
-  brief: "The Dummy Watch boasts a sleek design, advanced features, and unparalleled comfort for the modern, on-the-go lifestyle.",
+  brief: "Reviewers praised the watch's sleek design and long battery life, but some complained of poor screen visibility outdoors and unreliable heart rate tracking.",
   lastUpdated: "?/?/?",
 };
 const product3 = {
@@ -19,12 +19,20 @@ const product3 = {
   title: "Dummy Product 3",
   img: "/images/dummy_book.png",
   sentimoji: "😒",
-  brief: "Immerse yourself in the captivating world of '1984,' a thrilling sci-fi adventure that will leave you breathless.",
+  brief: "Readers praised 1984 as a chillingly prophetic exploration of totalitarianism, but some found the bleak ending and dense prose to be overwhelming.",
+  lastUpdated: "?/?/?",
+};
+const product4 = {
+  id: 3,
+  title: "Dummy Product 4",
+  img: "/images/dummy_keyboard.png",
+  sentimoji: "🙂",
+  brief: "Reviewers raved about the keyboard's build quality, but some complained of the loud clicky noises.",
   lastUpdated: "?/?/?",
 };
 
 
-const productsList = [product1, product2, product3];
+const productsList = [product1, product2, product3, product4];
 
 const DummyData = (productId: number) => {
   // This function is to take in a product id and return JSON object for dummy info

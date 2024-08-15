@@ -9,15 +9,14 @@ import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
-  productTitle: string;
-  productImg: string;
   productId: number;
   onClick?: () => void;
 }
 
 // Look into MUI typography for better text
 
-export const ProductCard = ({ productTitle, productImg, onClick = () => null }: Props) => {
+export const ProductCard = ({ productId, onClick = () => null }: Props) => {
+  const productInfo = DummyData(productId);
 
   // Style arrow icon
   const StyledArrowRightAltIcon = styled(ArrowRightAltIcon)(() => ({
@@ -32,10 +31,10 @@ export const ProductCard = ({ productTitle, productImg, onClick = () => null }: 
       onClick={onClick}
     >
       <div className="product-snippet flex flex-col w-[20vw]">
-        <h1 className="text-xl text-center">{productTitle}</h1>
+        <h1 className="text-xl text-center">{productInfo.title}</h1>
         <img
           className="w-[100%] h-[80%] object-cover rounded-lg shadow-sm dark:shadow-gray-800"
-          src={productImg}
+          src={productInfo.img}
         ></img>
       </div>
 
@@ -44,7 +43,7 @@ export const ProductCard = ({ productTitle, productImg, onClick = () => null }: 
           <div className="bg-gray-700 rounded-lg text-white text-center flex items-center p-1 w-full justify-center">
             <span className="text-lg">Customer Sentiment</span>
             <StyledArrowRightAltIcon fontSize="large"></StyledArrowRightAltIcon>
-            <span className="text-5xl mb-1">{"None"}</span>
+            <span className="text-5xl mb-1">{productInfo.sentimoji}</span>
           </div>
         </div>
 
@@ -52,13 +51,13 @@ export const ProductCard = ({ productTitle, productImg, onClick = () => null }: 
           <legend className="float-none w-auto px-3 text-center text-lg bg-gray-700 text-white rounded-lg pb-1">
             Brief Summary ✨
           </legend>
-          <p className="text-sm">{"lorem ipsum dolor. Lorem yes vox populi, virtute experiamaur"}</p>
+          <p className="text-sm">{productInfo.brief}</p>
         </fieldset>
       </div>
 
       <div className="updated-delete flex flex-col items-center">
         <p className="text-xs text-center text-gray-400">
-          Last Updated {"?/?/?"}
+          Last Updated {productInfo.lastUpdated}
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2 rounded-lg"

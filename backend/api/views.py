@@ -11,7 +11,8 @@ from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
 from Clean.Transform import clean_transform_data
 import datetime
-import nltk 
+
+
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -27,12 +28,10 @@ class CreateUserView(generics.CreateAPIView):
     
     
     
-class CreateProduct(generics.ListCreateAPIView):
+class CreateProduct(generics.CreateAPIView):
     
     queryset = Product.objects.all()
-    
     serializer_class = ProductSerializer
-    
     permission_classes = [AllowAny]
     
     # creates everything 
@@ -50,10 +49,16 @@ class CreateProduct(generics.ListCreateAPIView):
                 user_prod.save()
                 serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
                 return Response(data=serializer.data, status=status.HTTP_100_CONTINUE)
+            
             else:
                 # scrape and clean data 
                 scraped = (scrape_reviews(serializer.validated_data['url']))  
-                ##cleaned = clean_transform_data(scraped)
+                
+                if scraped is None:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                
+                cleaned = clean_transform_data(scraped)
+                
                 
                 # add to product table          
                 serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
@@ -64,104 +69,56 @@ class CreateProduct(generics.ListCreateAPIView):
                 
                 avg_sentiment = 0
                 avg_rating = 0
-                month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
+                ##month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
                 sent_model = start_model()
-                for review in scraped['Reviews']:
+                for review in cleaned['Reviews']:
                     
-                    #avg_rating += review['Stars']
+                    avg_rating += review['Stars']
                     
-                    date = review['Date'].split('on ')[-1].split(' ')
-                    rating = float(review['Stars'].split(' ')[0])
-                    avg_rating += rating
+                    ##date = review['Date'].split('on ')[-1].split(' ')
+                    ##rating = float(review['Stars'].split(' ')[0])
+                    ##avg_rating += rating
                     
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
-                    avg_sentiment += sentiment
-                    if sentiment >= 0.5:
-                        sentiment_label = 'Positive'
-                    elif sentiment <= -0.5:
-                        sentiment_label = 'Negative'
-                    else: 
-                        sentiment_label = 'Neutral'
-                        
-                    #prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                        #sentiment=sentiment, sentiment_label=sentiment_label, rating=review['Stars'], date=datetime.date(int(['Date'][-1], review['Date'][1], review['Date'][0]) )
+                    avg_sentiment += sentiment['score']
                     
-                    if date[0].isdigit():
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, sentiment_label=sentiment_label, rating=review['Stars'], date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])) )
-                    else:
-                        prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                            sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
+                        
+                    prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                        sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+                    
+                    # if date[0].isdigit():
+                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])) )
+                    # else:
+                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
+                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
                     
                     prod_rev.save()
                     
-                avg_sentiment = round(avg_sentiment/len(scraped['Reviews']),2)
-                avg_rating = round(avg_rating/len(scraped['Reviews']),2)
-                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(scraped['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+                avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
+                avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+                summary=summarize(scraped['Reviews'])
+                overview = summary.split('Overall:')[-1].replace('*', '').replace('\n', '')
+                
+                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
                 
         else:
             print(serializer.errors)
+    
+    
+## DELETE USER_PRODUCT
 
-class ListUserProduct(generics.ListCreateAPIView):
+#class DeleteProduct(APIView)   
+#    def delete()    
     
-    serializer_class = UserProductSerializer
-    
-    permission_classes = [AllowAny]
-    
-    queryset = User_Products.objects.all()
-
-class DeleteUserProduct(generics.DestroyAPIView):
-    
-    queryset = User_Products.objects.all()
-    
-    permission_classes = [AllowAny]
-    
-    
-class GetProds(generics.RetrieveAPIView):
-    
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
-    
-    
-class GetUProds(generics.RetrieveAPIView):
-    
-    lookup_field = 'product_id'
-    queryset = User_Products.objects.all()
-    serializer_class = UserProductSerializer
-    permission_classes = [AllowAny]
-    
-#_____________________________________________________________________________________________________________________________
-# POST Stuff
-
-## most promising so far    
-class GetProductDetails(APIView):
-    
-    permission_classes  = [AllowAny]
-    
-    def get(self, request, product_id):
-        
-        serializer = ProductSerializer(Product.objects.filter(id=product_id), many=True)
-        
-        print(serializer.data[0]['url'])
-        
-        return Response(serializer.data)
-    
-    def delete(self, request, product_id):
-
-        # delete for user table, not whole product
-        Product.objects.filter(id=product_id).delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
 ## GET STUFF
 
 # WORKING REQUESTS
 #__________________________________________________________________________________________________________________________
 # INFO FOR HOME
-class GetUserProduct_HomePage(generics.ListAPIView):
+class GetUserProduct_Home(generics.ListAPIView):
+    
     serializer_class = ProductSumSerializer_HOME
     permission_classes = [IsAuthenticated]
     
@@ -193,6 +150,7 @@ class GetProductMeta_Dash(APIView):
         
         return Response(serializer.data)
 
+
 class GetProductSum_Dash(APIView):
     permission_classes = [AllowAny]
     
@@ -202,3 +160,29 @@ class GetProductSum_Dash(APIView):
         
         return Response(serializer.data)
       
+      
+      
+#_____________________________________________________________________________________________________________________________
+# POST Stuff
+
+## most promising so far    
+class GetProductDetails(APIView):
+    
+    permission_classes  = [AllowAny]
+    
+    def get(self, request, product_id):
+        
+        serializer = ProductSerializer(Product.objects.filter(id=product_id), many=True)
+        
+        return Response(serializer.data)
+    
+    def delete(self, request, product_id):
+
+        # delete for user table, not whole product
+        User_Products.objects.filter(user=2,product=product_id).delete()
+        
+        if User_Products.objects.filter(product=product_id).exists() == False:
+            Product.objects.filter(pk=product_id).delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
