@@ -9,15 +9,17 @@ import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
+  productId: number;
   productTitle: string;
   productImg: string;
-  productId: number;
+  productOverview: string;
+  lastUpdated: string;
   onClick?: () => void;
 }
 
 // Look into MUI typography for better text
 
-export const ProductCard = ({ productTitle, productImg, onClick = () => null }: Props) => {
+export const ProductCard = ({ productTitle, productImg, productOverview, lastUpdated, onClick = () => null }: Props) => {
 
   // Style arrow icon
   const StyledArrowRightAltIcon = styled(ArrowRightAltIcon)(() => ({
@@ -27,19 +29,19 @@ export const ProductCard = ({ productTitle, productImg, onClick = () => null }: 
 
   return (
     <div
-      className="product-card bg-slate-100 w-[60vw] h-60 rounded-lg px-8 pr-0 py-4 flex shadow-sm dark:shadow-gray-800 gap-4 border-2 
+      className="product-card bg-slate-100 w-[60vw] h-60 rounded-lg px-8 pr-4 py-4 flex justify-between shadow-sm dark:shadow-gray-800 gap-2 border-2 
       border-gray-200 select-none transform hover:scale-[1.02] transition-transform"
       onClick={onClick}
     >
-      <div className="product-snippet flex flex-col w-[20vw]">
+      <div className="product-snippet flex flex-col w-[30%] h-[100%]">
         <h1 className="text-xl text-center">{productTitle}</h1>
         <img
-          className="w-[100%] h-[80%] object-cover rounded-lg shadow-sm dark:shadow-gray-800"
+            className="w-[100%] h-[80%] object-cover rounded-lg shadow-sm dark:shadow-gray-800"
           src={productImg}
         ></img>
       </div>
 
-      <div className="cx-info-brief flex flex-col justify-between w-[70%]">
+      <div className="cx-info-brief flex flex-col justify-between w-[65%]">
         <div className="flex justify-center mt-2 items-center">
           <div className="bg-gray-700 rounded-lg text-white text-center flex items-center p-1 w-full justify-center">
             <span className="text-lg">Customer Sentiment</span>
@@ -52,13 +54,13 @@ export const ProductCard = ({ productTitle, productImg, onClick = () => null }: 
           <legend className="float-none w-auto px-3 text-center text-lg bg-gray-700 text-white rounded-lg pb-1">
             Brief Summary ✨
           </legend>
-          <p className="text-sm">{"lorem ipsum dolor. Lorem yes vox populi, virtute experiamaur"}</p>
+          <p className="text-sm">{productOverview}</p>
         </fieldset>
       </div>
 
       <div className="updated-delete flex flex-col items-center">
         <p className="text-xs text-center text-gray-400">
-          Last Updated {"?/?/?"}
+          Last Updated<br />{lastUpdated}
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2 rounded-lg"

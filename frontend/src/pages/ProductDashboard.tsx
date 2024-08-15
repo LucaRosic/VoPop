@@ -11,9 +11,7 @@ export const ProductDashboard = () => {
   const navFunc = (prodId : number) => {
     navigate('/product-info', { state: { prodId: prodId, meaning : 'test' } }); 
   }
-
-  const productsList = [0,1,2,3];
-
+  
   // First do an API request to get product info
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,6 +36,15 @@ export const ProductDashboard = () => {
       .then((res) => {setProductData(res)})
   }, [])
 
+  const stringLimiter = (inString : string, sliceLength : number) => {
+    if (inString.length > sliceLength) {
+      return `${inString.slice(0,sliceLength)}...` // Slice up the string
+    } else {
+      return inString; // No need to slice up the string
+    }
+
+  }
+
   const renderProductCards = () => {
     if (loading === true) {
       return <h3>Page Loading...</h3>
@@ -49,9 +56,11 @@ export const ProductDashboard = () => {
               return(
                 <ProductCard
                   key={productInfo["product"]["id"]}
-                  productTitle={productInfo["product"]["name"].slice(0,20)}
-                  productImg={productInfo["product"]["image"]}
                   productId={productInfo["product"]["id"]}
+                  productTitle={stringLimiter(productInfo["product"]["name"], 20)}
+                  productImg={productInfo["product"]["image"]}
+                  productOverview={stringLimiter(productInfo["overview"], 200)}
+                  lastUpdated={productInfo["date"]}
                 /> 
               )
           })
@@ -64,10 +73,10 @@ export const ProductDashboard = () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-[100vh]">
       <NavbarTop title="Product Dashboard"/>
       <div 
-        className="flex flex-col items-center gap-4 px-32 pt-4"
+        className="flex-1 flex flex-col items-center gap-4 px-32 pt-4"
       >
         {renderProductCards()}
         {/* <ProductCard
@@ -77,6 +86,6 @@ export const ProductDashboard = () => {
       </div>
       
       <Footer />
-    </>
+    </div>
   );
 };
