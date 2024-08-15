@@ -5,7 +5,7 @@ def test_time():
     start_time =time.time()
 
     try:
-        result = subprocess.run(['python3', 'scrapper.py'], capture_output= True, text= True)
+        result = subprocess.run(['python3', '/VoPop/backend/scrape/scrapper.py'], capture_output= True, text= True, timeout=35)
 
         end_time = time.time()
 
@@ -14,9 +14,13 @@ def test_time():
 
         assert execution_time < 35, "Script took too long to run"
 
-    except:
+    except subprocess.TimeoutExpired:
         print("Script was longer than 35 seconds and was terminated")
         assert False, "Test failed due to timeout"
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        assert False, "Test failed due to an unexpected error"
 
 if __name__ == "__main__":
     test_time()
