@@ -70,9 +70,9 @@ export const ProductInfoPage = () => {
       {/* Sidebar right */}
       <div className="w-2/3 bg-[rgba(35,106,114)] flex flex-col gap-4 p-4 items-center overflow-y-auto border-4 border-gray-900">
         <div className="bg-gray-900 flex flex-col items-center border-2 border-gray-900 justify-between shadow-[10px_10px_0px_0px_rgba(255,241,201)]">
-          <span className="text-xl bg-gray-900 px-4 py-2 text-white">
+          <h1 className="text-xl bg-gray-900 text-white">
             Product Sentiment
-          </span>
+          </h1>
           <div className="bg-slate-100">
             <BarGraph />
           </div>
