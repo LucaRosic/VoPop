@@ -32,7 +32,7 @@ class CreateProduct(generics.CreateAPIView):
     
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     # creates everything 
     def perform_create(self, serializer):
@@ -42,7 +42,7 @@ class CreateProduct(generics.CreateAPIView):
             # If product is already in database, only add to user_product table
             if Product.objects.filter(url=serializer.validated_data['url']).exists():
                 
-                if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
+                if User_Products.objects.filter(user=User.objects.get(pk=self.request.user), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
                     return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
                 
                 user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=serializer.validated_data['url']))
@@ -64,7 +64,7 @@ class CreateProduct(generics.CreateAPIView):
                 serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
                 
                 # adds to user_product table
-                user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
+                user_prod = User_Products(user=User.objects.get(pk=self.request.user), product=Product.objects.get(pk=serializer.data['id']))
                 user_prod.save() 
                 
                 avg_sentiment = 0
@@ -132,7 +132,7 @@ class GetUserProduct_Home(generics.ListAPIView):
 # INFO FOR DASH
 class GetReviewSent_Dash(APIView):
     
-    permission_classes  = [AllowAny]
+    permission_classes  = [IsAuthenticated]
     
     def get(self, request, product_id):
         
@@ -142,7 +142,7 @@ class GetReviewSent_Dash(APIView):
         
    
 class GetProductMeta_Dash(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     def get(self, request, product_id):
                 
@@ -152,7 +152,7 @@ class GetProductMeta_Dash(APIView):
 
 
 class GetProductSum_Dash(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     def get(self, request, product_id):
                 
@@ -168,7 +168,7 @@ class GetProductSum_Dash(APIView):
 ## most promising so far    
 class GetProductDetails(APIView):
     
-    permission_classes  = [AllowAny]
+    permission_classes  = [IsAuthenticated]
     
     def get(self, request, product_id):
         
@@ -179,7 +179,7 @@ class GetProductDetails(APIView):
     def delete(self, request, product_id):
 
         # delete for user table, not whole product
-        User_Products.objects.filter(user=2,product=product_id).delete()
+        User_Products.objects.filter(user=self.request.user,product=product_id).delete()
         
         if User_Products.objects.filter(product=product_id).exists() == False:
             Product.objects.filter(pk=product_id).delete()

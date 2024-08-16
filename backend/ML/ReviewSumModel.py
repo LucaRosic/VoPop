@@ -1,9 +1,6 @@
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import nltk
-#from get_json_reviews import get_review_dict
-import pandas as pd
-
 
 
 
@@ -61,13 +58,18 @@ def batch_summary(model, query_revs):
     query_str = ' || '.join(query_revs)
             
     # try gemini query until successful
+    fail_counter = 0
     while True:
         try:
             batch_sum = model.generate_content(f"Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}. Can you give the review summary with this format: Likes:, Dislikes: and Overall:. Make sure the Overall section is only a sentence (max 200 characters).")
             break
         except:
-            ##print('something went wrong. Retrying...')
-            continue
+            if fail_counter == 4:
+                print('ERROR: summarization is crashed...')
+                return None
+            else:
+                fail_counter += 1
+                continue
         
     return batch_sum.text
     
@@ -118,13 +120,18 @@ def summarize(reviews):
         
         # if multiple summaries are made for a product, combine them
         query_sum = ' || '.join(batch_sums)
+        fail_counter = 0
         while True:
             try:
-                prod_sum = model.generate_content(f"Can you please combine these summarises for me, I want to understand what customers like and do not like about the product, the summaries are seperated by '||': {query_sum}")
+                prod_sum = model.generate_content(f"Can you please combine these summarises for me, I want to understand what customers like and do not like about the product, the summaries are seperated by '||': {query_sum} . Can you give the review summary with this format: Likes:, Dislikes: and Overall:. Make sure the Overall section is only a sentence (max 200 characters).")
                 break
             except:
-                ##print('Something went wrong. Retrying...')
-                continue
+                if fail_counter == 4:
+                    print('ERROR: batch summarization failed...')
+                    return None
+                else:
+                    fail_counter += 1
+                    continue
         
         return prod_sum.text
                 
