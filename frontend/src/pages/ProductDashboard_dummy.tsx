@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { ProductCard } from "../components/ProductCard";
 import NavbarTop from "../components/NavbarTop";
 import Footer from "../components/Footer";
+import { ProductCard_dummy } from "../components/ProductCard_dummy";
 
-export const ProductDashboard = () => {
+export const ProductDashboard_dummy = () => {
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
@@ -14,19 +14,21 @@ export const ProductDashboard = () => {
 
   return (
     <>
-      <NavbarTop title="Product Dashboard"/>
-      <div 
-        className="flex flex-col items-center gap-4 px-32 pt-4"
-      >
-        {productsList.map((product) => (
-          <ProductCard
-            key={product}
-            productId={product}
-            onClick={() => navFunc(product)}
-          />
-        ))}
+      <NavbarTop title="VoPop"/>
+      <div className="flex flex-col gap-8 bg-[rgba(255,241,201)]">
+        <div 
+          className="flex flex-col items-center gap-4 px-32 pt-4"
+        >
+          {productsList.map((product) => (
+            <ProductCard_dummy
+              key={product}
+              productId={product}
+              onClick={() => navFunc(product)}
+            />
+          ))}
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

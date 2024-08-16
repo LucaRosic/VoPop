@@ -16,6 +16,7 @@ import { TempProtectedPage } from "./pages/TempProtectedPage";
 import APITest from "./pages/APITest";
 
 import "./index.css"
+import { ProductDashboard_dummy } from "./pages/ProductDashboard_dummy";
 // TODO:
 // When refactoring rename function to have function clause
 
@@ -84,6 +85,7 @@ const App = () => {
         <Route path="/api" element={
             <APITest />
         } />
+        <Route path="/dummy" element={<ProductDashboard_dummy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

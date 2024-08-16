@@ -27,12 +27,13 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
     // Add other custom styles here
   }));
 
+ 
   return (
     <div
       className="product-card bg-slate-100 w-[60vw] h-60 rounded-lg px-8 pr-4 py-4 flex justify-between shadow-sm dark:shadow-gray-800 gap-2 border-2 
       border-gray-200 select-none transform hover:scale-[1.02] transition-transform"
       onClick={onClick}
-    >
+    > 
       <div className="product-snippet flex flex-col w-[30%] h-[100%]">
         <h1 className="text-xl text-center">{productTitle}</h1>
         <img
