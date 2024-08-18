@@ -34,9 +34,9 @@ const APITest = () => {
   const sendUrl = async () => {
     console.log("Sending URL api");
     try {
-      const urlData = {url:"google.com"};
+      const urlData = {url:"https://www.amazon.com.au/dp/B0B5WGCTQK/ref=cm_gf_aabx_d_p0_e0_qd0_DL8ezI6uYoSmWBq7QdAm"};
       console.log("Sending api:");
-      const res = await axios.post("http://localhost:8000/api/product/",urlData);
+      const res = await api.post("/api/product/",urlData);
       console.log("DONE!");
       console.log(res.data);
     } catch (error) {
@@ -60,14 +60,14 @@ const APITest = () => {
       </button>
       <br></br>
 
-      {/* <br></br>
+      <br></br>
       <button 
       onClick={sendUrl}
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
         Send URL Test
       </button>
-      <br></br> */}
+      <br></br>
 
       <br></br>
       <button
