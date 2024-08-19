@@ -21,6 +21,20 @@ def get_site(url):
         return 'aliexpress'
     else:
         return None
+    
+def clean_url(url):
+    if get_site(url) == 'amazon':
+        if "/product-reviews/" in url:
+            url = url.replace("/product-reviews/", "/dp/")
+        elif "/dp/" in url:
+            parts = url.split("/dp/")
+            if "/ref" in parts[1]:
+                clean_part = parts[1].split("/ref")[0]
+            else:
+                clean_part = parts[1].split("?")[0]
+            url = parts[0] + "/dp/" + clean_part, clean_part
+        return url 
+
 
 def scrape_amazon_reviews(url):
     count=0
@@ -86,16 +100,31 @@ def scrape_amazon_reviews(url):
 
         # Click on the "See more reviews" link if present
         try:
-            see_more_reviews = WebDriverWait(driver, 3).until(
+            see_more_reviews = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
             )
             see_more_reviews.click()
         except Exception as e:
             print("See more reviews link not found or error:", e)
 
+        try:
+            most_recent_button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_selected((By.CSS_SELECTOR, '#a-button-inner'))
+            )
+            most_recent_button.click()
+        except Exception as e:
+            print("review type not found reviews link not found or error:", e)
+        try:
+            most_recent = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.ID, 'sort-order-dropdown_1'))
+            )
+            most_recent.click()
+        except Exception as e:
+            print("most recent reviews link not found or error:", e)
+
         while True:
             # Extract review elements
-            review_elements = WebDriverWait(driver, 3).until(
+            review_elements = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
@@ -164,7 +193,7 @@ def scrape_amazon_reviews(url):
 def scrape_ali_express_reviews(url):
     print("AliExpress detected")
     start_time = time.time()
-
+    
     # Specify the path to your GeckoDriver executable
     gecko_driver_path = r''  # Add your path here
 
@@ -180,24 +209,19 @@ def scrape_ali_express_reviews(url):
     # Initialize Firefox WebDriver with service and options
     driver = webdriver.Firefox(service=service, options=options)
 
-    def get_review_selector(index):
-        return f"div.list--wrap--KBzXADx > div > div:nth-child({index}) > div > div.list--itemContent--yx8Cwlj"
-
-    def get_review_xpath(index):
-        if index % 20 == 0:
-            return f"/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[{index}]/div/div[2]/div[1]/div[3]"
-        else:
-            return f"/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[{index}]/div/div[3]/div[1]/div[3]"
-
     # Initialize an empty list to store reviews
     reviews_list = []
-
+    
     try:
         # Open the product page
         driver.get(url)
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "#nav-review > div:nth-child(2) > button > span"))
-        ).click()
+        time.sleep(2)  # Wait for the page to load
+
+        # Click the reviews section to open the pop-up window
+        reviews_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "#nav-review > div:nth-child(2) > button > span"))
+        )
+        reviews_button.click()
         time.sleep(5)  # Wait for the pop-out window to appear
 
         # Wait for the pop-out window to appear and store it in the variable
@@ -210,53 +234,49 @@ def scrape_ali_express_reviews(url):
         review_index = 1
         while True:
             try:
-                # Construct the XPath for the review container based on the index
-                review_xpath = get_review_xpath(review_index)
-
-                # Try to find the review element
-                review_element = WebDriverWait(pop_out_window, 10).until(
-                    EC.presence_of_element_located((By.XPATH, review_xpath))
-                )
-
-                # Extract review text
-                review_text = review_element.text
-
-                # Extract review date
-                try:
-                    review_date_xpath = ".//following-sibling::div[contains(@class, 'list--itemInfo--fb1A_M1')]"
-                    review_date = review_element.find_element(By.CSS_SELECTOR, review_date_xpath).text
-                except Exception as e:
-                    review_date = "Date not found"
-                    print("Error finding review date:", e)
-
-                # Extract star rating
-                star_elements = review_element.find_elements(By.XPATH, ".//following-sibling::div[contains(@class, 'stars--box--vHzUWQ9')]//span[contains(@class, 'comet-icon-starreviewfilled')]")
-                review_stars = len(star_elements)
-
-                # Append the extracted data to the reviews list
-                reviews_list.append({
-                    'Date': review_date,
-                    'Stars': review_stars,
-                    'Review Text': review_text
-                })
-
-                # Increment the review index
-                review_index += 1
-
-                # Scroll after every 20 reviews
-                if review_index % 20 == 1:  # Scroll after finishing the previous 20 reviews
-                    driver.execute_script("arguments[0].scrollIntoView();", review_element)
-
-                    # Asynchronous wait to ensure the next review element is loaded
-                    WebDriverWait(driver, 10).until(
-                        EC.presence_of_element_located((By.CSS_SELECTOR, get_review_selector(review_index)))
-                    )
-
-            except Exception as e:
-                # Exit the loop if no more reviews are found or if an error occurs
-                if "no such element" in str(e).lower():
-                    print("No more reviews found or error encountered.")
+                # Find all review elements within the pop-out window
+                review_elements = pop_out_window.find_elements(By.CLASS_NAME, "list--itemReview--hBFPNly")
+                
+                if not review_elements:
+                    print("No more reviews found.")
                     break
+
+                # Extract reviews
+                for review_element in review_elements:
+                    # Extract review text
+                    review_text = review_element.text
+                    
+                    # Extract review date (if available)
+                    review_date = "Date not found"  # Set a default value
+                    try:
+                        review_date_element = review_element.find_element(By.XPATH, ".//following-sibling::div[contains(@class, 'list--itemInfo--fb1A_M1')]")
+                        review_date = review_date_element.text
+                    except Exception as e:
+                        print("Error finding review date:", e)
+                    
+                    # Extract star rating (if available)
+                    star_elements = review_element.find_elements(By.XPATH, ".//following-sibling::div[contains(@class, 'stars--box--vHzUWQ9')]//span[contains(@class, 'comet-icon-starreviewfilled')]")
+                    review_stars = len(star_elements)
+                    
+                    # Append the extracted data to the reviews list
+                    reviews_list.append({
+                        'Date': review_date,
+                        'Stars': review_stars,
+                        'Review Text': review_text
+                    })
+                    
+                # Scroll after every 20 reviews
+                if review_index % 20 == 0:
+                    driver.execute_script("arguments[0].scrollIntoView();", review_elements[-1])
+
+                    # Asynchronous wait to ensure new reviews are loaded
+                    WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CLASS_NAME, "list--itemReview--hBFPNly"))
+                    )
+                    
+                review_index += len(review_elements)
+                
+            except Exception as e:
                 print("Error extracting review details:", e)
                 break
 
@@ -277,6 +297,7 @@ def scrape_ali_express_reviews(url):
     print(f"Scraping completed in {elapsed_time:.2f} seconds")
 
     return reviews_list
+
 
 
 def scrape_reviews(url):
