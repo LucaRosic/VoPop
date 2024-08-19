@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product, User_Products, Product_Summary, Product_Reviews
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from scrape.scrapper import scrape_reviews
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
@@ -26,7 +27,18 @@ class CreateUserView(generics.CreateAPIView):
     # who can make this view
     permission_classes = [AllowAny]
     
-    
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)  
     
 class CreateProduct(generics.CreateAPIView):
     
@@ -132,7 +144,7 @@ class GetUserProduct_Home(generics.ListAPIView):
 # INFO FOR DASH
 class GetReviewSent_Dash(APIView):
     
-    permission_classes  = [IsAuthenticated]
+    permission_classes  = [AllowAny]
     
     def get(self, request, product_id):
         

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import ReactMarkdown from 'react-markdown';
 import BarGraph from "../components/BarGraph.tsx";
 import {
   Chart as ChartJS,
@@ -11,7 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import DummyData from "../DummyData.ts";
+import DummyData, { GetMarkdownReview } from "../DummyData.ts";
 import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
@@ -26,7 +27,7 @@ ChartJS.register(
   Filler
 );
 
-export const ProductInfoPage = () => {
+export const ProductInfoPage_dummy = () => {
   const { state } = useLocation();
   // If state is not given:
   if (state === null) {
@@ -41,6 +42,8 @@ export const ProductInfoPage = () => {
   }
   const { prodId } = state;
   const productInfo = DummyData(prodId); // Get the product data information
+
+  const markdownReview = GetMarkdownReview();
 
   return (
     <div className="flex h-[100vh]">
@@ -73,12 +76,15 @@ export const ProductInfoPage = () => {
           <h1 className="text-xl bg-gray-900 text-white">
             Product Sentiment
           </h1>
-          
-          
+
+          {/* Sentiment Graph */}
           <div className="bg-slate-100">
             <BarGraph />
           </div>
 
+          {/* Review Summary */}
+          {/* <div className="text-white">{markdownReview}</div> */}
+          <ReactMarkdown children={markdownReview} className="text-white text-sm" />
         </div>
       </div>
     </div>

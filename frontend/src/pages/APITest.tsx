@@ -1,19 +1,14 @@
-import axios from "axios"
-import { useState } from "react"
 import api from "../api"
 // import { data } from "../components/BarGraph"
 
 const APITest = () => {
 
-  const [quote, setQuote] = useState<string>("")
+  const sendLogoug = async () => {
+    console.log("Logging out");
 
-  const getQuote = async () => {
-    console.log("Hello!")
     try {
-      const res = await axios.get('https://type.fit/api/quotes');
-      const apiQuote = res.data[0].text;
-      console.log(apiQuote);
-      setQuote(apiQuote);
+      const res = await api.get("/api/logout/");
+      console.log(res.status);
     } catch (error) {
       console.log(error);
     }
@@ -34,9 +29,9 @@ const APITest = () => {
   const sendUrl = async () => {
     console.log("Sending URL api");
     try {
-      const urlData = {url:"google.com"};
+      const urlData = {url:"https://www.amazon.com.au/dp/B0B5WGCTQK/ref=cm_gf_aabx_d_p0_e0_qd0_DL8ezI6uYoSmWBq7QdAm"};
       console.log("Sending api:");
-      const res = await axios.post("http://localhost:8000/api/product/",urlData);
+      const res = await api.post("/api/product/",urlData);
       console.log("DONE!");
       console.log(res.data);
     } catch (error) {
@@ -60,14 +55,23 @@ const APITest = () => {
       </button>
       <br></br>
 
-      {/* <br></br>
+      <br></br>
       <button 
       onClick={sendUrl}
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
         Send URL Test
       </button>
-      <br></br> */}
+      <br></br>
+
+      <br></br>
+      <button 
+      onClick={sendLogoug}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Logout
+      </button>
+      <br></br>
 
       <br></br>
       <button
