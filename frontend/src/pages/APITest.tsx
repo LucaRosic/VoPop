@@ -1,13 +1,16 @@
 import api from "../api"
+import { REFRESH_TOKEN } from "../constants";
 // import { data } from "../components/BarGraph"
 
 const APITest = () => {
 
-  const sendLogoug = async () => {
+  const sendLogout = async () => {
     console.log("Logging out");
 
     try {
-      const res = await api.get("/api/logout/");
+      const res = await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
+      localStorage.clear();
+      console.log("Cleared storage!");
       console.log(res.status);
     } catch (error) {
       console.log(error);
@@ -66,7 +69,7 @@ const APITest = () => {
 
       <br></br>
       <button 
-      onClick={sendLogoug}
+      onClick={sendLogout}
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
         Logout
