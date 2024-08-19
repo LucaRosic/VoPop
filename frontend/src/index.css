@@ -9,3 +9,8 @@
 /* * {
     font-family: "Poppins";
 } */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(58, 177, 190, 100) rgba(255, 255, 255, 0);
+}
