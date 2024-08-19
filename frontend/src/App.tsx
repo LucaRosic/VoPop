@@ -6,7 +6,6 @@ import { ProductDashboard } from "./pages/ProductDashboard";
 import { TempStatePage } from "./pages/TempStatePage";
 import { TempStatePage2 } from "./pages/TempStatePage2";
 import { TempGetStatePage } from "./pages/TempGetStatePage";
-import { ProductInfoPage } from "./pages/ProductInfoPage";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { NotFound } from "./pages/NotFound";
@@ -17,6 +16,8 @@ import APITest from "./pages/APITest";
 
 import "./index.css"
 import { ProductDashboard_dummy } from "./pages/ProductDashboard_dummy";
+import { ProductInfoPage_dummy } from "./pages/ProductInfoPage_dummy";
+import { ProductInfoPage } from "./pages/ProductInfoPage";
 // TODO:
 // When refactoring rename function to have function clause
 
@@ -72,7 +73,8 @@ const App = () => {
           <Route path="get-state" element={<TempGetStatePage />}/>
           {/* ------------------------ */}
         </Route>
-        <Route path="/product-info" element={<ProductInfoPage/>} />
+        <Route path="/product-info-dummy" element={<ProductInfoPage_dummy/>} />
+        <Route path="/product-info" element={<ProductInfoPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />

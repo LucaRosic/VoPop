@@ -47,4 +47,31 @@ const DummyData = (productId: number) => {
   return productsList[productId];
 };
 
+const reviewMarkdown = `
+## CyberPowerPC Gamer Xtreme VR Review Summary:
+**Likes:**
+* **Performance:** Customers consistently praise the performance of the PC, especially for its ability to handle modern games on high settings. 
+* **Value:** Many reviewers highlight the competitive price point, particularly when purchased on sale.
+* **Ease of Setup:** The PC is widely recognized for its straightforward setup process, even for those new to PC building.
+* **Quality Components:** Users appreciate the quality of the included parts, often mentioning specific brands like Asus and MSI.
+* **Included Peripherals:** The bundled keyboard and mouse are generally well-received.
+* **Quiet Operation:** Many users find the PC to be surprisingly quiet, even under load.
+* **RGB Lighting:** The customizable RGB lighting is a popular feature.
+* **Fast Shipping:** Several reviewers mention quick shipping times.
+
+**Dislikes:**
+* **CPU Cooling:** A common complaint is the inadequacy of the stock CPU cooler, leading to high temperatures and fan noise. Many recommend upgrading to a more robust cooler, like the Peerless Assassin.
+* **RAM:** Some users find 16GB of RAM insufficient for their needs and suggest upgrading to 32GB.
+* **RGB Control:** Difficulty controlling the RGB lighting is mentioned by a few reviewers.
+* **Damaged Packaging:** A couple of customers received PCs with damaged packaging, raising concerns about handling during shipping.
+* **Fan Noise:** While many find the PC to be quiet, some experience noticeable fan noise, especially during demanding tasks. 
+* **Warning Sticker:** Several users struggle to remove the warning sticker from the tempered glass side panel.
+
+**Overall:**
+The CyberPowerPC Gamer Xtreme VR is generally well-received, praised for its performance, ease of setup, and value for money. However, the stock CPU cooler is often criticized, requiring an upgrade for optimal thermal performance and quieter operation.
+`
+
+export const GetMarkdownReview = () => {return reviewMarkdown}
+
+
 export default DummyData;

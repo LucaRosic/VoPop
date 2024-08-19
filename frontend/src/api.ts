@@ -39,10 +39,13 @@ api.interceptors.response.use(
             originalRequest._retry = true; // The request has been retried, set to true
             try {
                 // Attempt to refresh the authorization (refreshAuth() function will update local storage)
+                console.log("SENDING REQUEST (api.ts)");
                 const accessToken = await refreshAuth();
                 if (accessToken !== null) {
                     // api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
                     return api(originalRequest); // Send original request again
+                } else {
+                    return Promise.reject("ERROR in REFRESH TOKEN");
                 }
             } catch (error) {
                 console.log("ERROR!")

@@ -7,7 +7,7 @@ export const ProductDashboard_dummy = () => {
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
-    navigate('/product-info', { state: { prodId: prodId, meaning : 'test' } }); 
+    navigate('/product-info-dummy', { state: { prodId: prodId, meaning : 'test' } }); 
   }
 
   const productsList = [0,1,2,3];

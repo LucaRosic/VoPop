@@ -1,19 +1,17 @@
-import axios from "axios"
-import { useState } from "react"
 import api from "../api"
+import { REFRESH_TOKEN } from "../constants";
 // import { data } from "../components/BarGraph"
 
 const APITest = () => {
 
-  const [quote, setQuote] = useState<string>("")
+  const sendLogout = async () => {
+    console.log("Logging out");
 
-  const getQuote = async () => {
-    console.log("Hello!")
     try {
-      const res = await axios.get('https://type.fit/api/quotes');
-      const apiQuote = res.data[0].text;
-      console.log(apiQuote);
-      setQuote(apiQuote);
+      const res = await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
+      localStorage.clear();
+      console.log("Cleared storage!");
+      console.log(res.status);
     } catch (error) {
       console.log(error);
     }
@@ -77,6 +75,15 @@ const APITest = () => {
       className="bg-gray-600 rounded-lg p-2 text-white"
       >
         Send URL Test
+      </button>
+      <br></br>
+
+      <br></br>
+      <button 
+      onClick={sendLogout}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Logout
       </button>
       <br></br>
 
