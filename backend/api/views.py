@@ -7,7 +7,7 @@ from .models import Product, User_Products, Product_Summary, Product_Reviews
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from scrape.scrapper import scrape_reviews
+from scrape.scrapper import scrape_reviews, clean_url
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
 from Clean.Transform import clean_transform_data
@@ -27,6 +27,8 @@ class CreateUserView(generics.CreateAPIView):
     # who can make this view
     permission_classes = [AllowAny]
     
+    
+    
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -40,70 +42,64 @@ class LogoutView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)  
     
+    
 class CreateProduct(generics.CreateAPIView):
     
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     # creates everything 
     def perform_create(self, serializer):
         
         if serializer.is_valid():
             
-            # If product is already in database, only add to user_product table
-            if Product.objects.filter(url=serializer.validated_data['url']).exists():
+            scraped = (scrape_reviews(serializer.validated_data['url']))  
                 
-                if User_Products.objects.filter(user=User.objects.get(pk=self.request.user), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
+            if scraped is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+            # If product is already in database, only add to user_product table
+            if Product.objects.filter(url=scraped['Clean URL']).exists():
+                
+                if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=scraped['Clean URL'])).exists():
                     return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
                 
-                user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=serializer.validated_data['url']))
+                user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=scraped['Clean URL']))
                 user_prod.save()
-                serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
+                serializer = ProductSerializer(Product.objects.get(url=scraped['Clean URL']))
                 return Response(data=serializer.data, status=status.HTTP_100_CONTINUE)
             
             else:
                 # scrape and clean data 
-                scraped = (scrape_reviews(serializer.validated_data['url']))  
+                ##scraped = (scrape_reviews(serializer.validated_data['url']))  
                 
-                if scraped is None:
-                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                ##if scraped is None:
+                ##     return Response(status=status.HTTP_400_BAD_REQUEST)
                 
                 cleaned = clean_transform_data(scraped)
                 
                 
                 # add to product table          
-                serializer.save(name=scraped['Product Name'], category='amazon', brand=scraped['Brand'], image=scraped['Product Image'])
+                serializer.save(name=scraped['Product Name'], url=scraped['Clean URL'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])
                 
                 # adds to user_product table
-                user_prod = User_Products(user=User.objects.get(pk=self.request.user), product=Product.objects.get(pk=serializer.data['id']))
+                user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
                 user_prod.save() 
                 
                 avg_sentiment = 0
                 avg_rating = 0
-                ##month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
                 sent_model = start_model()
                 for review in cleaned['Reviews']:
                     
-                    avg_rating += review['Stars']
-                    
-                    ##date = review['Date'].split('on ')[-1].split(' ')
-                    ##rating = float(review['Stars'].split(' ')[0])
-                    ##avg_rating += rating
+                    ##avg_rating += review['Stars']
                     
                     sentiment = analyseSentiment(sent_model, review['Review Text'])
                     avg_sentiment += sentiment['score']
                     
-                        
                     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
                         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                     
-                    # if date[0].isdigit():
-                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[1]], int(date[0])) )
-                    # else:
-                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
                     
                     prod_rev.save()
                     
@@ -111,6 +107,7 @@ class CreateProduct(generics.CreateAPIView):
                 avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
                 summary=summarize(scraped['Reviews'])
                 overview = summary.split('Overall:')[-1].replace('*', '').replace('\n', '')
+                avg_rating = float(scraped['Average Star'].split(' ')[0])
                 
                 prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
                 prod_sum.save()
@@ -197,4 +194,73 @@ class GetProductDetails(APIView):
             Product.objects.filter(pk=product_id).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+#_______________________________________________________________________________________________________
+class TestProd(APIView):
+    
+    permission_classes = [AllowAny]
+    
+    # creates everything 
+    def post(self, request):
+        
+        cleaned_url = clean_url(request.data['url'])
+        print(cleaned_url)
+        
+        
+        # If product is already in database, only add to user_product table
+        if Product.objects.filter(url=cleaned_url).exists():
+            
+            if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=cleaned_url)).exists():
+                return  Response(status=status.HTTP_208_ALREADY_REPORTED)
+            
+            user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=cleaned_url))
+            user_prod.save()
+            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(url=cleaned_url)), many=True)
+            return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+        
+        else:
+            
+            scraped = (scrape_reviews(request.data['url']))  
+            
+            if scraped is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+            cleaned = clean_transform_data(scraped)
+            
+            
+            # add to product table  
+            prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
+            prod.save()
+            
+            # adds to user_product table
+            user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(url=scraped['Clean URL']))
+            user_prod.save() 
+            
+            avg_sentiment = 0
+            sent_model = start_model()
+            for review in cleaned['Reviews']:
+                
+                sentiment = analyseSentiment(sent_model, review['Review Text'])
+                avg_sentiment += sentiment['score']
+                
+                prod_rev = Product_Reviews(product=Product.objects.get(url=scraped['Clean URL']), review=review['Review Text'], \
+                    sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+                
+                
+                prod_rev.save()
+                
+            avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
+            avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+            summary=summarize(scraped['Reviews'])
+            overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
+            avg_rating = float(scraped['Average Star'].split(' ')[0])
+                        
+            prod_sum = Product_Summary(product=Product.objects.get(url=scraped['Clean URL']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+            prod_sum.save()
+            
+            
+            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(url=scraped['Clean URL'])), many=True)
+            return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+            
     

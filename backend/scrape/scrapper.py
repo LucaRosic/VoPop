@@ -32,7 +32,7 @@ def clean_url(url):
                 clean_part = parts[1].split("/ref")[0]
             else:
                 clean_part = parts[1].split("?")[0]
-            url = parts[0] + "/dp/" + clean_part, clean_part
+            url = parts[0] + "/dp/" + clean_part
         return url 
 
 
@@ -62,7 +62,7 @@ def scrape_amazon_reviews(url):
     options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
 
     # Initialize FirefoxDriver service
     service = Service(gecko_driver_path)

@@ -12,7 +12,8 @@ urlpatterns = [
     path("product/dashboard/meta/<int:product_id>/", views.GetProductMeta_Dash.as_view(), name='product-dashboard-meta'),
     path("product/dashboard/summ/<int:product_id>/", views.GetProductSum_Dash.as_view(), name='product-dashboard-summ'),
     path("product/delete/<int:product_id>/", views.GetProductDetails.as_view(), name='product-delete'),
-    path("logout/", views.LogoutView.as_view(), name='auth_logout')
+    path("logout/", views.LogoutView.as_view(), name='auth_logout'),
+    path("prod/", views.TestProd.as_view(), name='testing')
     
 ]
 #
