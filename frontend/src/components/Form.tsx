@@ -27,7 +27,7 @@ export const Form = ({route, method} : Props) => {
       if (method === "login") { // for login
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/api"); // Navigate back to home
+        navigate("/dashboard"); // Navigate back to home
       } else { // For register
         navigate("/login");
       }
