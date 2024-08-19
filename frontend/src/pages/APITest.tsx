@@ -19,6 +19,17 @@ const APITest = () => {
     }
   }
 
+  const getData = async () => {
+    console.log("retrieving data")
+    try {
+      const res = await api.get('/api/product/dashboard/sentiment/50/');
+      const apiData = res.data;
+      console.log(apiData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const getProduct = async () => {
     console.log("Testing Django");
     try {
@@ -76,7 +87,15 @@ const APITest = () => {
       >
         Remove Local Cache
       </button>
+      <br></br>
+      <button 
+      onClick={getData}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Get chart data test
+      </button>
     </div>
+    
   )
 }
 

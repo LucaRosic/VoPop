@@ -18,3 +18,4 @@ nltk
 lsg_converter
 langdetect
 better_profanity
+pymysql
