@@ -144,7 +144,7 @@ class GetUserProduct_Home(generics.ListAPIView):
 # INFO FOR DASH
 class GetReviewSent_Dash(APIView):
     
-    permission_classes  = [IsAuthenticated]
+    permission_classes  = [AllowAny]
     
     def get(self, request, product_id):
         
