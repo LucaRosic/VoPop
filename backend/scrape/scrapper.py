@@ -82,25 +82,22 @@ def scrape_amazon_reviews(url):
         product_name = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'productTitle'))
         ).text
-
+        print("Product name")
         product_image = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'landingImage'))
         ).get_attribute('src')
+        print("Image")
 
         avg_star = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '#cm_cr_dp_d_rating_histogram > div.a-fixed-left-grid.AverageCustomerReviews.a-spacing-small > div > div.a-fixed-left-grid-col.aok-align-center.a-col-right > div > span > span'))
         ).text
+        print("Star")
 
-        try:
-            product_brand = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="productOverview_feature_div"]/div/table/tbody/tr[1]/td[2]/span'))
-            ).text
-        except:
-            product_brand = "NA"
+        
 
         # Click on the "See more reviews" link if present
         try:
-            see_more_reviews = WebDriverWait(driver, 10).until(
+            see_more_reviews = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
             )
             see_more_reviews.click()
@@ -108,23 +105,29 @@ def scrape_amazon_reviews(url):
             print("See more reviews link not found or error:", e)
 
         try:
-            most_recent_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_selected((By.CSS_SELECTOR, '#a-button-inner'))
+            most_recent_button = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.ID, 'a-autoid-3-announce'))
             )
             most_recent_button.click()
         except Exception as e:
             print("review type not found reviews link not found or error:", e)
         try:
-            most_recent = WebDriverWait(driver, 10).until(
+            most_recent = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.ID, 'sort-order-dropdown_1'))
             )
             most_recent.click()
         except Exception as e:
             print("most recent reviews link not found or error:", e)
+        try:
+            product_brand = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
+            ).text
+        except:
+            product_brand = "NA"
 
         while True:
             # Extract review elements
-            review_elements = WebDriverWait(driver, 10).until(
+            review_elements = WebDriverWait(driver, 15).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
