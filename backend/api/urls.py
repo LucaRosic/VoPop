@@ -4,7 +4,9 @@ from . import views
 urlpatterns = [
     
     # Post Request
-    path("product/", views.CreateProduct.as_view(), name='create-product'),
+    
+    #path("product/", views.CreateProduct.as_view(), name='create-product'),
+    path("product/", views.TestProd.as_view(), name='testing'),
     
     # Get Requests
     path("product/home/", views.GetUserProduct_Home.as_view(), name='product-home'),
@@ -12,8 +14,7 @@ urlpatterns = [
     path("product/dashboard/meta/<int:product_id>/", views.GetProductMeta_Dash.as_view(), name='product-dashboard-meta'),
     path("product/dashboard/summ/<int:product_id>/", views.GetProductSum_Dash.as_view(), name='product-dashboard-summ'),
     path("product/delete/<int:product_id>/", views.GetProductDetails.as_view(), name='product-delete'),
-    path("logout/", views.LogoutView.as_view(), name='auth_logout'),
-    path("prod/", views.TestProd.as_view(), name='testing')
+    path("logout/", views.LogoutView.as_view(), name='auth_logout')
     
 ]
 #
