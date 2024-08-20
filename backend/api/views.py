@@ -199,7 +199,7 @@ class GetProductDetails(APIView):
 #_______________________________________________________________________________________________________
 class TestProd(APIView):
     
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     # creates everything 
     def post(self, request):
@@ -211,10 +211,10 @@ class TestProd(APIView):
         # If product is already in database, only add to user_product table
         if Product.objects.filter(url=cleaned_url).exists():
             
-            if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=cleaned_url)).exists():
+            if User_Products.objects.filter(user=request.user, product=Product.objects.get(url=cleaned_url)).exists():
                 return  Response(status=status.HTTP_208_ALREADY_REPORTED)
             
-            user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=cleaned_url))
+            user_prod = User_Products(user=request.user, product=Product.objects.get(url=cleaned_url))
             user_prod.save()
             serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(url=cleaned_url)), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
@@ -234,7 +234,7 @@ class TestProd(APIView):
             prod.save()
             
             # adds to user_product table
-            user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(url=scraped['Clean URL']))
+            user_prod = User_Products(user=request.user, product=Product.objects.get(url=scraped['Clean URL']))
             user_prod.save() 
             
             avg_sentiment = 0
@@ -251,7 +251,7 @@ class TestProd(APIView):
                 prod_rev.save()
                 
             avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
-            avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+            ##avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
             summary=summarize(scraped['Reviews'])
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
             avg_rating = float(scraped['Average Star'].split(' ')[0])

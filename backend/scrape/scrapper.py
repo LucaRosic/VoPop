@@ -62,7 +62,7 @@ def scrape_amazon_reviews(url):
     options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
 
     # Initialize FirefoxDriver service
     service = Service(gecko_driver_path)
@@ -124,10 +124,10 @@ def scrape_amazon_reviews(url):
             ).text
         except:
             product_brand = "NA"
-
+        time.sleep(1)
         while True:
             # Extract review elements
-            review_elements = WebDriverWait(driver, 15).until(
+            review_elements = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
@@ -195,8 +195,7 @@ def scrape_amazon_reviews(url):
 
 def scrape_ali_express_reviews(url):
     print("AliExpress detected")
-    start_time = time.time()
-    
+
     # Specify the path to your GeckoDriver executable
     gecko_driver_path = r''  # Add your path here
 
@@ -214,7 +213,9 @@ def scrape_ali_express_reviews(url):
 
     # Initialize an empty list to store reviews
     reviews_list = []
-    
+    review_index = 1
+    reviews_per_page = 20  # Number of reviews loaded per page
+
     try:
         # Open the product page
         driver.get(url)
@@ -228,58 +229,76 @@ def scrape_ali_express_reviews(url):
         time.sleep(5)  # Wait for the pop-out window to appear
 
         # Wait for the pop-out window to appear and store it in the variable
-        pop_out_window = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div[3]"))
-        )
-        print("Pop-out window found.")
+        try:
+            pop_out_window = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div[3]"))
+            )
+            print("Pop-out window found.")
+        except Exception as e:
+            print("Error finding pop-out window:", e)
+            driver.quit()
+            return
+
+        # Function to construct the XPath for review elements
+        def get_review_xpath(index):
+            # Test both potential structures
+            xpath_1 = f"/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[{index}]/div/div[3]/div[1]/div[3]"
+            xpath_2 = f"/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[{index}]/div/div[2]/div[1]/div[3]"
+            try:
+                element = pop_out_window.find_element(By.XPATH, xpath_1)
+                return xpath_1
+            except NoSuchElementException:
+                try:
+                    element = pop_out_window.find_element(By.XPATH, xpath_2)
+                    return xpath_2
+                except NoSuchElementException:
+                    raise Exception(f"Unable to locate review element at index {index}")
 
         # Loop to extract reviews
-        review_index = 1
         while True:
             try:
-                # Find all review elements within the pop-out window
-                review_elements = pop_out_window.find_elements(By.CLASS_NAME, "list--itemReview--hBFPNly")
+                # Construct the XPath for the review container based on the index
+                review_xpath = get_review_xpath(review_index)
                 
-                if not review_elements:
-                    print("No more reviews found.")
-                    break
-
-                # Extract reviews
-                for review_element in review_elements:
-                    # Extract review text
-                    review_text = review_element.text
-                    
-                    # Extract review date (if available)
-                    review_date = "Date not found"  # Set a default value
-                    try:
-                        review_date_element = review_element.find_element(By.XPATH, ".//following-sibling::div[contains(@class, 'list--itemInfo--fb1A_M1')]")
-                        review_date = review_date_element.text
-                    except Exception as e:
-                        print("Error finding review date:", e)
-                    
-                    # Extract star rating (if available)
-                    star_elements = review_element.find_elements(By.XPATH, ".//following-sibling::div[contains(@class, 'stars--box--vHzUWQ9')]//span[contains(@class, 'comet-icon-starreviewfilled')]")
-                    review_stars = len(star_elements)
-                    
-                    # Append the extracted data to the reviews list
-                    reviews_list.append({
-                        'Date': review_date,
-                        'Stars': review_stars,
-                        'Review Text': review_text
-                    })
-                    
-                # Scroll after every 20 reviews
-                if review_index % 20 == 0:
-                    driver.execute_script("arguments[0].scrollIntoView();", review_elements[-1])
-
-                    # Asynchronous wait to ensure new reviews are loaded
-                    WebDriverWait(driver, 10).until(
-                        EC.presence_of_element_located((By.CLASS_NAME, "list--itemReview--hBFPNly"))
-                    )
-                    
-                review_index += len(review_elements)
+                # Try to find the review element
+                review_element = pop_out_window.find_element(By.XPATH, review_xpath)
                 
+                # Extract review text
+                review_text = review_element.text
+                
+                # Extract review date
+                try:
+                    review_date_xpath = review_xpath.replace("div[1]/div[3]", "div[2]/div[1]")
+                    review_date = pop_out_window.find_element(By.XPATH, review_date_xpath).text
+                except Exception as e:
+                    review_date = "Date not found"
+                    print("Error finding review date:", e)
+                
+                # Extract star rating
+                star_elements = review_element.find_elements(By.XPATH, ".//div[contains(@class, 'stars--box--vHzUWQ9')]//span[contains(@class, 'comet-icon-starreviewfilled')]")
+                review_stars = len(star_elements)
+                
+                # Append the extracted data to the reviews list
+                reviews_list.append({
+                    'Date': review_date,
+                    'Stars': review_stars,
+                    'Review Text': review_text
+                })
+                
+                # Increment the review index
+                review_index += 1
+                
+                # Scroll down every reviews_per_page reviews to load more
+                if (review_index - 1) % reviews_per_page == 0:
+                    print("Scrolling down to load more reviews...")
+                    driver.execute_script("arguments[0].scrollIntoView(true);", review_element)
+                    time.sleep(2)  # Wait for new reviews to load
+
             except Exception as e:
+                # Exit the loop if no more reviews are found or if an error occurs
+                if "no such element" in str(e).lower():
+                    print("No more reviews found or error encountered.")
+                    break
                 print("Error extracting review details:", e)
                 break
 
@@ -295,11 +314,10 @@ def scrape_ali_express_reviews(url):
         json.dump(reviews_list, file, indent=4)
 
     print(f"Scraped {len(reviews_list)} reviews from AliExpress")
-    end_time = time.time()  # End the timer
-    elapsed_time = end_time - start_time  # Calculate elapsed time
-    print(f"Scraping completed in {elapsed_time:.2f} seconds")
 
     return reviews_list
+
+
 
 
 
@@ -321,8 +339,8 @@ def scrape_reviews(url):
 
 
 if __name__ == "__main__":
-    # url = "https://www.etsy.com/au/listing/1518307138/personalized-travel-jewelry-box-small?click_key=e840c0f4cb9842b5b33c7993184a9c63c837c426%3A1518307138&click_sum=dd8b8e24&ref=hp_prn-1&pro=1&sts=1"
-    # url = "https://www.aliexpress.com/item/1005006598161696.html?spm=a2g0o.detail.pcDetailBottomMoreOtherSeller.1.170acr2ncr2nwm&gps-id=pcDetailBottomMoreOtherSeller&scm=1007.40000.326746.0&scm_id=1007.40000.326746.0&scm-url=1007.40000.326746.0&pvid=5206a737-b0cc-4b82-9da6-d6300fc3301d&_t=gps-id:pcDetailBottomMoreOtherSeller,scm-url:1007.40000.326746.0,pvid:5206a737-b0cc-4b82-9da6-d6300fc3301d,tpp_buckets:668%232846%238114%23750&pdp_npi=4%40dis%21AUD%2110.32%211.52%21%21%2148.05%217.06%21%402101e62517237011224783085eb4b6%2112000037771136223%21rec%21AU%21%21ABX&utparam-url=scene%3ApcDetailBottomMoreOtherSeller%7Cquery_from%3A"
+
+    url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
-    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
+    # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
     reviews_df = scrape_reviews(url)
