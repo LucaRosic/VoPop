@@ -1,10 +1,26 @@
 import {Bar, Line } from 'react-chartjs-2'
 import { BarElement } from 'chart.js'
 import {Chart as ChartJS} from 'chart.js'
+import api from "../api"
 
 ChartJS.register(
   BarElement
   );
+
+const getData = async (index : number, prodId : number = 50) => {
+
+  console.log("retrieving data")
+  try {
+    const res = await api.get(`/api/product/dashboard/sentiment/${prodId}/`);
+    const apiData = res.data;
+    console.log(apiData);
+    return apiData[index]
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
  export const barOptions = {
   responsive: true,
@@ -26,8 +42,10 @@ ChartJS.register(
   scales: {
     x: {
       display: false,
-      stacked: false
+      stacked: false,
+      
     },
+    
     y: {
       grid: {
         display: true,
@@ -90,8 +108,18 @@ const months = [
   'September',
   'October',
   'November',
-  'December',
+  'December'
 ]
+
+const month_shift = (list_to_shift : number[]|string[]) => {
+  
+  var today = new Date();
+  var this_month = today.getMonth();
+  var right_side = list_to_shift.slice(0,this_month+1)
+  var left_side = list_to_shift.slice(this_month+1)
+
+  return left_side.concat(right_side)
+}
 
 const data =
   {
@@ -99,30 +127,40 @@ const data =
     datasets: [
     {
       label: "Positive",
-      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      data: month_shift(await getData(0)),
       backgroundColor: '#1c8000'
     },
     {
       label: "Negative",
-      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      data: month_shift(await getData(1)),
       backgroundColor: '#eb3434'
     },
     {
       label: "Neutral",
-      data: [...Array(12)].map(e=>~~(Math.random()*80)),
+      data: month_shift(await getData(2)),
       backgroundColor: '#db8412',
       
     },
     ]
   }
-  
+
+var pos = await getData(0)
+var neg = await getData(1)
+var neu = await getData(2)
+var nps = []
+for (let i = 0; i < pos.length; i++){
+  nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
+}
+
+
+
 const lineData =
 {
-  labels: months,
+  labels: month_shift(months),
   datasets: [
     {
       label: "NPS",
-      data: [...Array(12)].map(e=>~~(Math.random()*100)),
+      data: month_shift(nps),
       backgroundColor: '#db8412',
       borderColor: '#0b13a3',
       tension: 0.1
@@ -142,10 +180,12 @@ const BarGraph = () => {
     padding: '1rem',
   }
 
+  
   return (
     <div>
     <div style={graphStyle}>
       <Bar data={data} options={barOptions} />
+      <br />
       <Line data={lineData} options={lineOptions}/>
     </div>
     </div>

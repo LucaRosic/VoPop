@@ -62,8 +62,8 @@ class SentimentDataSerializer_Dash(serializers.ModelSerializer):
     
     class Meta:
         model = Product_Reviews
-        fields = ['sentiment', 'sentiment_label', 'date']
-        extra_kwargs = {"sentiment": {"read_only": True}, "sentiment_label": {"read_only": True}, "date": {"read_only": True}}
+        fields = ['sentiment_label', 'date']
+        extra_kwargs = {"sentiment_label": {"read_only": True}, "date": {"read_only": True}}
   
         
 class ProductSerializer_Dash(serializers.ModelSerializer):
