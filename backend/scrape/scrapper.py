@@ -105,6 +105,7 @@ def scrape_amazon_reviews(url):
             print("See more reviews link not found or error:", e)
 
         try:
+            print('finding drop down filter')
             most_recent_button = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.ID, 'a-autoid-3-announce'))
             )
@@ -112,6 +113,7 @@ def scrape_amazon_reviews(url):
         except Exception as e:
             print("review type not found reviews link not found or error:", e)
         try:
+            print('most recent attempt')
             most_recent = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.ID, 'sort-order-dropdown_1'))
             )
@@ -220,6 +222,20 @@ def scrape_ali_express_reviews(url):
         # Open the product page
         driver.get(url)
         time.sleep(2)  # Wait for the page to load
+        
+        product_name = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'title--wrap--UUHae_g'))
+        ).text
+        print("Product name")
+        product_image = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[1]/div/div[1]/div[1]/div[1]/div/div/div[2]/div[1]/div/img'))
+        ).get_attribute('src')
+        print("Image")
+
+        avg_star = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-review > div:nth-child(2) > div.header--wrap--BgjROgu > div > div.header--blockWrap1--S_r1OlE > div > div.header--num--XJ6wKJ5'))
+        ).text
+        print("Star")
 
         # Click the reviews section to open the pop-up window
         reviews_button = WebDriverWait(driver, 10).until(
@@ -247,25 +263,36 @@ def scrape_ali_express_reviews(url):
             try:
                 element = pop_out_window.find_element(By.XPATH, xpath_1)
                 return xpath_1
-            except NoSuchElementException:
+            except Exception as e:
                 try:
                     element = pop_out_window.find_element(By.XPATH, xpath_2)
                     return xpath_2
-                except NoSuchElementException:
+                except Exception as e:
                     raise Exception(f"Unable to locate review element at index {index}")
-
+        empty_count = 0
         # Loop to extract reviews
         while True:
             try:
                 # Construct the XPath for the review container based on the index
                 review_xpath = get_review_xpath(review_index)
-                
                 # Try to find the review element
                 review_element = pop_out_window.find_element(By.XPATH, review_xpath)
                 
                 # Extract review text
                 review_text = review_element.text
-                
+                print(review_text)
+                        # Check if the review text is empty
+                if not review_text:
+                    empty_count += 1
+                    print(f"Empty review found. Count: {empty_count}")
+                else:
+                    empty_count = 0  # Reset counter if a non-empty review is found
+
+                # Stop scraping if 5 consecutive empty reviews are found
+                if empty_count >= 5:
+                    print("5 consecutive empty reviews found. Stopping scraping.")
+                    break
+
                 # Extract review date
                 try:
                     review_date_xpath = review_xpath.replace("div[1]/div[3]", "div[2]/div[1]")
@@ -292,7 +319,7 @@ def scrape_ali_express_reviews(url):
                 if (review_index - 1) % reviews_per_page == 0:
                     print("Scrolling down to load more reviews...")
                     driver.execute_script("arguments[0].scrollIntoView(true);", review_element)
-                    time.sleep(2)  # Wait for new reviews to load
+                    time.sleep(2) 
 
             except Exception as e:
                 # Exit the loop if no more reviews are found or if an error occurs
@@ -308,10 +335,20 @@ def scrape_ali_express_reviews(url):
     finally:
         # Close the WebDriver
         driver.quit()
-
+    # Create a product details dictionary
+    product_details = {
+        'Category': 'Amazon',
+        'Product Name': product_name,
+        'Product Image': product_image,
+        # 'Unique Key': unique_key,
+        # 'Clean URL': cleaned_url,
+        'Brand': product_brand,
+        'Average Star': avg_star,
+        'Reviews': reviews_list
+    }
     # Save product details as a JSON file
     with open('aliexpress_product_details.json', 'w') as file:
-        json.dump(reviews_list, file, indent=4)
+        json.dump(product_details, file, indent=4)
 
     print(f"Scraped {len(reviews_list)} reviews from AliExpress")
 
@@ -340,7 +377,7 @@ def scrape_reviews(url):
 
 if __name__ == "__main__":
 
-    url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
+    # url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
-    # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
+    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
     reviews_df = scrape_reviews(url)
