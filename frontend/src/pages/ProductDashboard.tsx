@@ -97,6 +97,7 @@ export const ProductDashboard = () => {
                   productImg={productInfo["product"]["image"]}
                   productOverview={stringLimiter(productInfo["overview"], 200)}
                   lastUpdated={productInfo["date"]}
+                  sentimentScore={productInfo["avg_sentiment"]}
                 /> 
               )
           })
@@ -113,19 +114,16 @@ export const ProductDashboard = () => {
 
   return (
     <div className="flex flex-col min-h-[100vh]">
-      <NavbarTop title="Product Dashboard" urlScraperCallback={addProductCard}/>
-      <div 
-        className="flex-1 flex flex-col items-center gap-4 px-32 pt-4"
-      >
-        {renderProductCards()}
-        {/* Add a product to the page? */}
-        {/* <ProductCard
-          productTitle="Test Product"
-          productImg="https://m.media-amazon.com/images/I/71IRptDkCRL._AC_SX679_.jpg"
-        /> */}
+      <NavbarTop title="VoPop" urlScraperCallback={addProductCard}/>
+      <div className="flex-grow flex flex-col gap-8 bg-[#FBF5F3]">
+        <div 
+          className="flex-grow flex flex-col items-center gap-4 px-32 pt-4"
+        >
+          {/* Render the product cards */}
+          {renderProductCards()}
+        </div>
+        <Footer />
       </div>
-      
-      <Footer />
     </div>
   );
 };
