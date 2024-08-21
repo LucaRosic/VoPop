@@ -65,7 +65,9 @@ export const ProductDashboard = () => {
       console.log("Sending scraping api");
       const res = await api.post("/api/product/",urlData);
       console.log(res.data);
-      setProductData(productData.push(res.data));
+      setProductData((productData : any) => [...productData, res.data[0]]);
+      console.log("Added product information.");
+      console.log(`Added: ${productData}`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -97,20 +99,14 @@ export const ProductDashboard = () => {
           })
         )
       } catch (error) {
+        console.log(error);
         return <h3>Error Getting Product Info</h3>
       }
       
     }
   }
 
-  // Hmm -> 
-  /*
-    Some changes
-    - First I need to use useEffect() hook to call "renderProductCards()" function.
-    - This will actually update an array of product cards
-    - For cardInfo in array -> Render product card
-    - Add product will add to this array
-  */
+  
 
   return (
     <div className="flex flex-col min-h-[100vh]">

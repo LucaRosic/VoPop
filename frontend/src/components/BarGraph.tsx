@@ -7,7 +7,7 @@ ChartJS.register(
   BarElement
   );
 
-const getData = async (index : number, prodId : number = 50) => {
+const getData = async (index : number, prodId : number = 61) => {
 
   console.log("retrieving data")
   try {
