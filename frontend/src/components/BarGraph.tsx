@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 ChartJS.register(
   BarElement
-  );
+);
 
 
 
@@ -24,7 +24,7 @@ const BarGraph = () => {
       return apiData[index]
     } catch (error) {
       console.log(error);
-      return [];
+      return Promise.reject("API for sentiment failed.");
     }
   }
 
@@ -130,32 +130,38 @@ const BarGraph = () => {
   }
 
   const getGraphData = async () => {
-    const data =
-    {
-      labels: months,
-      datasets: [
+    try {
+      const data =
       {
-        label: "Positive",
-        data: month_shift(await getData(0)),
-        backgroundColor: '#1c8000'
-      },
-      {
-        label: "Negative",
-        data: month_shift(await getData(1)),
-        backgroundColor: '#eb3434'
-      },
-      {
-        label: "Neutral",
-        data: month_shift(await getData(2)),
-        backgroundColor: '#db8412',
-        
-      },
-      ]
-    };
-    return data;
+        labels: months,
+        datasets: [
+        {
+          label: "Positive",
+          data: month_shift(await getData(0)),
+          backgroundColor: '#1c8000'
+        },
+        {
+          label: "Negative",
+          data: month_shift(await getData(1)),
+          backgroundColor: '#eb3434'
+        },
+        {
+          label: "Neutral",
+          data: month_shift(await getData(2)),
+          backgroundColor: '#db8412',
+          
+        },
+        ]
+      };
+      return data;
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+    
   }
 
-  const calculateNps = async () => {
+  const calculateLineData = async () => {
     try{
       const pos = await getData(0)
       const neg = await getData(1)
@@ -165,45 +171,35 @@ const BarGraph = () => {
         nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
       }
 
-      return nps;
+      // return linedata;
+      return {
+        labels: month_shift(months),
+        datasets: [
+          {
+            label: "NPS",
+            data: month_shift(nps),
+            backgroundColor: '#db8412',
+            borderColor: '#0b13a3',
+            tension: 0.1
+
+          }, 
+        ]
+      }
     } catch (error) {
       console.log(error)
-      return [0];
+      return undefined;
     }
     
 
   }
 
-  const [data, setData] = useState<any>({});
-  const [nps, setNps] = useState<any>([0]);
+  const [data, setData] = useState<any>(undefined);
+  const [lineData, setLineData] = useState<any>(undefined);
   useEffect(() => {
     getGraphData().then((value) => setData(value));
-    calculateNps().then((value) => setNps(value));
+    calculateLineData().then((value) => setLineData(value));
   }, [])
 
-  
-  
-
-
-  const lineData =
-  {
-    labels: month_shift(months),
-    datasets: [
-      {
-        label: "NPS",
-        data: month_shift(nps),
-        backgroundColor: '#db8412',
-        borderColor: '#0b13a3',
-        tension: 0.1
-
-      }, 
-    ]
-  }
-
-
-
-
-  // ============================
 
 
   const graphStyle = {
@@ -215,7 +211,10 @@ const BarGraph = () => {
     padding: '1rem',
   }
 
-  try {
+  console.log(`DATA: ${data}`);
+  if (data === undefined || lineData === undefined) {
+    return (<div className='h-48 flex items-center p-4'>Error Getting Sentiment Data</div>)
+  } else {
     return (
     <div>
     <div style={graphStyle}>
@@ -224,12 +223,9 @@ const BarGraph = () => {
       <Line data={lineData} options={lineOptions}/>
     </div>
     </div>
-  )
-  } catch (error) 
-  {
-    console.log(error);
-    return (<div>:c</div>)
+    )
   }
+  
   
 }
 
