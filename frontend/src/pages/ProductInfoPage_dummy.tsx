@@ -45,6 +45,15 @@ export const ProductInfoPage_dummy = () => {
 
   const markdownReview = GetMarkdownReview();
 
+  const renderBargraph = () => {
+    try {
+      return BarGraph();
+    } catch (error) {
+      console.log(error);
+      return (<div>:C</div>)
+    }
+  }
+
   return (
     <div className="flex h-[100vh]">
       {/* Sidebar left */}
@@ -79,7 +88,7 @@ export const ProductInfoPage_dummy = () => {
 
           {/* Sentiment Graph */}
           <div className="bg-slate-100">
-            <BarGraph />
+            {renderBargraph()}
           </div>
 
           {/* Review Summary */}

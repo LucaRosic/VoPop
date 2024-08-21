@@ -35,7 +35,8 @@ api.interceptors.response.use(
     (response) => { return response }, // Return response if no error
     async (error) => {
         const originalRequest = error.config // Retain original request to send again
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (!error.response) {return Promise.reject(error);}
+        else if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true; // The request has been retried, set to true
             try {
                 // Attempt to refresh the authorization (refreshAuth() function will update local storage)
@@ -53,6 +54,8 @@ api.interceptors.response.use(
                 window.location.href = '/login'; // Go back to login page
                 return Promise.reject(error);
             }
+        } else {
+            return Promise.reject("Failed at re-authentication.");
         }
     }
 )

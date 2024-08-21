@@ -25,20 +25,23 @@ export const ProductDashboard = () => {
       return res.data // Filled object
     } catch (error) {
       console.log(error);
-      return {}; // Empty object
+      return Promise.reject(error); // Empty object
     } finally {
       setLoading(false);
     }
   }
 
   // let productData = {}; // Default nothing in product data object
-  const [productData, setProductData] = useState<any>({});
+  const [productData, setProductData] = useState<any>([]);
   useEffect(() => { // On page load setProductData
     getProductInfo()
       .then((res) => {
         let productDataList:any[] = []; // Change this any to a defined product card object in future
         res.map((productInfo : any) => productDataList.push(productInfo))
         setProductData(productDataList);
+      }).catch((error) => {
+        console.log(error)
+        setProductData(null);
       })
       // .then((res) => {setProductData(res)})
   }, [])
