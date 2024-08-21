@@ -1,12 +1,17 @@
 import { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 
-const AddProductBtn = () => {
+interface Props {
+  urlScraperCallback : (url: string) => void;
+}
+
+const AddProductBtn = ( {urlScraperCallback} : Props ) => {
   const [url, setUrl] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page from reloading
     console.log(`URL Sent: ${url}`);
+    urlScraperCallback(url); // Send the url
     setUrl(""); // Clear url field
   }
 
@@ -33,7 +38,7 @@ const AddProductBtn = () => {
   return(
     <div className="flex flex-col">
       <div 
-        className="bg-green-700 hover:bg-green-800 p-1 rounded-sm cursor-pointer w-40 text-center select-none"
+        className="bg-green-700 hover:bg-green-800 p-1 cursor-pointer w-36 text-center select-none"
         onClick={toggleState}
       >
       <span><AddIcon /></span>  Add Product
