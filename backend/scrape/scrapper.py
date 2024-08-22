@@ -195,7 +195,11 @@ def scrape_amazon_reviews(url):
 
     return product_details
 
+
+    
+
 def scrape_ali_express_reviews(url):
+    
     print("AliExpress detected")
 
     # Specify the path to your GeckoDriver executable
@@ -213,6 +217,19 @@ def scrape_ali_express_reviews(url):
     # Initialize Firefox WebDriver with service and options
     driver = webdriver.Firefox(service=service, options=options)
 
+    def clean_url(url):
+        if "/item/" in url:
+            parts = url.split("/item/")
+            if ".html" in parts[1]:
+                clean_part = parts[1].split(".html")[0]
+            else:
+                clean_part = parts[1].split("?")[0]
+            url = parts[0] + "/item/" + clean_part+".html", clean_part
+        return url 
+    
+    cleaned_url, unique_key = clean_url(url)
+    
+
     # Initialize an empty list to store reviews
     reviews_list = []
     review_index = 1
@@ -220,23 +237,32 @@ def scrape_ali_express_reviews(url):
 
     try:
         # Open the product page
-        driver.get(url)
+        driver.get(cleaned_url)
         time.sleep(2)  # Wait for the page to load
         
         product_name = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'title--wrap--UUHae_g'))
         ).text
         print("Product name")
+        time.sleep(1)
+
         product_image = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[1]/div/div[1]/div[1]/div[1]/div/div/div[2]/div[1]/div/img'))
         ).get_attribute('src')
         print("Image")
+        time.sleep(1)
 
         avg_star = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-review > div:nth-child(2) > div.header--wrap--BgjROgu > div > div.header--blockWrap1--S_r1OlE > div > div.header--num--XJ6wKJ5'))
         ).text
         print("Star")
+        time.sleep(1)
 
+        product_brand = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-specification > ul > li:nth-child(3) > div:nth-child(2) > div.specification--desc--Dxx6W0W'))
+        ).text
+        print("Product brand")
+        time.sleep(1)
         # Click the reviews section to open the pop-up window
         reviews_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "#nav-review > div:nth-child(2) > button > span"))
@@ -246,8 +272,8 @@ def scrape_ali_express_reviews(url):
 
         # Wait for the pop-out window to appear and store it in the variable
         try:
-            pop_out_window = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, "/html/body/div[12]/div[2]/div/div[2]/div/div/div/div[4]/div/div[2]/div/div[3]"))
+            pop_out_window = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "comet-v2-modal-body"))
             )
             print("Pop-out window found.")
         except Exception as e:
@@ -337,12 +363,12 @@ def scrape_ali_express_reviews(url):
         driver.quit()
     # Create a product details dictionary
     product_details = {
-        'Category': 'Amazon',
+        'Category': 'AliExpress',
         'Product Name': product_name,
         'Product Image': product_image,
-        # 'Unique Key': unique_key,
-        # 'Clean URL': cleaned_url,
-        # 'Brand': product_brand,
+        'Unique Key': unique_key,
+        'Clean URL': cleaned_url,
+        'Brand': product_brand,
         'Average Star': avg_star,
         'Reviews': reviews_list
     }
@@ -379,5 +405,5 @@ if __name__ == "__main__":
 
     url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
-    # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
+    # url = 'https://www.amazon.com.au/Chotto-Motto-Crispy-Chilli-Oil/dp/B0BTM969DV/ref=sr_1_1?sr=8-1'
     reviews_df = scrape_reviews(url)

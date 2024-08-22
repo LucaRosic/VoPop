@@ -12,14 +12,19 @@ def convert_date(date_str):
     if date_str is None:
         raise ValueError("Date is None")
     
-    # Remove any leading text before the actual date
-    cleaned_date_str = re.sub(r'^.*on ', '', date_str)
+    # Check if the date string contains a '|' and extract the part after it
+    if '|' in date_str:
+        cleaned_date_str = date_str.split('|')[1].strip()
+    else:
+        # Remove any leading text before the actual date using "on" as a reference point
+        cleaned_date_str = re.sub(r'^.*on\s+', '', date_str).strip()
+    print(cleaned_date_str)
     
     # Try to parse the cleaned date string with different formats
-    for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y'):
+    for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
-            return date_obj #.strftime('%d %B %Y')
+            return date_obj .strftime('%d %B %Y')
         except ValueError:
             pass
     
@@ -28,11 +33,30 @@ def convert_date(date_str):
 
 def clean_transform_data(data):
     cleaned_reviews = []
+
+    def clean_rate(x):
+            if isinstance(x, str):
+                try:
+                    # Extract the first floating point number found in the string
+                    x = float(re.findall(r'\d+\.\d+', x)[0])
+                    print(x)
+                except (ValueError, IndexError):
+                    x = None
+            elif isinstance(x, float):
+                # If it's already a float, we just pass
+                pass
+            else:
+                x = None
+            
+            return x
     
     # Extract product information
+    category = data.get("Category","")
     product_name = data.get("Product Name", "")   
     product_image = data.get("Product Image", "")
     unique_key = data.get("Unique Key", "")
+    clean_url = data.get("Clean URL","")
+    avg_star = data.get("Average Star","")
     brand = data.get("Brand", "")
     
     # Extract the reviews
@@ -43,15 +67,16 @@ def clean_transform_data(data):
         review_date = review.get('Date', '')
         review_rating = review.get('Stars', '')
 
-        # Remove Non-English reviews
-        if detect(review_text) != 'en':
+        try:# Remove Non-English reviews
+            if detect(review_text) != 'en':
+                print('not good')
+                continue
+        except:
+            print("this shit borken")
             continue
 
         # Filter out profanity
         review_text = profanity.censor(review_text)
-
-        # Normalize text (handling Unicode)
-        review_text = re.sub(r'[^\x00-\x7F]+', '', review_text)
 
         # Clean the date
         if review_date:
@@ -61,46 +86,44 @@ def clean_transform_data(data):
             except ValueError as e:
                 print(f"Error cleaning date: {e}")
                 review_date = None
-        else:
-            review_date = None
 
-        # Clean the rating
-        if isinstance(review_rating, str):
-            try:
-                review_rating = float(re.findall(r'\d+\.\d+', review_rating)[0])
-            except (ValueError, IndexError):
-                review_rating = None
-        elif isinstance(review_rating, float):
-            # If it's already a float, we just pass
-            pass
-        else:
-            review_rating = None
+        
+    
+        
+        
+        if review_rating:
+            review_rating = clean_rate(review_rating)
+        if category == 'Amazon':
+            avg_star = clean_rate(avg_star)
+
 
         cleaned_review = {
-            'Review Text': review_text,
             'Date': review_date,
-            'Stars': review_rating
+            'Stars': review_rating,
+            'Review Text': review_text
         }
         cleaned_reviews.append(cleaned_review)
     
     # Return the complete data including product info and cleaned reviews
     return {
+        'Category': category,
         'Product Name': product_name,
         'Product Image': product_image,
         'Unique Key': unique_key,
+        'Clean URL': clean_url,
         'Brand': brand,
+        'Average Stars': avg_star,
         'Reviews': cleaned_reviews
     }
 
-# Example usage
-##json_file_path = 'backend/Clean/amazon_product_details.json'
+json_file_path = 'backend/Clean/aliexpress_product_details.json'
 
-##with open(json_file_path, 'r', encoding='utf-8') as f:
-    ##json_data = json.load(f)
+with open(json_file_path, 'r', encoding='utf-8') as f:
+    json_data = json.load(f)
 
-##cleaned_data = clean_transform_data(json_data)
+cleaned_data = clean_transform_data(json_data)
 
 # If you want to save the cleaned data to a new file:
-##output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
-##with open(output_file_path, 'w', encoding='utf-8') as f:
-    ##json.dump(cleaned_data, f, indent=4)
+output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
+with open(output_file_path, 'w', encoding='utf-8') as f:
+    json.dump(cleaned_data, f, indent=4)
