@@ -4,6 +4,7 @@ import NavbarTop from "../components/NavbarTop";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import api from "../api";
+import ProductCardLoading from "../components/ProductCardLoading";
 
 export const ProductDashboard = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export const ProductDashboard = () => {
   
   // First do an API request to get product info
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getProductInfo = async () => {
     setLoading(true);
@@ -59,8 +60,8 @@ export const ProductDashboard = () => {
   const [waitingCardNumber, setWaitingCardNumber] = useState<number>(0); 
 
   const addProductCard = async ( scrapeUrl : string ) => {
-    // First increment waiting card number
-    console.log(`Adding product: ${scrapeUrl}`);
+   
+    // Increment number of waiting cards to be processed
     setWaitingCardNumber(waitingCardNumber + 1);
     // Call the URL scraper API
     try {
@@ -68,16 +69,18 @@ export const ProductDashboard = () => {
       console.log("Sending scraping api");
       const res = await api.post("/api/product/",urlData);
       console.log(res.data);
-      setProductData((productData : any) => [...productData, res.data[0]]);
-      console.log("Added product information.");
-      console.log(`Added: ${productData}`);
+      // setProductData((productData : any) => [...productData, res.data[0]]);
+      if (res.data[0] !== undefined) {
+        setProductData((productData : any) => [res.data[0], ...productData]);
+        console.log("Added product information.");
+        console.log(`Added: ${productData}`);
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      // Decrement waiting card number
-      setWaitingCardNumber(waitingCardNumber - 1);
+      // Decrement waitng card number -> the card has been processed
+      setWaitingCardNumber(waitingCardNumber => Math.max(waitingCardNumber - 1,0)); // Clamp value to 0
     }
-
   }
 
   const renderProductCards = () => {
@@ -116,6 +119,14 @@ export const ProductDashboard = () => {
     }
   }
 
+  const renderLoadingCards = (numCards : number) => {
+    // console.log(`Loading card function called! Number: ${numCards}`);
+    return [...Array(numCards).keys()].map((key) => {
+      return (<ProductCardLoading key={key} />)
+    })
+
+    // return <ProductCardLoading />
+  }
   
 
   return (
@@ -125,6 +136,9 @@ export const ProductDashboard = () => {
         <div 
           className="flex-grow flex flex-col items-center gap-4 px-32 pt-4"
         >
+          {/* Render loading card components */}
+          {renderLoadingCards(waitingCardNumber)}
+
           {/* Render the product cards */}
           {renderProductCards()}
         </div>

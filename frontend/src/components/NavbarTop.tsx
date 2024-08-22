@@ -14,7 +14,7 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
  const logout = async () => {
     console.log("Logging out");
     try {
-      const res = await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
+      await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
       localStorage.clear();
       console.log("Cleared storage!");
       window.location.href = "/login";
