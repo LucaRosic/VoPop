@@ -27,6 +27,7 @@ function ProtectedRoute({children} : Props) {
         try {
             // Sending refresh (refreshToken) payload to this api end point (dont forget trailing slash)
             // Base URL is already handled (base url for Django server)
+            console.log("Protected Route Refresh Token!")
             const res = await api.post("/api/token/refresh/", {refresh: refreshToken}); // Get response on POST request
             if (res.status === 200) { // Response was success
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);

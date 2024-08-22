@@ -1,6 +1,4 @@
 import "./css/product-card.css";
-import DummyData from "../DummyData";
-
 //--------------
 // MUI ui stuff:
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -9,7 +7,7 @@ import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
-  productId: number;
+  productId?: number;
   productTitle: string;
   productImg: string;
   productOverview: string;
@@ -54,6 +52,14 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
   }
 
+  const convertDate = (date : string) => {
+    // Function to convert yyyy-mm-dd to dd/mm/yy like a normal person
+
+    const dateSplit = date.split("-");
+    const convertedDate = `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0].slice(2,4)}`
+    return convertedDate;
+  }
+
  
   return (
     <div
@@ -90,7 +96,7 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
       <div className="updated-delete flex flex-col justify-between items-center">
         <p className="text-xs text-center text-gray-400">
-          Last Updated {lastUpdated}
+          Last Updated <br></br> {convertDate(lastUpdated)}
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2"
@@ -103,10 +109,3 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
   );
 };
 
-/*
-- A div for the card
-- There is product title
-- There is product image
-
-
-*/

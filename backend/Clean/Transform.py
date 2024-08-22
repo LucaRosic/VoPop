@@ -24,7 +24,7 @@ def convert_date(date_str):
     for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
-            return date_obj .strftime('%d %B %Y')
+            return date_obj #.strftime('%d %B %Y')
         except ValueError:
             pass
     
@@ -116,14 +116,15 @@ def clean_transform_data(data):
         'Reviews': cleaned_reviews
     }
 
-json_file_path = 'backend/Clean/aliexpress_product_details.json'
+if __name__ == "__main__": 
+    json_file_path = 'backend/Clean/aliexpress_product_details.json'
 
-with open(json_file_path, 'r', encoding='utf-8') as f:
-    json_data = json.load(f)
+    with open(json_file_path, 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
 
-cleaned_data = clean_transform_data(json_data)
+    cleaned_data = clean_transform_data(json_data)
 
-# If you want to save the cleaned data to a new file:
-output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
-with open(output_file_path, 'w', encoding='utf-8') as f:
-    json.dump(cleaned_data, f, indent=4)
+    # If you want to save the cleaned data to a new file:
+    output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
+    with open(output_file_path, 'w', encoding='utf-8') as f:
+        json.dump(cleaned_data, f, indent=4)

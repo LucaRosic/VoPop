@@ -5,8 +5,7 @@ urlpatterns = [
     
     # Post Request
     
-    #path("product/", views.CreateProduct.as_view(), name='create-product'),
-    path("product/", views.TestProd.as_view(), name='testing'),
+    path("product/", views.CreateProduct.as_view(), name='create-product'),
     
     # Get Requests
     path("product/home/", views.GetUserProduct_Home.as_view(), name='product-home'),

@@ -8,9 +8,11 @@ ChartJS.register(
   BarElement
 );
 
+interface Props {
+  productId? : number;
+}
 
-
-const BarGraph = () => {
+const BarGraph = ({productId=61} : Props) => {
   // ============================
 
 
@@ -137,17 +139,17 @@ const BarGraph = () => {
         datasets: [
         {
           label: "Positive",
-          data: month_shift(await getData(0)),
+          data: month_shift(await getData(0, productId)),
           backgroundColor: '#1c8000'
         },
         {
           label: "Negative",
-          data: month_shift(await getData(1)),
+          data: month_shift(await getData(1, productId)),
           backgroundColor: '#eb3434'
         },
         {
           label: "Neutral",
-          data: month_shift(await getData(2)),
+          data: month_shift(await getData(2, productId)),
           backgroundColor: '#db8412',
           
         },
@@ -163,9 +165,9 @@ const BarGraph = () => {
 
   const calculateLineData = async () => {
     try{
-      const pos = await getData(0)
-      const neg = await getData(1)
-      const neu = await getData(2)
+      const pos = await getData(0, productId)
+      const neg = await getData(1, productId)
+      const neu = await getData(2, productId)
       const nps = []
       for (let i = 0; i < pos.length; i++){
         nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
