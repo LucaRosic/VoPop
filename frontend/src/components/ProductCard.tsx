@@ -54,8 +54,7 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
   const convertDate = (date : string) => {
     // Function to convert yyyy-mm-dd to dd/mm/yy like a normal person
-
-    const dateSplit = date.split("-");
+    const dateSplit = date.split("T")[0].split("-");
     const convertedDate = `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0].slice(2,4)}`
     return convertedDate;
   }
@@ -69,8 +68,7 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
     >
       {/* Shadow for the product card */}
 
-      {/* Product title and image */}
-      <div className="product-snippet flex flex-col w-[30%] h-[100%] bg-gray-900 text-white">
+      <div className="product-snippet flex flex-col w-[20vw] h-[100%] bg-gray-900 text-white">
         <h1 className="text-xl text-center">{productTitle}</h1>
         <img
           className="w-[100%] h-[80%] object-cover border-2 border-gray-900"
@@ -78,7 +76,6 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
         ></img>
       </div>
 
-      {/* Product sentiment emoji and brief summary */}
       <div className="cx-info-brief flex flex-col justify-between w-[70%]">
         <div className="flex justify-center items-center">
           <div className="bg-gray-900 text-white text-center flex items-center p-1 w-full justify-center">

@@ -32,7 +32,6 @@ export const ProductDashboard = () => {
     }
   }
 
-  // let productData = {}; // Default nothing in product data object
   const [productData, setProductData] = useState<any>([]);
   useEffect(() => { // On page load setProductData
     getProductInfo()
@@ -44,7 +43,6 @@ export const ProductDashboard = () => {
         console.log(error)
         setProductData(null);
       })
-      // .then((res) => {setProductData(res)})
   }, [])
 
   const stringLimiter = (inString : string, sliceLength : number) => {
@@ -120,12 +118,10 @@ export const ProductDashboard = () => {
   }
 
   const renderLoadingCards = (numCards : number) => {
-    // console.log(`Loading card function called! Number: ${numCards}`);
+    // Function to render numCards loading product cards
     return [...Array(numCards).keys()].map((key) => {
       return (<ProductCardLoading key={key} />)
     })
-
-    // return <ProductCardLoading />
   }
   
 
