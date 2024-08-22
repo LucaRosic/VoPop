@@ -23,35 +23,28 @@ def get_site(url):
         return None
     
 def clean_url(url):
-    if get_site(url) == 'amazon':
+    if "amazon.com" in url:
         if "/product-reviews/" in url:
             url = url.replace("/product-reviews/", "/dp/")
-        elif "/dp/" in url:
+            
+        if "/dp/" in url:
             parts = url.split("/dp/")
-            if "/ref" in parts[1]:
-                clean_part = parts[1].split("/ref")[0]
+            clean_part = parts[1].split("/ref")[0] if "/ref" in parts[1] else parts[1].split("?")[0]
+            return parts[0] + "/dp/" + clean_part + "/ref=cm_cr_arp_d_rvw_ttl_sol", clean_part
+
+    elif "aliexpress.com" in url:
+        if "/item/" in url:
+            parts = url.split("/item/")
+            if ".html" in parts[1]:
+                clean_part = parts[1].split(".html")[0]
             else:
                 clean_part = parts[1].split("?")[0]
-            url = parts[0] + "/dp/" + clean_part
-        return url 
+            return parts[0] + "/item/" + clean_part + ".html", clean_part
 
+    return url
 
 def scrape_amazon_reviews(url):
-    count=0
-    def clean_url(url):
-        if "/product-reviews/" in url:
-            url = url.replace("/product-reviews/", "/dp/")
-        elif "/dp/" in url:
-            parts = url.split("/dp/")
-            if "/ref" in parts[1]:
-                clean_part = parts[1].split("/ref")[0]
-            else:
-                clean_part = parts[1].split("?")[0]
-            url = parts[0] + "/dp/" + clean_part, clean_part
-        return url 
-        
-    
-
+    count=0 
     print("Amazon detected")
     start_time = time.time()
 
@@ -217,16 +210,6 @@ def scrape_ali_express_reviews(url):
     # Initialize Firefox WebDriver with service and options
     driver = webdriver.Firefox(service=service, options=options)
 
-    def clean_url(url):
-        if "/item/" in url:
-            parts = url.split("/item/")
-            if ".html" in parts[1]:
-                clean_part = parts[1].split(".html")[0]
-            else:
-                clean_part = parts[1].split("?")[0]
-            url = parts[0] + "/item/" + clean_part+".html", clean_part
-        return url 
-    
     cleaned_url, unique_key = clean_url(url)
     
 
@@ -327,9 +310,21 @@ def scrape_ali_express_reviews(url):
                     review_date = "Date not found"
                     print("Error finding review date:", e)
                 
-                # Extract star rating
-                star_elements = review_element.find_elements(By.XPATH, ".//div[contains(@class, 'stars--box--vHzUWQ9')]//span[contains(@class, 'comet-icon-starreviewfilled')]")
-                review_stars = len(star_elements)
+                try:
+                    # Locate the star box element first
+                    star_box = review_element.find_element(By.XPATH, "/html/body/div[13]/div[2]/div/div[2]/div/div/div/div[4]/div/div[1]/div/div[3]/div[1]/div[1]")
+                    
+                    # Find all filled stars within the star box
+                    filled_stars = star_box.find_elements(By.CLASS_NAME, "comet-icon-starreviewfilled")
+                    
+                    # Count the number of filled stars
+                    review_stars = len(filled_stars)
+                    print(star_box.get_attribute('outerHTML'))
+
+                    print(f"{review_stars} total stars for review")
+                except Exception as e:
+                    print(f"An error occurred: {e}")
+                    review_stars = 0
                 
                 # Append the extracted data to the reviews list
                 reviews_list.append({
@@ -380,10 +375,6 @@ def scrape_ali_express_reviews(url):
 
     return reviews_list
 
-
-
-
-
 def scrape_reviews(url):
     if not is_valid_url(url):
         print("Invalid URL")
@@ -405,5 +396,5 @@ if __name__ == "__main__":
 
     url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
-    # url = 'https://www.amazon.com.au/Chotto-Motto-Crispy-Chilli-Oil/dp/B0BTM969DV/ref=sr_1_1?sr=8-1'
+    # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
     reviews_df = scrape_reviews(url)
