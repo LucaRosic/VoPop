@@ -53,7 +53,7 @@ class CreateProduct(APIView):
     def post(self, request):
         
         cleaned_url = clean_url(request.data['url'])
-        print(cleaned_url)
+        #print(cleaned_url)
         #cleaned_url, _ = clean_url(request.data['url'])
         
         

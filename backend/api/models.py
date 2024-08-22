@@ -43,7 +43,10 @@ class Product_Summary(models.Model):
     overview = models.CharField(max_length=1000)
     avg_sentiment = models.DecimalField(max_digits=3, decimal_places=2)
     avg_rating = models.DecimalField(max_digits=4, decimal_places=2)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ('-date',)
     
     def __str__(self):
         return self.product.name
