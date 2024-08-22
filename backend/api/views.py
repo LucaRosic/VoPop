@@ -11,7 +11,8 @@ from scrape.scrapper import scrape_reviews, clean_url
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
 from Clean.Transform import clean_transform_data
-import datetime
+from datetime import datetime, timedelta
+import pandas as pd
 
 
 
@@ -146,8 +147,22 @@ class GetReviewSent_Dash(APIView):
     def get(self, request, product_id):
         
         serializer = SentimentDataSerializer_Dash(Product_Reviews.objects.filter(product=product_id), many=True)
-        
-        return Response(serializer.data)
+        datalist = pd.DataFrame(serializer.data)
+        datalist['date'] = pd.to_datetime(datalist['date'], yearfirst=True)
+        datalist['month'] = datalist['date'].dt.month
+        last_year = datetime.now() - timedelta(days=365)
+        filtered_datalist = datalist.loc[datalist['date'] > last_year]
+        agg_datalist = filtered_datalist.groupby(['month','sentiment_label'])['sentiment_label'].count().reset_index(name='sentiment_count')
+        chart_data = [[0]*12 for num in range(3)]
+
+        for index, row in agg_datalist.iterrows():
+            if row['sentiment_label'] == 'Positive':
+                chart_data[0][row['month']-1] = row['sentiment_count']
+            elif row['sentiment_label'] == 'Negative':
+                chart_data[1][row['month']-1] = row['sentiment_count']
+            else:
+                chart_data[2][row['month']-1] = row['sentiment_count']    
+        return Response(chart_data)
         
    
 class GetProductMeta_Dash(APIView):

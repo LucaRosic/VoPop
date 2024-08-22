@@ -43,8 +43,8 @@ const APITest = () => {
   const sendUrl = async () => {
     console.log("Sending URL api");
     try {
-      const urlData = {url:"https://www.amazon.com.au/dp/B0B5WGCTQK/ref=cm_gf_aabx_d_p0_e0_qd0_DL8ezI6uYoSmWBq7QdAm"};
-      console.log("Sending api:");
+      const urlData = {url:"https://www.amazon.com.au/Chotto-Motto-Crispy-Chilli-Oil/dp/B0BTM969DV/ref=sr_1_5?sr=8-5"};
+      console.log(`Sending url: ${urlData}`);
       const res = await api.post("/api/product/",urlData);
       console.log("DONE!");
       console.log(res.data);

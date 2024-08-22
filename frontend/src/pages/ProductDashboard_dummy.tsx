@@ -14,8 +14,9 @@ export const ProductDashboard_dummy = () => {
 
   return (
     <>
-      <NavbarTop title="VoPop"/>
-      <div className="flex flex-col gap-8 bg-[rgba(255,241,201)]">
+      <NavbarTop title="VoPop" urlScraperCallback={(arg:string) => (console.log(arg))}/>
+      {/* <div className="flex flex-col gap-8 bg-[rgba(255,241,201)]"> */}
+      <div className="flex flex-col gap-8 bg-[#FBF5F3]">
         <div 
           className="flex flex-col items-center gap-4 px-32 pt-4"
         >

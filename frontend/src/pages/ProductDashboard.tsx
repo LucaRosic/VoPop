@@ -20,20 +20,30 @@ export const ProductDashboard = () => {
     setLoading(true);
     try {
       const res = await api.get("/api/product/home/");
+      console.log(res.data); // REMOVE
+      console.log(`Type of data: ${typeof res.data}`);
       return res.data // Filled object
     } catch (error) {
       console.log(error);
-      return {}; // Empty object
+      return Promise.reject(error); // Empty object
     } finally {
       setLoading(false);
     }
   }
 
   // let productData = {}; // Default nothing in product data object
-  const [productData, setProductData] = useState<any>({});
-  useEffect(() => {
+  const [productData, setProductData] = useState<any>([]);
+  useEffect(() => { // On page load setProductData
     getProductInfo()
-      .then((res) => {setProductData(res)})
+      .then((res) => {
+        let productDataList:any[] = []; // Change this any to a defined product card object in future
+        res.map((productInfo : any) => productDataList.push(productInfo))
+        setProductData(productDataList);
+      }).catch((error) => {
+        console.log(error)
+        setProductData(null);
+      })
+      // .then((res) => {setProductData(res)})
   }, [])
 
   const stringLimiter = (inString : string, sliceLength : number) => {
@@ -45,11 +55,37 @@ export const ProductDashboard = () => {
 
   }
 
+  // Count number of cards currently loading
+  const [waitingCardNumber, setWaitingCardNumber] = useState<number>(0); 
+
+  const addProductCard = async ( scrapeUrl : string ) => {
+    // First increment waiting card number
+    console.log(`Adding product: ${scrapeUrl}`);
+    setWaitingCardNumber(waitingCardNumber + 1);
+    // Call the URL scraper API
+    try {
+      const urlData = {url:scrapeUrl};
+      console.log("Sending scraping api");
+      const res = await api.post("/api/product/",urlData);
+      console.log(res.data);
+      setProductData((productData : any) => [...productData, res.data[0]]);
+      console.log("Added product information.");
+      console.log(`Added: ${productData}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // Decrement waiting card number
+      setWaitingCardNumber(waitingCardNumber - 1);
+    }
+
+  }
+
   const renderProductCards = () => {
     if (loading === true) {
       return <h3>Page Loading...</h3>
     } else {
       console.log(productData);
+      console.log(`Type test 2: ${typeof productData}`)
       try{
           return (
             productData.map((productInfo : any) => {
@@ -61,31 +97,33 @@ export const ProductDashboard = () => {
                   productImg={productInfo["product"]["image"]}
                   productOverview={stringLimiter(productInfo["overview"], 200)}
                   lastUpdated={productInfo["date"]}
+                  sentimentScore={productInfo["avg_sentiment"]}
                 /> 
               )
           })
         )
       } catch (error) {
+        console.log(error);
         return <h3>Error Getting Product Info</h3>
       }
       
     }
   }
 
+  
+
   return (
     <div className="flex flex-col min-h-[100vh]">
-      <NavbarTop title="Product Dashboard"/>
-      <div 
-        className="flex-1 flex flex-col items-center gap-4 px-32 pt-4"
-      >
-        {renderProductCards()}
-        {/* <ProductCard
-          productTitle="Test Product"
-          productImg="https://m.media-amazon.com/images/I/71IRptDkCRL._AC_SX679_.jpg"
-        /> */}
+      <NavbarTop title="VoPop" urlScraperCallback={addProductCard}/>
+      <div className="flex-grow flex flex-col gap-8 bg-[#FBF5F3]">
+        <div 
+          className="flex-grow flex flex-col items-center gap-4 px-32 pt-4"
+        >
+          {/* Render the product cards */}
+          {renderProductCards()}
+        </div>
+        <Footer />
       </div>
-      
-      <Footer />
     </div>
   );
 };

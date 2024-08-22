@@ -42,6 +42,12 @@ export const ProductInfoPage = () => {
   const { prodId } = state;
   const productInfo = DummyData(prodId); // Get the product data information
 
+  /*
+    Things to add to product info page:
+      - Star rating
+      - Emoji sentiment (along with average sentiment score)
+  */
+
   return (
     <div className="flex h-[100vh]">
       {/* Sidebar left */}
