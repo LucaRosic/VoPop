@@ -66,7 +66,7 @@ def batch_summary(model, query_revs):
         except:
             if fail_counter == 4:
                 print('ERROR: summarization is crashed...')
-                return None
+                return ''
             else:
                 fail_counter += 1
                 continue
@@ -128,7 +128,7 @@ def summarize(reviews):
             except:
                 if fail_counter == 4:
                     print('ERROR: batch summarization failed...')
-                    return None
+                    return ''
                 else:
                     fail_counter += 1
                     continue
