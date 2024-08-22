@@ -104,7 +104,13 @@ export const ProductDashboard = () => {
         )
       } catch (error) {
         console.log(error);
-        return <h3>Error Getting Product Info</h3>
+        return (
+          <>
+            <h3>Error Getting Product Info</h3>
+            <a href=".">Retry</a>
+          </>
+          
+        )
       }
       
     }
