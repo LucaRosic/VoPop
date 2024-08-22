@@ -1,6 +1,4 @@
 import "./css/product-card.css";
-import DummyData from "../DummyData";
-
 //--------------
 // MUI ui stuff:
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -9,7 +7,7 @@ import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
-  productId: number;
+  productId?: number;
   productTitle: string;
   productImg: string;
   productOverview: string;

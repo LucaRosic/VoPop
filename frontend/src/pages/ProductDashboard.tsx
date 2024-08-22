@@ -9,7 +9,7 @@ export const ProductDashboard = () => {
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
-    navigate('/product-info', { state: { prodId: prodId, meaning : 'test' } }); 
+    navigate('/product-info', { state: { prodId: prodId} }); 
   }
   
   // First do an API request to get product info
@@ -92,12 +92,12 @@ export const ProductDashboard = () => {
               return(
                 <ProductCard
                   key={productInfo["product"]["id"]}
-                  productId={productInfo["product"]["id"]}
                   productTitle={stringLimiter(productInfo["product"]["name"], 20)}
                   productImg={productInfo["product"]["image"]}
                   productOverview={stringLimiter(productInfo["overview"], 200)}
                   lastUpdated={productInfo["date"]}
                   sentimentScore={productInfo["avg_sentiment"]}
+                  onClick={() => navFunc(productInfo["product"]["id"])}
                 /> 
               )
           })
