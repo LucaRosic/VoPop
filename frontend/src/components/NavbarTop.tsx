@@ -33,7 +33,7 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
       </div>
 
       <div className="flex gap-3 items-center px-2 py-1">
-        <div>{localStorage.getItem(USERNAME) || "Hugh Mungus"}</div>
+        <div>{localStorage.getItem(USERNAME)?.toUpperCase() || "Hugh Mungus"}</div>
         <div className="bg-slate-400 rounded-full p-1">
           <PersonIcon></PersonIcon>
         </div>
