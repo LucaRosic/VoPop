@@ -55,7 +55,7 @@ class CreateProduct(APIView):
         #cleaned_url = clean_url(request.data['url'])
         #
         cleaned_url, _ = clean_url(request.data['url'])
-        #print(cleaned_url)
+        print(cleaned_url)
         #https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S/ref=cm_cr_arp_d_rvw_ttl_sol
         
         
