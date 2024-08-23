@@ -46,6 +46,7 @@ api.interceptors.response.use(
                     // api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
                     return api(originalRequest); // Send original request again
                 } else {
+                    window.location.href = '/login'
                     return Promise.reject("ERROR in REFRESH TOKEN");
                 }
             } catch (error) {

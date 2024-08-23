@@ -22,15 +22,6 @@ import { ProductInfoPage } from "./pages/ProductInfoPage";
 // When refactoring rename function to have function clause
 
 
-const Logout = () => {
-  localStorage.clear();
-  return <Navigate to="/login" />
-}
-
-const RegisterAndLogout = () => {
-  localStorage.clear()
-  return <Register />
-}
 
 // Wrap anything that should not be accessible without authentication
 // with a <ProtectedRoute> tag
@@ -76,8 +67,7 @@ const App = () => {
         <Route path="/product-info-dummy" element={<ProductInfoPage_dummy/>} />
         <Route path="/product-info" element={<ProductInfoPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/test-protected" element={
           <ProtectedRoute>
