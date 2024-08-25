@@ -125,38 +125,6 @@ const BarGraph = ({productId=61} : Props) => {
     
   }
 
-  const calculateLineData = (sentimentData : number[][]) => {
-    try {
-      const pos = sentimentData[0]
-      const neg = sentimentData[1]
-      const neu = sentimentData[2]
-      const nps = []
-      for (let i = 0; i < pos.length; i++){
-        nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
-      }
-
-      // return linedata;
-      return {
-        labels: month_shift(months),
-        datasets: [
-          {
-            label: "NPS",
-            data: month_shift(nps),
-            backgroundColor: '#db8412',
-            borderColor: '#0b13a3',
-            tension: 0.1
-
-          }, 
-        ]
-      }
-    } catch (error) {
-      console.log(error)
-      return undefined;
-    }
-    
-
-  }
-
   const [data, setData] = useState<any>(undefined);
 
   useEffect(() => {

@@ -16,14 +16,14 @@ const LineGraph = ({productId=61} : Props) => {
   // ============================
 
 
-  const getData = async (index : number, prodId : number = 61) => {
+  const getData = async (prodId : number = 61) => {
 
     console.log("retrieving data")
     try {
       const res = await api.get(`/api/product/dashboard/sentiment/${prodId}/`);
       const apiData = res.data;
       console.log(apiData);
-      return apiData[index]
+      return apiData
     } catch (error) {
       console.log(error);
       return Promise.reject("API for sentiment failed.");
@@ -90,12 +90,11 @@ const LineGraph = ({productId=61} : Props) => {
 
     return left_side.concat(right_side)
   }
-
-  const calculateLineData = async () => {
-    try{
-      const pos = await getData(0, productId)
-      const neg = await getData(1, productId)
-      const neu = await getData(2, productId)
+  const calculateLineData = (sentimentData : number[][]) => {
+    try {
+      const pos = sentimentData[0]
+      const neg = sentimentData[1]
+      const neu = sentimentData[2]
       const nps = []
       for (let i = 0; i < pos.length; i++){
         nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
@@ -126,7 +125,10 @@ const LineGraph = ({productId=61} : Props) => {
   
   const [lineData, setLineData] = useState<any>(undefined);
   useEffect(() => {
-    calculateLineData().then((value) => setLineData(value));
+    getData(productId).then((res) => {
+      console.log("GETTING SENTIMENT DATA");
+      setLineData(calculateLineData(res));
+    })
   }, [])
 
 
