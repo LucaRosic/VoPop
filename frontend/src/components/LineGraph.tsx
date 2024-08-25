@@ -1,4 +1,4 @@
-import {Bar } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { BarElement } from 'chart.js'
 import {Chart as ChartJS} from 'chart.js'
 import api from "../api"
@@ -12,7 +12,7 @@ interface Props {
   productId? : number;
 }
 
-const BarGraph = ({productId=61} : Props) => {
+const LineGraph = ({productId=61} : Props) => {
   // ============================
 
 
@@ -30,34 +30,30 @@ const BarGraph = ({productId=61} : Props) => {
     }
   }
 
-
-
-  const barOptions = {
+  const lineOptions = {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        display: false,
       },
       title: {
         display: true,
-        text: "Review counts from past 12 months"
+        text: "NPS from past 12 months",
       },
       colors: {
         enabled: true,
       },
-      
       
 
     },
     scales: {
       x: {
         display: true,
-        stacked: true,
-        
       },
-      
       y: {
-        stacked: true,
+        display:true,
+        min: -100,
+        max: 100,
         grid: {
           display: true,
         },
@@ -70,7 +66,6 @@ const BarGraph = ({productId=61} : Props) => {
       },
     },
   }
-
   const months = [
     'January',
     'February',
@@ -96,43 +91,42 @@ const BarGraph = ({productId=61} : Props) => {
     return left_side.concat(right_side)
   }
 
-  const getGraphData = async () => {
-    try {
-      const data =
-      {
+  const calculateLineData = async () => {
+    try{
+      const pos = await getData(0, productId)
+      const neg = await getData(1, productId)
+      const neu = await getData(2, productId)
+      const nps = []
+      for (let i = 0; i < pos.length; i++){
+        nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
+      }
+
+      // return linedata;
+      return {
         labels: month_shift(months),
         datasets: [
-        {
-          label: "Negative",
-          data: month_shift(await getData(1, productId)),
-          backgroundColor: '#eb3434'
-        },
-        {
-          label: "Neutral",
-          data: month_shift(await getData(2, productId)),
-          backgroundColor: '#db8412',
-          
-        },
-        {
-          label: "Positive",
-          data: month_shift(await getData(0, productId)),
-          backgroundColor: '#1c8000'
-        },
+          {
+            label: "NPS",
+            data: month_shift(nps),
+            backgroundColor: '#286c74',
+            borderColor: '#286c74',
+            tension: 0.1
+
+          }, 
         ]
-      };
-      return data;
+      }
     } catch (error) {
-      console.log(error);
+      console.log(error)
       return undefined;
     }
     
+
   }
 
-
-  const [data, setData] = useState<any>(undefined);
-
+  
+  const [lineData, setLineData] = useState<any>(undefined);
   useEffect(() => {
-    getGraphData().then((value) => setData(value));
+    calculateLineData().then((value) => setLineData(value));
   }, [])
 
 
@@ -146,14 +140,13 @@ const BarGraph = ({productId=61} : Props) => {
     padding: '1rem',
   }
 
-  console.log(`DATA: ${data}`);
-  if (data === undefined) {
+  if (lineData === undefined) {
     return (<div className='h-48 flex items-center p-4'>Error Getting Sentiment Data</div>)
   } else {
     return (
     <div>
     <div style={graphStyle}>
-      <Bar data={data} options={barOptions} />
+      <Line data={lineData} options={lineOptions}/>
     </div>
     </div>
     )
@@ -162,4 +155,4 @@ const BarGraph = ({productId=61} : Props) => {
   
 }
 
-export default BarGraph;
+export default LineGraph;
