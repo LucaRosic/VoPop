@@ -14,7 +14,7 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
  const logout = async () => {
     console.log("Logging out");
     try {
-      const res = await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
+      await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
       localStorage.clear();
       console.log("Cleared storage!");
       window.location.href = "/login";
@@ -33,7 +33,7 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
       </div>
 
       <div className="flex gap-3 items-center px-2 py-1">
-        <div>{localStorage.getItem(USERNAME) || "Hugh Mungus"}</div>
+        <div>{localStorage.getItem(USERNAME)?.toUpperCase() || "Hugh Mungus"}</div>
         <div className="bg-slate-400 rounded-full p-1">
           <PersonIcon></PersonIcon>
         </div>

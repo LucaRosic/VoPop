@@ -15,22 +15,19 @@ interface Props {
 const BarGraph = ({productId=61} : Props) => {
   // ============================
 
-
-  const getData = async (index : number, prodId : number = 61) => {
+  const getData = async (prodId : number = 61) => {
 
     console.log("retrieving data")
     try {
       const res = await api.get(`/api/product/dashboard/sentiment/${prodId}/`);
       const apiData = res.data;
       console.log(apiData);
-      return apiData[index]
+      return apiData
     } catch (error) {
       console.log(error);
       return Promise.reject("API for sentiment failed.");
     }
   }
-
-
 
   const barOptions = {
     responsive: true,
@@ -96,27 +93,27 @@ const BarGraph = ({productId=61} : Props) => {
     return left_side.concat(right_side)
   }
 
-  const getGraphData = async () => {
+  const getGraphData = (sentimentData : number[][]) => {
     try {
       const data =
       {
         labels: month_shift(months),
         datasets: [
         {
+          label: "Positive",
+          data: month_shift(sentimentData[0]),
+          backgroundColor: '#1c8000'
+        },
+        {
           label: "Negative",
-          data: month_shift(await getData(1, productId)),
+          data: month_shift(sentimentData[1]),
           backgroundColor: '#eb3434'
         },
         {
           label: "Neutral",
-          data: month_shift(await getData(2, productId)),
+          data: month_shift(sentimentData[2]),
           backgroundColor: '#db8412',
           
-        },
-        {
-          label: "Positive",
-          data: month_shift(await getData(0, productId)),
-          backgroundColor: '#1c8000'
         },
         ]
       };
@@ -128,12 +125,50 @@ const BarGraph = ({productId=61} : Props) => {
     
   }
 
+  const calculateLineData = (sentimentData : number[][]) => {
+    try {
+      const pos = sentimentData[0]
+      const neg = sentimentData[1]
+      const neu = sentimentData[2]
+      const nps = []
+      for (let i = 0; i < pos.length; i++){
+        nps[i] = (pos[i]/(pos[i]+neg[i]+neu[i]) - neg[i]/(pos[i]+neg[i]+neu[i]))*100
+      }
+
+      // return linedata;
+      return {
+        labels: month_shift(months),
+        datasets: [
+          {
+            label: "NPS",
+            data: month_shift(nps),
+            backgroundColor: '#db8412',
+            borderColor: '#0b13a3',
+            tension: 0.1
+
+          }, 
+        ]
+      }
+    } catch (error) {
+      console.log(error)
+      return undefined;
+    }
+    
+
+  }
 
   const [data, setData] = useState<any>(undefined);
 
   useEffect(() => {
-    getGraphData().then((value) => setData(value));
+    getData(productId).then((res) => {
+      console.log("GETTING SENTIMENT DATA");
+      setData(getGraphData(res));
+    })
   }, [])
+  // useEffect(() => {
+  //   getGraphData().then((value) => setData(value));
+  //   calculateLineData().then((value) => setLineData(value));
+  // }, [])
 
 
 

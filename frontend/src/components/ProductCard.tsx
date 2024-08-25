@@ -54,8 +54,7 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
   const convertDate = (date : string) => {
     // Function to convert yyyy-mm-dd to dd/mm/yy like a normal person
-
-    const dateSplit = date.split("-");
+    const dateSplit = date.split("T")[0].split("-");
     const convertedDate = `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0].slice(2,4)}`
     return convertedDate;
   }

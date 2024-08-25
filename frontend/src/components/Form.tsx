@@ -1,7 +1,7 @@
 import { useState } from "react"
 import api from "../api"
 import { useNavigate } from "react-router-dom"
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
+import { ACCESS_TOKEN, REFRESH_TOKEN, USERNAME } from "../constants"
 import "../styles/Form.css" // Import the Form.css stylesheet
 
 interface Props {
@@ -25,11 +25,13 @@ export const Form = ({route, method} : Props) => {
     try {
       const res = await api.post(route, {username, password}); // Send username and password to the api endpoint
       if (method === "login") { // for login
+        console.log(`REFRESH SET TO: ${res.data.refresh}`);
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        localStorage.setItem(USERNAME, username);
         console.log("Set the Tokens!")
-        // navigate("/dashboard"); // Navigate back to home
-        navigate(-1);
+        navigate("/dashboard"); // Navigate back to home
+        // navigate(-1);
       } else { // For register
         navigate("/login");
       }

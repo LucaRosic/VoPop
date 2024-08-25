@@ -52,9 +52,11 @@ class CreateProduct(APIView):
     # creates everything 
     def post(self, request):
         
-        cleaned_url = clean_url(request.data['url'])
+        #cleaned_url = clean_url(request.data['url'])
+        #
+        cleaned_url, _ = clean_url(request.data['url'])
         print(cleaned_url)
-        #cleaned_url, _ = clean_url(request.data['url'])
+        #https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S/ref=cm_cr_arp_d_rvw_ttl_sol
         
         
         # If product is already in database, only add to user_product table
