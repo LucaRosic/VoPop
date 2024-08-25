@@ -11,12 +11,13 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import DummyData from "../DummyData.ts";
+//import DummyData from "../DummyData.ts";
 import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import api from "../api.ts";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import LineGraph from "../components/LineGraph.tsx";
 
 ChartJS.register(
   CategoryScale,
@@ -171,11 +172,17 @@ export const ProductInfoPage = () => {
           <div className="bg-slate-100">
             <BarGraph productId={prodId} />
           </div>
+          
 
           {/* Review Summary */}
           {/* <div className="text-white">{markdownReview}</div> */}
           <ReactMarkdown children={productSummary} className="text-white text-sm px-2 mt-4" />
+          {/* Sentiment Graph */}
+          <div className="bg-slate-100">
+            <LineGraph productId={prodId} />
+          </div>
         </div>
+        
       </div>
     </div>
   );
