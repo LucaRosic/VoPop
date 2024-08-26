@@ -3,7 +3,7 @@
 
 // Axios interceptor -> Check you have access
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ACCESS_TOKEN } from "./constants";
 import { refreshAuth } from "./tokenManager";
 
@@ -35,7 +35,10 @@ api.interceptors.response.use(
     (response) => { return response }, // Return response if no error
     async (error) => {
         const originalRequest = error.config // Retain original request to send again
-        if (!error.response) {return Promise.reject(error);}
+        if (!error.response) {
+            console.log("Interceptor has no ERROR RESPONSE");
+            return Promise.reject(error);
+        }
         else if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true; // The request has been retried, set to true
             try {

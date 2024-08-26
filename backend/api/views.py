@@ -96,6 +96,8 @@ class CreateProduct(APIView):
                 sentiment = analyseSentiment(sent_model, review['Review Text'])
                 avg_sentiment += sentiment['score']
                 
+                
+                print('add prod revs')
                 prod_rev = Product_Reviews(product=Product.objects.get(url=scraped['Clean URL']), review=review['Review Text'], \
                     sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                 
@@ -107,7 +109,8 @@ class CreateProduct(APIView):
             summary=summarize(scraped['Reviews'])
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
             avg_rating = float(scraped['Average Star'].split(' ')[0])
-                        
+            
+            print('add prod Sum')     
             prod_sum = Product_Summary(product=Product.objects.get(url=scraped['Clean URL']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
             prod_sum.save()
             

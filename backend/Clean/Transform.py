@@ -24,7 +24,7 @@ def convert_date(date_str):
     for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
-            return date_obj #.strftime('%d %B %Y')
+            return date_obj#.strftime('%d %B %Y')
         except ValueError:
             pass
     

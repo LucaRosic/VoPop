@@ -3,6 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddProductBtn from "./AddProductBtn";
 import api from "../api";
+import { AxiosError } from "axios";
 
 interface Props {
   title: string;
@@ -18,8 +19,11 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
       localStorage.clear();
       console.log("Cleared storage!");
       window.location.href = "/login";
-    } catch (error) {
+    } catch (error : any) {
       console.log(error);
+      console.log("ERROR RESPONSE:");
+      const errorResponse = error as AxiosError;
+      console.log(errorResponse.response);
     }
   }
 
