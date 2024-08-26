@@ -18,12 +18,14 @@ api.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}` // This is how you pass a JWT access token
         }
+        console.log("RETURNING CONFIG");
         return config;
     },
     (error) => {
 
         // If error calling API, check for refresh token:
         // If error, try to reauthenticate?
+        console.log("THROWING ERROR INTERCEPTOR REQUEST");
         return Promise.reject(error);
     }
 )
@@ -44,9 +46,11 @@ api.interceptors.response.use(
                 const accessToken = await refreshAuth();
                 if (accessToken !== null) {
                     // api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+                    console.log(`Sending through request ${JSON.stringify(originalRequest)}`);
                     return api(originalRequest); // Send original request again
                 } else {
-                    window.location.href = '/login'
+                    localStorage.clear(); // Clear local storage
+                    // window.location.href = '/login'
                     return Promise.reject("ERROR in REFRESH TOKEN");
                 }
             } catch (error) {
@@ -56,7 +60,7 @@ api.interceptors.response.use(
                 return Promise.reject(error);
             }
         } else {
-            return Promise.reject("Failed at re-authentication.");
+            return Promise.reject(error);
         }
     }
 )
