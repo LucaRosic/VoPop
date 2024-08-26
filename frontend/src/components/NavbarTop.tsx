@@ -19,11 +19,15 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
       localStorage.clear();
       console.log("Cleared storage!");
       window.location.href = "/login";
-    } catch (error : any) {
+    } catch (error) {
       console.log(error);
-      console.log("ERROR RESPONSE:");
       const errorResponse = error as AxiosError;
-      console.log(errorResponse.response);
+      console.log("RESPONSE:");
+      console.log(errorResponse.response); 
+      if (errorResponse.response?.status === 401) {
+        localStorage.clear()
+        window.location.href = "/login";
+      } 
     }
   }
 
