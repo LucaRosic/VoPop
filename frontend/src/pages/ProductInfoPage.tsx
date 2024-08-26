@@ -171,6 +171,7 @@ export const ProductInfoPage = () => {
           {/* Sentiment Graph */}
           <div className="bg-slate-100">
             <BarGraph productId={prodId} />
+            <LineGraph productId={prodId} />
           </div>
           
 
@@ -178,9 +179,9 @@ export const ProductInfoPage = () => {
           {/* <div className="text-white">{markdownReview}</div> */}
           <ReactMarkdown children={productSummary} className="text-white text-sm px-2 mt-4" />
           {/* Sentiment Graph */}
-          <div className="bg-slate-100">
+          {/* <div className="bg-slate-100">
             <LineGraph productId={prodId} />
-          </div>
+          </div> */}
         </div>
         
       </div>

@@ -51,7 +51,7 @@ api.interceptors.response.use(
                 } else {
                     localStorage.clear(); // Clear local storage
                     // window.location.href = '/login'
-                    return Promise.reject("ERROR in REFRESH TOKEN");
+                    return Promise.reject(error);
                 }
             } catch (error) {
                 console.log("ERROR!")

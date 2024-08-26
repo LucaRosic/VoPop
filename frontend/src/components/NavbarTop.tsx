@@ -22,9 +22,9 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
     } catch (error) {
       console.log(error);
       const errorResponse = error as AxiosError;
-      console.log("RESPONSE:");
+      console.log("LOGOUT ERROR RESPONSE:");
       console.log(errorResponse.response); 
-      if (errorResponse.response?.status === 401) {
+      if (errorResponse.response) {
         localStorage.clear()
         window.location.href = "/login";
       } 
