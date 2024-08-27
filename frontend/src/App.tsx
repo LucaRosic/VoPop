@@ -55,7 +55,11 @@ const App = () => {
       <Routes>
         <Route index element={<Navigate to="/dashboard" />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<ProductDashboard />} /> 
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <ProductDashboard />
+          </ProtectedRoute>
+          } /> 
         <Route path="/state">
           <Route index element={<TempStatePage />}/>
           <Route path=":id" element={<TempStatePage />}/>
