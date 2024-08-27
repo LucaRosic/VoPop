@@ -8,6 +8,7 @@ class Product(models.Model):
     name = models.CharField("Name", max_length=240)
     category = models.CharField("Category", max_length=240)
     url = models.CharField("URL", max_length=500)
+    unique_code = models.CharField("unique_code", max_length=50)
     brand = models.CharField("Brand", max_length=240)
     image = models.CharField("Image", max_length=240)
     

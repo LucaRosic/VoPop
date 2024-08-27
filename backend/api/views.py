@@ -54,20 +54,20 @@ class CreateProduct(APIView):
         
         #cleaned_url = clean_url(request.data['url'])
         #
-        cleaned_url, _ = clean_url(request.data['url'])
-        print(cleaned_url)
+        cleaned_url, unique_code = clean_url(request.data['url'])
+        # print(cleaned_url)
         #https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S/ref=cm_cr_arp_d_rvw_ttl_sol
         
         
         # If product is already in database, only add to user_product table
-        if Product.objects.filter(url=cleaned_url).exists():
+        if Product.objects.filter(unique_code=unique_code).exists():
             
             if User_Products.objects.filter(user=self.request.user, product=Product.objects.get(url=cleaned_url)).exists():
                 return Response(status=status.HTTP_208_ALREADY_REPORTED)
             
-            user_prod = User_Products(user=request.user, product=Product.objects.get(url=cleaned_url))
+            user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=unique_code))
             user_prod.save()
-            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(url=cleaned_url)), many=True)
+            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=unique_code)), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
         
         else:
@@ -82,11 +82,11 @@ class CreateProduct(APIView):
             
             
             # add to product table  
-            prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
+            prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], unique_code=scraped['Unique Key'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
             prod.save()
             
             # adds to user_product table
-            user_prod = User_Products(user=request.user, product=Product.objects.get(url=scraped['Clean URL']))
+            user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=scraped['Unique Key']))
             user_prod.save() 
             
             avg_sentiment = 0
@@ -97,8 +97,8 @@ class CreateProduct(APIView):
                 avg_sentiment += sentiment['score']
                 
                 
-                print('add prod revs')
-                prod_rev = Product_Reviews(product=Product.objects.get(url=scraped['Clean URL']), review=review['Review Text'], \
+                #print('add prod revs')
+                prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
                     sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                 
                 
@@ -110,12 +110,12 @@ class CreateProduct(APIView):
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
             avg_rating = float(scraped['Average Star'].split(' ')[0])
             
-            print('add prod Sum')     
-            prod_sum = Product_Summary(product=Product.objects.get(url=scraped['Clean URL']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+            #print('add prod Sum')     
+            prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
             prod_sum.save()
             
             
-            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(url=scraped['Clean URL'])), many=True)
+            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=scraped['Unique Key'])), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
     
     

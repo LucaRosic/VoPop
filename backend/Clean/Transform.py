@@ -18,7 +18,7 @@ def convert_date(date_str):
     else:
         # Remove any leading text before the actual date using "on" as a reference point
         cleaned_date_str = re.sub(r'^.*on\s+', '', date_str).strip()
-    print(cleaned_date_str)
+    #print(cleaned_date_str)
     
     # Try to parse the cleaned date string with different formats
     for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
@@ -39,7 +39,7 @@ def clean_transform_data(data):
                 try:
                     # Extract the first floating point number found in the string
                     x = float(re.findall(r'\d+\.\d+', x)[0])
-                    print(x)
+                    #print(x)
                 except (ValueError, IndexError):
                     x = None
             elif isinstance(x, float):
@@ -128,3 +128,10 @@ if __name__ == "__main__":
     output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
     with open(output_file_path, 'w', encoding='utf-8') as f:
         json.dump(cleaned_data, f, indent=4)
+
+
+
+#https://www.amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM
+
+
+#https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM
