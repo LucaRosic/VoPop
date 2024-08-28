@@ -11,7 +11,8 @@ class TestScraperExecutionTime(unittest.TestCase):
         start_time = time.time()
         
         try:
-            scrape_reviews(self.url)
+            prompt = str(input("Enter URL: "))
+            scrape_reviews(prompt)
             
             end_time = time.time()
             execution_time = end_time - start_time
