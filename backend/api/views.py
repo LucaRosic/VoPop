@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics, status
-from .serializers import UserSerializer, ProductSerializer, UserProductSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
+from .serializers import UserSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product, User_Products, Product_Summary, Product_Reviews
 from rest_framework.response import Response
@@ -15,6 +15,8 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 
+#_____________________________________________________________________________________________________________________________
+# USER Requests 
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -45,93 +47,106 @@ class LogoutView(APIView):
     
     
 
+
+#_____________________________________________________________________________________________________________________________
+# POST Requests 
+
 class CreateProduct(APIView):
     
     permission_classes = [IsAuthenticated]
     
-    # creates everything 
     def post(self, request):
         
-        #cleaned_url = clean_url(request.data['url'])
-        #
+        # Check if product is in DB
         cleaned_url, unique_code = clean_url(request.data['url'])
-        # print(cleaned_url)
-        #https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S/ref=cm_cr_arp_d_rvw_ttl_sol
         
-        
-        # If product is already in database, only add to user_product table
+        # Product is already in database
         if Product.objects.filter(unique_code=unique_code).exists():
             
+            # User is already tracking product
             if User_Products.objects.filter(user=self.request.user, product=Product.objects.get(url=cleaned_url)).exists():
                 return Response(status=status.HTTP_208_ALREADY_REPORTED)
             
+            
+            # Connect product to user
             user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=unique_code))
             user_prod.save()
+            
+            
+            # Return Product card details to frontend
             serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=unique_code)), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
         
         else:
             
+            # scrape data
             scraped = (scrape_reviews(request.data['url']))  
             
+            
+            # URL link is invalid
             if scraped is None:
-                
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             
+            
+            # Clean scraped data
             cleaned = clean_transform_data(scraped)
             
-            
-            # add to product table  
+            # Add to product table  
             prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], unique_code=scraped['Unique Key'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
             prod.save()
             
-            # adds to user_product table
+            # Connects Product to User
             user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=scraped['Unique Key']))
             user_prod.save() 
+            
+            
             
             postive_count = 0
             negative_count = 0
             sent_model = start_model()
+            
             for review in cleaned['Reviews']:
                 
+                # Sentiment
                 sentiment = analyseSentiment(sent_model, review['Review Text'])
+                
+                # Count positive and negative reviews
                 if sentiment['label'] == 'Positive':
                     postive_count += 1
                 elif sentiment['label'] == 'Negative':
                     negative_count += 1
                 
                 
-                #print('add prod revs')
+                # Add product reviews
                 prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
                     sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
-                
-                
                 prod_rev.save()
                    
+            # Calculate avg. sentiment (NPS) for Product       
             avg_sentiment = round( (postive_count/len(cleaned['Reviews'])) - (negative_count/len(cleaned['Reviews']) ) ,2)
-            print(postive_count, negative_count, avg_sentiment) 
+            
+            # Gemini Review Summary Model
             summary=summarize(scraped['Reviews'])
+            
+            # Overivew for frontend product cards
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
+            
             avg_rating = float(scraped['Average Star'].split(' ')[0])
             
-            #print('add prod Sum')     
+            
+            # Add product summary
             prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
             prod_sum.save()
             
-            
+            # Return product card data to frontend
             serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=scraped['Unique Key'])), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
     
     
-## DELETE USER_PRODUCT
 
-#class DeleteProduct(APIView)   
-#    def delete()    
-    
-## GET STUFF
-
-# WORKING REQUESTS
 #__________________________________________________________________________________________________________________________
+# GET Requests
+
 # INFO FOR HOME
 class GetUserProduct_Home(generics.ListAPIView):
     
@@ -193,24 +208,18 @@ class GetProductSum_Dash(APIView):
       
       
 #_____________________________________________________________________________________________________________________________
-# POST Stuff
+# DELETE Requests  
 
-## most promising so far    
-class GetProductDetails(APIView):
+class ProductDelete(APIView):
     
     permission_classes  = [IsAuthenticated]
     
-    def get(self, request, product_id):
-        
-        serializer = ProductSerializer(Product.objects.filter(id=product_id), many=True)
-        
-        return Response(serializer.data)
-    
     def delete(self, request, product_id):
 
-        # delete for user table, not whole product
+        # Delete for user table, not whole product
         User_Products.objects.filter(user=self.request.user,product=product_id).delete()
         
+        # Delete product if no user is tracking (no point storing irrelevant data)
         if User_Products.objects.filter(product=product_id).exists() == False:
             Product.objects.filter(pk=product_id).delete()
 
