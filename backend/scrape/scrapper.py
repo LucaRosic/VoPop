@@ -55,7 +55,7 @@ def scrape_amazon_reviews(url):
     options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-    # options.add_argument('--headless') # Comment out to get headful
+    options.add_argument('--headless') # Comment out to get headful
 
     # Initialize FirefoxDriver service
     service = Service(gecko_driver_path)
