@@ -129,9 +129,3 @@ if __name__ == "__main__":
     with open(output_file_path, 'w', encoding='utf-8') as f:
         json.dump(cleaned_data, f, indent=4)
 
-
-
-#https://www.amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM
-
-
-#https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM

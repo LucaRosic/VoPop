@@ -89,12 +89,16 @@ class CreateProduct(APIView):
             user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=scraped['Unique Key']))
             user_prod.save() 
             
-            avg_sentiment = 0
+            postive_count = 0
+            negative_count = 0
             sent_model = start_model()
             for review in cleaned['Reviews']:
                 
                 sentiment = analyseSentiment(sent_model, review['Review Text'])
-                avg_sentiment += sentiment['score']
+                if sentiment['label'] == 'Positive':
+                    postive_count += 1
+                elif sentiment['label'] == 'Negative':
+                    negative_count += 1
                 
                 
                 #print('add prod revs')
@@ -103,9 +107,9 @@ class CreateProduct(APIView):
                 
                 
                 prod_rev.save()
-                
-            avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
-            ##avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
+                   
+            avg_sentiment = round( (postive_count/len(cleaned['Reviews'])) - (negative_count/len(cleaned['Reviews']) ) ,2)
+            print(postive_count, negative_count, avg_sentiment) 
             summary=summarize(scraped['Reviews'])
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
             avg_rating = float(scraped['Average Star'].split(' ')[0])
