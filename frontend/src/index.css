@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+/* * {
+    font-family: "Poppins";
+} */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(58, 177, 190, 100) rgba(255, 255, 255, 0);
+}
