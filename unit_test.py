@@ -1,5 +1,6 @@
 import unittest
 import time
+import selenium
 from backend.scrape.scrapper import scrape_reviews
 
 class TestScraperExecutionTime(unittest.TestCase):
@@ -11,8 +12,7 @@ class TestScraperExecutionTime(unittest.TestCase):
         start_time = time.time()
         
         try:
-            prompt = str(input("Enter URL: ")) # Prompts user to enter URL
-            scrape_reviews(prompt)
+            scrape_reviews(self.url) # Directly use URL from the setUp
             
             end_time = time.time()
             execution_time = end_time - start_time
