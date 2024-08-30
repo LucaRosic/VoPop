@@ -1,0 +1,32 @@
+=======================================
+[https://www.amazon.com.au/Meta-Quest-128GB-Breakthrough-included/dp/B0CC8NFFNS/ref=cm_gf_aabz_d_p0_e0_qd0_AcPC8DbVZbEHtnKgpPXB?sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D]
+===== Results =====
+
+--- BERT ---
+Time: 31.333851s  ||  NPS: 0.52
+
+--- Spacy ---
+Time: 1.673764s  ||  NPS: 0.8110166439931334
+
+=======================================
+[https://www.amazon.com/DECKER-Nonstick-Reversible-Stainless-G48TD/dp/B000063XH7/]
+===== Results =====
+
+--- BERT ---
+Time: 21.595439s  ||  NPS: -0.24
+
+--- Spacy ---
+Time: 1.223588s  ||  NPS (naive): 0.73
+Time: 1.223588s  ||  NPS (thresholded): 0.18
+
+=======================================
+[https://www.amazon.com/Magnetic-Building-Stacking-Preschool-Construction/dp/B09XMN7YGW/ref=sr_1_5?sr=8-5]
+
+===== Results =====
+
+--- BERT ---
+Time: 14.10768s  ||  NPS: 0.54
+
+--- Spacy ---
+Time: 0.98275s  ||  NPS (naive): 0.84
+Time: 0.98275s  ||  NPS (thresholded): 0.35
