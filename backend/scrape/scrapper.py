@@ -2,7 +2,10 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
+import re
 import time
+import json
 from urllib.parse import urlparse
 import json
 from selenium import webdriver
@@ -43,7 +46,32 @@ def clean_url(url):
 
     return url
 
-def scrape_amazon_reviews(url):
+
+def convert_date(date_str):
+    if date_str is None:
+        raise ValueError("Date is None")
+    
+    # Check if the date string contains a '|' and extract the part after it
+    if '|' in date_str:
+        cleaned_date_str = date_str.split('|')[1].strip()
+    else:
+        # Remove any leading text before the actual date using "on" as a reference point
+        cleaned_date_str = re.sub(r'^.*on\s+', '', date_str).strip()
+    
+    # Try to parse the cleaned date string with different formats
+    for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
+        try:
+            date_obj = datetime.strptime(cleaned_date_str, fmt)
+            return date_obj  # Return the datetime object
+        except ValueError:
+            pass
+    
+    raise ValueError(f'No valid date format found for {date_str}')
+
+
+
+
+def scrape_amazon_reviews(url,date_filter=None):
     count=0 
     print("Amazon detected")
     start_time = time.time()
@@ -70,25 +98,30 @@ def scrape_amazon_reviews(url):
     # Initialize an empty list to store reviews
     reviews_list = []
 
+    if not date_filter:
+        try:
+            product_name = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.ID, 'productTitle'))
+            ).text
+            product_image = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.ID, 'landingImage'))
+            ).get_attribute('src')
+            avg_star = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#cm_cr_dp_d_rating_histogram > div.a-fixed-left-grid.AverageCustomerReviews.a-spacing-small > div > div.a-fixed-left-grid-col.aok-align-center.a-col-right > div > span > span'))
+            ).text
+            product_brand = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
+            ).text
+        except Exception as e:
+            print("Error extracting product details:", e)
+            product_name = "NA"
+            product_image = "NA"
+            avg_star = "NA"
+            product_brand = "NA"
+    else:
+        print("Skipping product information due to date filter.")
+
     try:
-        # Scrape product details
-        product_name = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'productTitle'))
-        ).text
-        print("Product name")
-        product_image = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'landingImage'))
-        ).get_attribute('src')
-        print("Image")
-
-        avg_star = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#cm_cr_dp_d_rating_histogram > div.a-fixed-left-grid.AverageCustomerReviews.a-spacing-small > div > div.a-fixed-left-grid-col.aok-align-center.a-col-right > div > span > span'))
-        ).text
-        print("Star")
-
-        
-
-        # Click on the "See more reviews" link if present
         try:
             see_more_reviews = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
@@ -98,75 +131,80 @@ def scrape_amazon_reviews(url):
             print("See more reviews link not found or error:", e)
 
         try:
-            print('finding drop down filter')
-            most_recent_button = WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable((By.ID, 'a-autoid-3-announce'))
-            )
-            most_recent_button.click()
+            see_more_button = driver.find_element(By.CSS_SELECTOR, "span.a-button-text.a-declarative")
+            see_more_button.click()
+
+            
         except Exception as e:
-            print("review type not found reviews link not found or error:", e)
+            print("Review type not found or error:", e)
+
         try:
-            print('most recent attempt')
             most_recent = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.ID, 'sort-order-dropdown_1'))
             )
             most_recent.click()
         except Exception as e:
-            print("most recent reviews link not found or error:", e)
-        try:
-            product_brand = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
-            ).text
-        except:
-            product_brand = "NA"
+            print("Most recent reviews link not found or error:", e)
+
         time.sleep(1)
         while True:
-            # Extract review elements
-            review_elements = WebDriverWait(driver, 10).until(
+            review_elements = WebDriverWait(driver, 5).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
-            # Iterate over each review element
             for review in review_elements:
-                
                 try:
-                    # Extract review text
                     review_text = review.find_element(By.CSS_SELECTOR, '.review-text-content').text
-                    # Extract review date
                     review_date = review.find_element(By.CSS_SELECTOR, '.review-date').text
-                    # Extract star rating
+
+                    try:
+                        review_date = convert_date(review_date)
+                    except ValueError as e:
+                        print(f"Error cleaning date: {e}")
+                        review_date = None
+                    # Convert the date filter to a datetime object
+                    review_date_str = review.find_element(By.CSS_SELECTOR, '.review-date').text
+                    review_date = convert_date(review_date_str)  # Convert to datetime object
+
+                    # Skip reviews based on the date filter
+                    if date_filter and review_date <= date_filter:
+                        print(f"Skipping review from {review_date} due to date filter: {date_filter}")
+                        continue
+
+
                     review_stars = review.find_element(By.CSS_SELECTOR, '.a-icon-alt').get_attribute('textContent')
-                    count+=1
-                    # Append the extracted data to the reviews list
+                    count += 1
+
                     reviews_list.append({
                         'Date': review_date,
                         'Stars': review_stars,
                         'Review Text': review_text
                     })
-                    
                 except Exception as e:
                     print("Error extracting review details:", e)
 
-            # Check for the "Next page" link and click if found
             try:
                 next_page = WebDriverWait(driver, 3).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, '#cm_cr-pagination_bar > ul > li.a-last > a'))
                 )
-                driver.execute_script("arguments[0].scrollIntoView(true);", next_page)  # Ensure element is in view
+                driver.execute_script("arguments[0].scrollIntoView(true);", next_page)
                 next_page.click()
                 WebDriverWait(driver, 3).until(
                     EC.invisibility_of_element((By.CSS_SELECTOR, 'div.a-section.cr-list-loading.reviews-loading'))
-                )  # Wait for loading overlay to disappear
+                )
             except Exception as e:
                 print(count)
                 print("No more pages or error navigating to next page:", e)
                 break
 
     finally:
-        # Close the WebDriver
         driver.quit()
 
-    # Create a product details dictionary
+    if date_filter:
+        # Only return reviews when date_filter is provided
+        return reviews_list
+
+    # If no date_filter, return product details along with reviews
     product_details = {
         'Category': 'Amazon',
         'Product Name': product_name,
@@ -178,12 +216,11 @@ def scrape_amazon_reviews(url):
         'Reviews': reviews_list
     }
 
-    # Save product details as a JSON file
     with open('amazon_product_details.json', 'w') as file:
         json.dump(product_details, file, indent=4)
 
-    end_time = time.time()  # End the timer
-    elapsed_time = end_time - start_time  # Calculate elapsed time
+    end_time = time.time()
+    elapsed_time = end_time - start_time
     print(f"Scraping completed in {elapsed_time:.2f} seconds")
 
     return product_details
@@ -373,16 +410,14 @@ def scrape_ali_express_reviews(url):
 
     return reviews_list
 
-def scrape_reviews(url):
+def scrape_reviews(url,date=None):
     if not is_valid_url(url):
         print("Invalid URL")
         return None
 
     site = get_site(url)
     if site == 'amazon':
-        return scrape_amazon_reviews(url)
-    elif site == 'etsy':
-        return scrape_ali_express_reviews(url)
+        return scrape_amazon_reviews(url,date)
     elif site == 'aliexpress':
         return scrape_ali_express_reviews(url)
     else:
@@ -394,6 +429,7 @@ if __name__ == "__main__":
 
     # url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
-    #url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
-    url='https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM/ref=sr_1_6?crid=2O0NHFPX8TPWO&dib=eyJ2IjoiMSJ9.KEZMeBqM8DaV6pqo_GHgPkvI4g0GL2Dn0psNSqinazgW1JJTR6ZNVybpJKS4sapTORB5PVPvmsylhA22pDq-A0lZpVqVwM-wKmzeozI_oBaKcU9OBwOoJJ3NJEnx2m8hDNI-5OLY-ZIqLyA0C8BEQMYiLbaKf7ERZuWPQPkeMj0ktsV3d1DvtE9bNBRLbQtgj-9vxGDdC5dXcHcLQXJ6sADRjKCHeiPp4HzsHDhR8Zsf8Dg3HEfmqwRfgrTBC-9eTKNAuHocnw8FR98a1yQQ2vEmbE9Q7EiCP0YC7zV6OKU.6n0CW1fFTGvuG5wSKHgYOTKYEpUd7wV1_V1kfPzIZsw&dib_tag=se&keywords=b87+keyboard&qid=1724629811&sprefix=b87%2Caps%2C252&sr=8-6'
-    reviews_df = scrape_reviews(url)
+    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
+    # url='https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM/ref=sr_1_6?crid=2O0NHFPX8TPWO&dib=eyJ2IjoiMSJ9.KEZMeBqM8DaV6pqo_GHgPkvI4g0GL2Dn0psNSqinazgW1JJTR6ZNVybpJKS4sapTORB5PVPvmsylhA22pDq-A0lZpVqVwM-wKmzeozI_oBaKcU9OBwOoJJ3NJEnx2m8hDNI-5OLY-ZIqLyA0C8BEQMYiLbaKf7ERZuWPQPkeMj0ktsV3d1DvtE9bNBRLbQtgj-9vxGDdC5dXcHcLQXJ6sADRjKCHeiPp4HzsHDhR8Zsf8Dg3HEfmqwRfgrTBC-9eTKNAuHocnw8FR98a1yQQ2vEmbE9Q7EiCP0YC7zV6OKU.6n0CW1fFTGvuG5wSKHgYOTKYEpUd7wV1_V1kfPzIZsw&dib_tag=se&keywords=b87+keyboard&qid=1724629811&sprefix=b87%2Caps%2C252&sr=8-6'
+    date = datetime(day=15,month=7, year=2024)
+    reviews_df = scrape_amazon_reviews(url, date)
