@@ -1,7 +1,7 @@
 import unittest
 import time
 import selenium
-from backend.scrape.scrapper import scrape_reviews
+from backend.scrape.scrapper import scrape_reviews, clean_url
 
 class TestScraperExecutionTime(unittest.TestCase):
     def setUp(self):
@@ -23,6 +23,22 @@ class TestScraperExecutionTime(unittest.TestCase):
         
         except Exception as e:
             self.fail(f"Scraping failed due to an unexpected error: {e}")
+
+class TestCleanURL(unittest.TestCase):
+
+    def test_clean_amazon_url(self):
+        """Test cleaning an Amazon URL with review query parameters."""
+        try:
+            url = "https://www.amazon.com/product-reviews/B00X4WHP5E/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+            expected_clean_url = "https://www.amazon.com/dp/B00X4WHP5E"
+            cleaned_url, _ = clean_url(url)
+            self.assertEqual(cleaned_url, expected_clean_url,f"Cleaned URL: {cleaned_url}")
+        
+        except Exception as e:
+            self.fail(f"Clean Amazon URL test failed due to an unexpected error: {e}")
+        
+
+        
 
 if __name__ == "__main__":
     unittest.main()
