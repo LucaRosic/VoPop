@@ -1,7 +1,10 @@
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from webdriver_manager.chrome import ChromeDriverManager
+
 from datetime import datetime
 import re
 import time
@@ -80,16 +83,13 @@ def scrape_amazon_reviews(url,date_filter=None):
     gecko_driver_path = r''
 
     # Configure Firefox options
-    options = webdriver.FirefoxOptions()
+    options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
     # options.add_argument('--headless') # Comment out to get headful
 
-    # Initialize FirefoxDriver service
-    service = Service(gecko_driver_path)
-
     # Initialize Firefox WebDriver with service and options
-    driver = webdriver.Firefox(service=service, options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     # Clean the URL
     cleaned_url, unique_key = clean_url(url)
@@ -434,5 +434,5 @@ if __name__ == "__main__":
     
     # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
     url='https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM/ref=sr_1_6?crid=2O0NHFPX8TPWO&dib=eyJ2IjoiMSJ9.KEZMeBqM8DaV6pqo_GHgPkvI4g0GL2Dn0psNSqinazgW1JJTR6ZNVybpJKS4sapTORB5PVPvmsylhA22pDq-A0lZpVqVwM-wKmzeozI_oBaKcU9OBwOoJJ3NJEnx2m8hDNI-5OLY-ZIqLyA0C8BEQMYiLbaKf7ERZuWPQPkeMj0ktsV3d1DvtE9bNBRLbQtgj-9vxGDdC5dXcHcLQXJ6sADRjKCHeiPp4HzsHDhR8Zsf8Dg3HEfmqwRfgrTBC-9eTKNAuHocnw8FR98a1yQQ2vEmbE9Q7EiCP0YC7zV6OKU.6n0CW1fFTGvuG5wSKHgYOTKYEpUd7wV1_V1kfPzIZsw&dib_tag=se&keywords=b87+keyboard&qid=1724629811&sprefix=b87%2Caps%2C252&sr=8-6'
-    date = datetime(day=15,month=7, year=2024)
+    date = datetime(day=15,month=8, year=2024)
     reviews_df = scrape_amazon_reviews(url, date)
