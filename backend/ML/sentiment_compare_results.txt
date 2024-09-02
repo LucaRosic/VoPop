@@ -18,6 +18,7 @@ Time: 21.595439s  ||  NPS: -0.24
 --- Spacy ---
 Time: 1.223588s  ||  NPS (naive): 0.73
 Time: 1.223588s  ||  NPS (thresholded): 0.18
+Average polarity: 0.1305646930094912
 
 =======================================
 [https://www.amazon.com/Magnetic-Building-Stacking-Preschool-Construction/dp/B09XMN7YGW/ref=sr_1_5?sr=8-5]
@@ -30,3 +31,17 @@ Time: 14.10768s  ||  NPS: 0.54
 --- Spacy ---
 Time: 0.98275s  ||  NPS (naive): 0.84
 Time: 0.98275s  ||  NPS (thresholded): 0.35
+Average polarity: 0.25067363214800287
+
+======================================
+[https://www.amazon.com/Kindle-Paperwhite-Signature-including-Lockscreen/dp/B0BN4ZLQR2/ref=sr_1_1?sr=8-1]
+
+===== Results =====
+
+--- BERT ---
+Time: 18.988039s  ||  NPS: 0.66
+
+--- Spacy ---
+Time: 1.261259s  ||  NPS (naive): 0.89
+Time: 1.261259s  ||  NPS (thresholded): 0.26
+Average polarity: 0.268425039310315

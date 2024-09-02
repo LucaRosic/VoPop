@@ -1,4 +1,5 @@
 # This is to compare sentiment models time taken and score
+# Have to run this file from the ML folder
 
 # Supress future warnings
 import warnings
@@ -14,11 +15,12 @@ import spacy
 from spacytextblob.spacytextblob import SpacyTextBlob
 from datetime import datetime
 import functools # For the reduce function
+import statistics
 # >> python -m spacy download en_core_web_sm
 
 
 # url_to_scrape = input("Enter URL: ")
-url_to_scrape = r"https://www.amazon.com/DECKER-Nonstick-Reversible-Stainless-G48TD/dp/B000063XH7/"
+url_to_scrape = r"https://www.amazon.com/Kindle-Paperwhite-Signature-including-Lockscreen/dp/B0BN4ZLQR2/ref=sr_1_1?sr=8-1"
 scraped = (scrape_reviews(url_to_scrape))
 cleaned = clean_transform_data(scraped)
 
@@ -72,6 +74,8 @@ detractors = functools.reduce(lambda x,y: x+y if y < -0.1 else x, sentiment_pola
 nps_spacy_naive = round((num_positive/total_reviews) - (num_negative/total_reviews), 2)
 nps_spacy = round((promoters/total_reviews) - (detractors/total_reviews), 2)
 
+avg_polarity = statistics.mean(sentiment_polarity)
+
 end_spacy = datetime.now()
 print("Spacy sentiment finished!")
 
@@ -86,3 +90,4 @@ print()
 print("--- Spacy ---")
 print(f"Time: {(end_spacy-start_spacy).total_seconds()}s  ||  NPS (naive): {nps_spacy_naive}")
 print(f"Time: {(end_spacy-start_spacy).total_seconds()}s  ||  NPS (thresholded): {nps_spacy}")
+print(f"Average polarity: {avg_polarity}")
