@@ -19,5 +19,6 @@ langdetect
 better_profanity
 pymysql
 gunicorn
+webdriver_manager
 # Install CPU version of torch
 # torch==2.4.0+cpu @ https://download.pytorch.org/whl/cpu
