@@ -29,8 +29,8 @@ class TestCleanURL(unittest.TestCase):
     def test_clean_amazon_url(self):
         """Test cleaning an Amazon URL with review query parameters."""
         try:
-            url = "https://www.amazon.com/product-reviews/B00X4WHP5E/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
-            expected_clean_url = "https://www.amazon.com/dp/B00X4WHP5E"
+            url = "https://www.amazon.com/product-reviews/ABC/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+            expected_clean_url = "https://www.amazon.com/dp/ABC"
             cleaned_url, _ = clean_url(url)
             self.assertEqual(cleaned_url, expected_clean_url,f"Cleaned URL: {cleaned_url}")
         
