@@ -232,6 +232,9 @@ def scrape_amazon_reviews(url,date_filter=None):
 
     if date_filter:
         # Only return reviews when date_filter is provided
+        with open('amazon_product_details.json', 'w') as file:
+            json.dump(reviews_list, file, indent=4)
+
         return reviews_list
 
     # If no date_filter, return product details along with reviews
@@ -248,6 +251,8 @@ def scrape_amazon_reviews(url,date_filter=None):
 
     with open('amazon_product_details.json', 'w') as file:
         json.dump(product_details, file, indent=4)
+
+   
 
     end_time = time.time()
     elapsed_time = end_time - start_time
