@@ -122,7 +122,7 @@ def scrape_amazon_reviews(url,date_filter=None):
             print('Looking for product brand')
             try:
                 # First attempt with the primary selector
-                product_brand = WebDriverWait(driver, 5).until(
+                product_brand = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
                 ).text
                 print(f'Product brand found using primary selector: {product_brand}')
@@ -130,7 +130,7 @@ def scrape_amazon_reviews(url,date_filter=None):
                 print(f'Primary selector failed, trying alternative. Error: {e}')
                 try:
                     # Secondary attempt with the alternative selector
-                    product_brand = WebDriverWait(driver, 5).until(
+                    product_brand = WebDriverWait(driver, 10).until(
                         EC.presence_of_element_located((By.ID, 'bylineInfo'))
                     ).text
                     print(f'Product brand found using secondary selector: {product_brand}')
@@ -440,7 +440,7 @@ def scrape_reviews(url,date=None):
         return None
 
     site = get_site(url)
-    
+
     if site == 'amazon':
         return scrape_amazon_reviews(url,date)
     elif site == 'aliexpress':
@@ -455,6 +455,6 @@ if __name__ == "__main__":
     # url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
     # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
-        url='https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM/ref=sr_1_6?crid=2O0NHFPX8TPWO&dib=eyJ2IjoiMSJ9.KEZMeBqM8DaV6pqo_GHgPkvI4g0GL2Dn0psNSqinazgW1JJTR6ZNVybpJKS4sapTORB5PVPvmsylhA22pDq-A0lZpVqVwM-wKmzeozI_oBaKcU9OBwOoJJ3NJEnx2m8hDNI-5OLY-ZIqLyA0C8BEQMYiLbaKf7ERZuWPQPkeMj0ktsV3d1DvtE9bNBRLbQtgj-9vxGDdC5dXcHcLQXJ6sADRjKCHeiPp4HzsHDhR8Zsf8Dg3HEfmqwRfgrTBC-9eTKNAuHocnw8FR98a1yQQ2vEmbE9Q7EiCP0YC7zV6OKU.6n0CW1fFTGvuG5wSKHgYOTKYEpUd7wV1_V1kfPzIZsw&dib_tag=se&keywords=b87+keyboard&qid=1724629811&sprefix=b87%2Caps%2C252&sr=8-6'
+        url='https://www.amazon.com/Apple-Smartwatch-Starlight-Aluminum-Detection/product-reviews/B0CHX7R6WJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
         date = datetime(day=2,month=7, year=2024)
-        reviews_df = scrape_reviews(url,date)
+        reviews_df = scrape_reviews(url)
