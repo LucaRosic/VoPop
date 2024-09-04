@@ -9,16 +9,15 @@ sqlparse
 psycopg2-binary
 python-dotenv~=1.0.1
 transformers~=4.43.3
-torch
 numpy==1.26.4
 pandas
-selenium==4.23.1
-
-webdriver_manager
+selenium
 google-generativeai
 nltk
 lsg_converter
 langdetect
 better_profanity
 pymysql
-apache-airflow
+gunicorn
+# Install CPU version of torch
+# torch==2.4.0+cpu @ https://download.pytorch.org/whl/cpu
