@@ -78,14 +78,14 @@ def clean_transform_data(data):
         # Filter out profanity
         review_text = profanity.censor(review_text)
 
-        # Clean the date
-        if review_date:
-            try:
-                review_date = convert_date(review_date)
-                ##print(type(review_date))
-            except ValueError as e:
-                print(f"Error cleaning date: {e}")
-                review_date = None
+        # # Clean the date
+        # if review_date:
+        #     try:
+        #         review_date = convert_date(review_date)
+        #         ##print(type(review_date))
+        #     except ValueError as e:
+        #         print(f"Error cleaning date: {e}")
+        #         review_date = None
 
         
     
@@ -128,4 +128,3 @@ if __name__ == "__main__":
     output_file_path = 'backend/Clean/cleaned_amazon_product_details.json'
     with open(output_file_path, 'w', encoding='utf-8') as f:
         json.dump(cleaned_data, f, indent=4)
-
