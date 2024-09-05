@@ -1,17 +1,15 @@
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-from webdriver_manager.chrome import ChromeDriverManager
-
 from datetime import datetime
 import re
 import time
 import json
 from urllib.parse import urlparse
-import json
 from selenium import webdriver
+
+# from airflow.decorators import dag, task
 
 def is_valid_url(url):
     try:
@@ -65,7 +63,7 @@ def convert_date(date_str):
     for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
-            return date_obj  # Return the datetime object
+            return date_obj#.strftime('%d %B %Y')  # Return the datetime object
         except ValueError:
             pass
     
@@ -83,13 +81,16 @@ def scrape_amazon_reviews(url,date_filter=None):
     gecko_driver_path = r''
 
     # Configure Firefox options
-    options = webdriver.ChromeOptions()
+    options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-    # options.add_argument('--headless') # Comment out to get headful
+    options.add_argument('--headless') 
+
+    # Initialize FirefoxDriver service
+    service = Service(gecko_driver_path)
 
     # Initialize Firefox WebDriver with service and options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Firefox(service=service, options=options)
 
     # Clean the URL
     cleaned_url, unique_key = clean_url(url)
@@ -98,26 +99,51 @@ def scrape_amazon_reviews(url,date_filter=None):
     # Initialize an empty list to store reviews
     reviews_list = []
 
-    if not date_filter:
+    if date_filter is None:
         try:
-            product_name = WebDriverWait(driver, 5).until(
+            print('Looking for product name')
+            product_name = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, 'productTitle'))
             ).text
-            product_image = WebDriverWait(driver, 5).until(
+            print(f'Product name found: {product_name}')
+
+            print('Looking for product image')
+            product_image = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, 'landingImage'))
             ).get_attribute('src')
-            avg_star = WebDriverWait(driver, 5).until(
+            print(f'Product image found: {product_image}')
+
+            print('Looking for avg star')
+            avg_star = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '#cm_cr_dp_d_rating_histogram > div.a-fixed-left-grid.AverageCustomerReviews.a-spacing-small > div > div.a-fixed-left-grid-col.aok-align-center.a-col-right > div > span > span'))
             ).text
-            product_brand = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
-            ).text
+            print(f'Average star rating found: {avg_star}')
+
+            print('Looking for product brand')
+            try:
+                # First attempt with the primary selector
+                product_brand = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
+                ).text
+                print(f'Product brand found using primary selector: {product_brand}')
+            except Exception as e:
+                print(f'Primary selector failed, trying alternative. Error: {e}')
+                try:
+                    # Secondary attempt with the alternative selector
+                    product_brand = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.ID, 'bylineInfo'))
+                    ).text
+                    print(f'Product brand found using secondary selector: {product_brand}')
+                except Exception as e:
+                    print(f'Secondary selector also failed. Error: {e}')
+                    product_brand = "NA"
+
         except Exception as e:
             print("Error extracting product details:", e)
             product_name = "NA"
             product_image = "NA"
             avg_star = "NA"
-            product_brand = "NA"
+            
     else:
         print("Skipping product information due to date filter.")
 
@@ -174,7 +200,6 @@ def scrape_amazon_reviews(url,date_filter=None):
                         print(f"Skipping review from {review_date} due to date filter: {date_filter}")
                         continue
 
-
                     review_stars = review.find_element(By.CSS_SELECTOR, '.a-icon-alt').get_attribute('textContent')
                     count += 1
 
@@ -204,7 +229,6 @@ def scrape_amazon_reviews(url,date_filter=None):
         driver.quit()
 
     if date_filter:
-        # Only return reviews when date_filter is provided
         return reviews_list
 
     # If no date_filter, return product details along with reviews
@@ -217,10 +241,7 @@ def scrape_amazon_reviews(url,date_filter=None):
         'Brand': product_brand,
         'Average Star': avg_star,
         'Reviews': reviews_list
-    }
-
-    with open('amazon_product_details.json', 'w') as file:
-        json.dump(product_details, file, indent=4)
+    } 
 
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -419,6 +440,7 @@ def scrape_reviews(url,date=None):
         return None
 
     site = get_site(url)
+
     if site == 'amazon':
         return scrape_amazon_reviews(url,date)
     elif site == 'aliexpress':
@@ -433,6 +455,6 @@ if __name__ == "__main__":
     # url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     
     # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
-    url='https://amazon.com.au/Wireless-Mechanical-Keyboard-Bluetooth-Swappable/dp/B0D1XKDWFM/ref=sr_1_6?crid=2O0NHFPX8TPWO&dib=eyJ2IjoiMSJ9.KEZMeBqM8DaV6pqo_GHgPkvI4g0GL2Dn0psNSqinazgW1JJTR6ZNVybpJKS4sapTORB5PVPvmsylhA22pDq-A0lZpVqVwM-wKmzeozI_oBaKcU9OBwOoJJ3NJEnx2m8hDNI-5OLY-ZIqLyA0C8BEQMYiLbaKf7ERZuWPQPkeMj0ktsV3d1DvtE9bNBRLbQtgj-9vxGDdC5dXcHcLQXJ6sADRjKCHeiPp4HzsHDhR8Zsf8Dg3HEfmqwRfgrTBC-9eTKNAuHocnw8FR98a1yQQ2vEmbE9Q7EiCP0YC7zV6OKU.6n0CW1fFTGvuG5wSKHgYOTKYEpUd7wV1_V1kfPzIZsw&dib_tag=se&keywords=b87+keyboard&qid=1724629811&sprefix=b87%2Caps%2C252&sr=8-6'
-    date = datetime(day=15,month=8, year=2024)
-    reviews_df = scrape_amazon_reviews(url, date)
+        url='https://www.amazon.com/Apple-Smartwatch-Starlight-Aluminum-Detection/product-reviews/B0CHX7R6WJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
+        date = datetime(day=2,month=7, year=2024)
+        reviews_df = scrape_reviews(url)
