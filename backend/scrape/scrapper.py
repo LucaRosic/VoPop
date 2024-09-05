@@ -157,9 +157,17 @@ def scrape_amazon_reviews(url,date_filter=None):
             see_more_reviews.click()
         except Exception as e:
             print("See more reviews link not found or error:", e)
+        try:
+            product_brand = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'a-size-base a-link-normal'))
+            ).text
+            print(f'Product brand found using third selector: {product_brand}')
+        except Exception as e:
+            print(f'Secondary selector also failed. Error: {e}')
+            product_brand = "NA"
 
         try:
-            print("searching.....butonn")
+            print("searching.....butonnnnnnnnnnnnnn")
             see_more_button = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "span.a-button-text.a-declarative")))
             print("button found")
