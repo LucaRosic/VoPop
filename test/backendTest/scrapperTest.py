@@ -25,7 +25,9 @@ class TestScraperFunctions(unittest.TestCase):
         start_time = time.time()
         
         try:
-            scrape_reviews(self.url)  # Directly use URL from the setUp
+            
+            # Directly use URL from the setUp
+            scrape_reviews(self.url)  
             
             end_time = time.time()
             execution_time = end_time - start_time
