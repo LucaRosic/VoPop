@@ -5,3 +5,4 @@ venv/
 /backend/api/__pycache__
 *.pyc
 __pycache__/
+backend/scrape/__pycache__/scrapper.cpython-312.pyc
