@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Python tests
         run: |
-          python -m unittest test/scrapperTest.py  # Replace with your preferred test runner and test command
+          python -m unittest test/backendTest/scrapperTest.py  # Replace with your preferred test runner and test command
 
   deploy:
     needs: test
