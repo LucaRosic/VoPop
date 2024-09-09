@@ -453,7 +453,7 @@ def scrape_ali_express_reviews(url):
 
     return reviews_list
 
-def scrape_reviews(url):
+def scrape_reviews(url, *date):
     if not is_valid_url(url):
         print("Invalid URL")
         return None
@@ -461,7 +461,7 @@ def scrape_reviews(url):
     site = get_site(url)
 
     if site == 'amazon':
-        return scrape_amazon_reviews(url)
+        return scrape_amazon_reviews(url, date)
     elif site == 'etsy':
         return scrape_ali_express_reviews(url)
     elif site == 'aliexpress':
