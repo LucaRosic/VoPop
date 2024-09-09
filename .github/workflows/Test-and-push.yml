@@ -1,0 +1,58 @@
+name: Test and Deploy
+
+on:
+  push:
+    branches:
+      - Test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.12.5'  
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Python tests
+        run: |
+          python -m unittest test/backendTest/scrapperTest.py 
+
+  deploy:
+    needs: test
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Git
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions@github.com'
+      
+      - name: Authenticate with GitHub
+        run: |
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git   
+      
+      - name: Fetch all branches
+        run: git fetch --all
+  
+      - name: Pull latest changes from main
+        run: |
+          git checkout main
+          git pull origin main           
+    
+      - name: Push to main
+        run: |
+            git checkout -b temp-deploy
+            git merge --no-ff --allow-unrelated-histories -X ours Test
+            git push origin temp-deploy:main
