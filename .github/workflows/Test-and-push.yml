@@ -8,12 +8,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run tests
-        run: npm test test/scrapperTest.py
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.12.5'  
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Python tests
+        run: |
+          python -m unittest test/scrapperTest.py  # Replace with your preferred test runner and test command
 
   deploy:
     needs: test
