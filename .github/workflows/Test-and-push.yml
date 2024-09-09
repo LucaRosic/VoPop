@@ -35,6 +35,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Authenticate with GitHub
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git     
+      
       - name: Set up Git
         run: |
           git config user.name 'github-actions[bot]'
