@@ -1,0 +1,29 @@
+name: Test and Deploy
+
+on:
+  push:
+    branches:
+      - Test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: npm test test/scrapperTest.py
+
+  deploy:
+    needs: test
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions
