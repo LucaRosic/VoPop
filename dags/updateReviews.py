@@ -10,7 +10,7 @@ import re
 #from ML.sentiment import analyseSentiment, start_model
 #sys.path.insert(1, '/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/Clean/')
 #from Transform import clean_rate
-sys.path.insert(1, '/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/ML/')
+sys.path.insert(1, './backend/ML/')
 from sentiment import start_model,analyseSentiment
 from ReviewSumModel import summarize
 
@@ -32,25 +32,25 @@ def clean_rate(x):
             
             return x
 
-# @dag(
-# schedule='@daily',
-# start_date=dt.datetime(2024,1,1),
-# catchup=False,
-# dag_id='update_reviews'
-# )
+@dag(
+schedule='@daily',
+start_date=dt.datetime(2024,1,1),
+catchup=False,
+dag_id='update_reviews'
+)
 def get_latest_reviews():
 
-    connection = sqlite3.connect("/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/db.sqlite3")
+    connection = sqlite3.connect("./backend/db.sqlite3")
     cursor = connection.cursor()
 
-    #@task(task_id='retrieve_urls')
+    @task(task_id='retrieve_urls')
     def retrieve_outdated_urls():
         
         result = cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id LIMIT 1")
         #print(result.fetchall())
         return result.fetchall()
 
-    #@task(task_id='scrape')
+    @task(task_id='scrape')
     def scrape_new_data(product_list):
         new_reviews ={}
         for url, date, product_id in product_list:
@@ -62,7 +62,7 @@ def get_latest_reviews():
                print(new_reviews)
         return new_reviews
     
-    #@task(task_id='transform')
+    @task(task_id='transform')
     def transform_new_data(new_data):
         sent_model = start_model()
         profanity.load_censor_words()
@@ -103,7 +103,7 @@ def get_latest_reviews():
              
         return cleaned_reviews
     
-    #
+    @task(task_id='urd')
     def update_review_database(new_data):
         for review in new_data:
             print(review['Review Text'])
@@ -117,6 +117,7 @@ def get_latest_reviews():
         #cursor.close()    
         return None
     
+    @task(task_id='urs')
     def update_review_summary(old_product):
         for url, date, product_id in old_product:
             
@@ -139,7 +140,7 @@ def get_latest_reviews():
     transformed_data = transform_new_data(new_data)
     update_review_database(transformed_data)
     update_review_summary(old_urls)
-#get_latest_reviews()
+get_latest_reviews()
 
 if __name__ == "__main__":
     get_latest_reviews()
