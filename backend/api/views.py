@@ -205,8 +205,15 @@ class GetProductSum_Dash(APIView):
         
         return Response(serializer.data)
       
-      
-      
+class GetNewRewreviews(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self,request):
+        url = request.GET.get('url')
+        date = request.GET.get('date')
+        return Response(scrape_reviews(url,date))
+
+  
 #_____________________________________________________________________________________________________________________________
 # DELETE Requests  
 
