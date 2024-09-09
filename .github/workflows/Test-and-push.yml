@@ -40,7 +40,11 @@ jobs:
           git config user.email 'github-actions@github.com'
       - name: Authenticate with GitHub
         run: |
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git              
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git   
+      - name: Pull latest changes from main
+        run: |
+          git checkout main
+          git pull origin main           
       - name: Push to main
         run: |
             git checkout -b temp-deploy
