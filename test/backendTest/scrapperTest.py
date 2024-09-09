@@ -50,17 +50,17 @@ class TestScraperFunctions(unittest.TestCase):
         except Exception as e:
             self.fail(f"Clean Amazon URL test failed due to an unexpected error: {e}")
 
-    #def test_scrape_aliexpress_reviews_time(self):
-        # """Test that scrape_reviews function executes within the time limit for AliExpress."""
-        #start_time = time.time()
+    # def test_scrape_aliexpress_reviews_time(self):
+    #     """Test that scrape_reviews function executes within the time limit for AliExpress."""
+    #     start_time = time.time()
         
-        #try:
-            #scrape_reviews(self.aliexpress_url)
-            #end_time = time.time()
-        #     execution_time = end_time - start_time
+    #     try:
+    #         scrape_reviews(self.aliexpress_url)
+    #         end_time = time.time()
+    #         execution_time = end_time - start_time
             
-        #     print(f"Execution time: {execution_time:.2f} seconds")
-        #     self.assertLess(execution_time, 60, "AliExpress scraper took longer than 60 seconds")
+    #         print(f"Execution time: {execution_time:.2f} seconds")
+    #         self.assertLess(execution_time, 60, "AliExpress scraper took longer than 60 seconds")
         
         # except Exception as e:
         #     self.fail(f"AliExpress scraping failed due to an unexpected error: {e}")
