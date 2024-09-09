@@ -33,7 +33,7 @@ class TestScraperFunctions(unittest.TestCase):
             execution_time = end_time - start_time
             
             print(f"Execution time: {execution_time:.2f} seconds")
-            self.assertLess(execution_time, 60, "Scraper took longer than 60 seconds")
+            self.assertLess(execution_time, 35, "Scraper took longer than 60 seconds")
         
         except Exception as e:
             self.fail(f"Scraping failed due to an unexpected error: {e}")
