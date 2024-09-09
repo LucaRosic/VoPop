@@ -41,8 +41,8 @@ jobs:
       - name: Authenticate with GitHub
         run: |
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git              
-      - name: Push to Main
+      - name: Push to main
         run: |
             git checkout -b temp-deploy
             git merge --no-ff Test
-            git push origin temp-deploy:Main
+            git push origin temp-deploy:main
