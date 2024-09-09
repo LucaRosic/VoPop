@@ -60,7 +60,7 @@ def convert_date(date_str):
         cleaned_date_str = re.sub(r'^.*on\s+', '', date_str).strip()
     
     # Try to parse the cleaned date string with different formats
-    for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
+    for fmt in ('%Y-%m-%d','%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
             return date_obj#.strftime('%d %B %Y')  # Return the datetime object
@@ -84,7 +84,7 @@ def scrape_amazon_reviews(url,date_filter=None):
     options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-    options.add_argument('--headless') 
+    #options.add_argument('--headless') 
 
     # Initialize FirefoxDriver service
     service = Service(gecko_driver_path)
@@ -196,7 +196,7 @@ def scrape_amazon_reviews(url,date_filter=None):
                     review_date = convert_date(review_date_str)  # Convert to datetime object
 
                     # Skip reviews based on the date filter
-                    if date_filter and review_date <= date_filter:
+                    if date_filter and review_date <= convert_date(date_filter):
                         print(f"Skipping review from {review_date} due to date filter: {date_filter}")
                         continue
 
