@@ -453,7 +453,7 @@ def scrape_ali_express_reviews(url):
 
     return reviews_list
 
-def scrape_reviews(url, *date):
+def scrape_reviews(url, date=None):
     if not is_valid_url(url):
         print("Invalid URL")
         return None
