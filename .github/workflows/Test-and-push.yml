@@ -45,14 +45,14 @@ jobs:
       
       - name: Fetch all branches
         run: git fetch --all
-     
+  
       - name: Pull latest changes from main
         run: |
           git checkout main
           git pull origin main           
-     
+    
       - name: Push to main
         run: |
             git checkout -b temp-deploy
-            git merge --no-ff --allow-unrelated-histories Test
+            git merge --no-ff --allow-unrelated-histories -X ours Test
             git push origin temp-deploy:main
