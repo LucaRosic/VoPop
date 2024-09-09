@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import re
 import time
-import json
 from urllib.parse import urlparse
 from selenium import webdriver
 
@@ -60,7 +59,7 @@ def convert_date(date_str):
         cleaned_date_str = re.sub(r'^.*on\s+', '', date_str).strip()
     
     # Try to parse the cleaned date string with different formats
-    for fmt in ('%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
+    for fmt in ('%Y-%m-%d','%d %B %Y', '%B %d %Y', '%B %d, %Y','%d %b %Y'):
         try:
             date_obj = datetime.strptime(cleaned_date_str, fmt)
             return date_obj#.strftime('%d %B %Y')  # Return the datetime object
@@ -153,37 +152,54 @@ def scrape_amazon_reviews(url,date_filter=None):
             see_more_reviews = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
             )
-            print("more reviews found")
             see_more_reviews.click()
         except Exception as e:
             print("See more reviews link not found or error:", e)
+        try:
+            product_brand = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'a-size-base a-link-normal'))
+            ).text
+            print(f'Product brand found using third selector: {product_brand}')
+        except Exception as e:
+            print(f'Secondary selector also failed. Error: {e}')
+            product_brand = "NA"
 
         try:
-            print("searching.....butonn")
+            print("searching.....butonnnnnnnnnnnnnn")
             see_more_button = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "span.a-button-text.a-declarative")))
             print("button found")
             see_more_button.click()     
         except Exception as e:
-            print("Review type not found or error:", e)
-
+            print("review type not found reviews link not found or error:", e)
         try:
+            print('most recent attempt')
             most_recent = WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.ID, 'sort-order-dropdown_1'))
             )
             most_recent.click()
         except Exception as e:
-            print("Most recent reviews link not found or error:", e)
-
+            print("most recent reviews link not found or error:", e)
+        try:
+            product_brand = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#cr-arp-byline > a'))
+            ).text
+        except:
+            product_brand = "NA"
         time.sleep(1)
         while True:
-            review_elements = WebDriverWait(driver, 5).until(
+            # Extract review elements
+            review_elements = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
+            # Iterate over each review element
             for review in review_elements:
+                
                 try:
+                    # Extract review text
                     review_text = review.find_element(By.CSS_SELECTOR, '.review-text-content').text
+                    # Extract review date
                     review_date = review.find_element(By.CSS_SELECTOR, '.review-date').text
 
                     try:
@@ -196,36 +212,39 @@ def scrape_amazon_reviews(url,date_filter=None):
                     review_date = convert_date(review_date_str)  # Convert to datetime object
 
                     # Skip reviews based on the date filter
-                    if date_filter and review_date <= date_filter:
+                    if date_filter and review_date <= convert_date(date_filter):
                         print(f"Skipping review from {review_date} due to date filter: {date_filter}")
                         continue
 
                     review_stars = review.find_element(By.CSS_SELECTOR, '.a-icon-alt').get_attribute('textContent')
-                    count += 1
-
+                    count+=1
+                    # Append the extracted data to the reviews list
                     reviews_list.append({
                         'Date': review_date,
                         'Stars': review_stars,
                         'Review Text': review_text
                     })
+                    
                 except Exception as e:
                     print("Error extracting review details:", e)
 
+            # Check for the "Next page" link and click if found
             try:
                 next_page = WebDriverWait(driver, 3).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, '#cm_cr-pagination_bar > ul > li.a-last > a'))
                 )
-                driver.execute_script("arguments[0].scrollIntoView(true);", next_page)
+                driver.execute_script("arguments[0].scrollIntoView(true);", next_page)  # Ensure element is in view
                 next_page.click()
                 WebDriverWait(driver, 3).until(
                     EC.invisibility_of_element((By.CSS_SELECTOR, 'div.a-section.cr-list-loading.reviews-loading'))
-                )
+                )  # Wait for loading overlay to disappear
             except Exception as e:
                 print(count)
                 print("No more pages or error navigating to next page:", e)
                 break
 
     finally:
+        # Close the WebDriver
         driver.quit()
 
     if date_filter:
@@ -434,7 +453,7 @@ def scrape_ali_express_reviews(url):
 
     return reviews_list
 
-def scrape_reviews(url,date=None):
+def scrape_reviews(url, date=None):
     if not is_valid_url(url):
         print("Invalid URL")
         return None
@@ -442,7 +461,9 @@ def scrape_reviews(url,date=None):
     site = get_site(url)
 
     if site == 'amazon':
-        return scrape_amazon_reviews(url,date)
+        return scrape_amazon_reviews(url, date)
+    elif site == 'etsy':
+        return scrape_ali_express_reviews(url)
     elif site == 'aliexpress':
         return scrape_ali_express_reviews(url)
     else:
