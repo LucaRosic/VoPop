@@ -7,12 +7,14 @@ import json
 from langdetect import detect
 from better_profanity import profanity
 import re
-import os
-os.environ['NO_PROXY'] = '*'
-
-#need to fix imports
-sys.path.insert(1, '/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/ML/')
+#from ML.sentiment import analyseSentiment, start_model
+#sys.path.insert(1, '/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/Clean/')
+#from Transform import clean_rate
+sys.path.insert(1, './backend/ML/')
+from sentiment import start_model,analyseSentiment
 from ReviewSumModel import summarize
+
+
 
 def clean_rate(x):
             if isinstance(x, str):
@@ -30,49 +32,33 @@ def clean_rate(x):
             
             return x
 
-@dag(
-schedule='@daily',
-start_date=dt.datetime(2024,1,1),
-catchup=False,
-dag_id='update_reviews'
-)
-@dag(
-schedule='@daily',
-start_date=dt.datetime(2024,1,1),
-catchup=False,
-dag_id='update_reviews'
-)
+
 def get_latest_reviews():
 
-    #adjust db connection
-    connection = sqlite3.connect("/Users/noahpalmer/Documents/FDM/Cassowary/VoPop/VoPop/backend/db.sqlite3")
+    connection = sqlite3.connect("./backend/db.sqlite3")
     cursor = connection.cursor()
 
-    #get urls and summary dates for each product
-    @task(task_id='retrieve_urls')
+  
     def retrieve_outdated_urls():
         
-        result = cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id")
+        result = cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id LIMIT 1")
+        #print(result.fetchall())
         return result.fetchall()
-    
-    #check if last summary date older than a month. If yes, scrape new reviews using backend api.
-    @task(task_id='scrape')
+
+  
     def scrape_new_data(product_list):
-        
         new_reviews ={}
         for url, date, product_id in product_list:
-     
+            print(str(date.split()[0]))
             if dt.datetime.strptime(date,"%Y-%m-%d %H:%M:%S.%f") < dt.datetime.now(): #- dt.timedelta(days=31):
                payload = {'url':url,'date':str(date.split()[0])}
-               fresh_reviews = requests.get('http://localhost:8000/api/product/newreviews/', params=payload)
-               new_reviews[product_id] = fresh_reviews.text
-             
+               fresh_reviews = requests.get('http://localhost:8000/api/product/newreviews/', params=payload).text
+               new_reviews[product_id] = fresh_reviews
+               print(new_reviews)
         return new_reviews
-
-    #Format data to be ready for insertion into database. Sentiment analysis done using api call. Could optimise.
-    @task(task_id='transform')
+  
     def transform_new_data(new_data):
-        
+        sent_model = start_model()
         profanity.load_censor_words()
         cleaned_reviews = []
         for id in new_data.keys():
@@ -95,13 +81,13 @@ def get_latest_reviews():
                 
                 if review_rating:
                     review_rating = clean_rate(review_rating)
+
                 # Sentiment
-                sentiment = json.loads(requests.get('http://localhost:8000/api/product/newsentiment/',{'review':review_text}).text)
-                
+                sentiment = analyseSentiment(sent_model, review_text)
                 cleaned_review = {
-                    'Date': review_date.split('T')[0],
+                    'Date': review_date,
                     'Stars': review_rating,
-                    'Review Text': review_text.replace('"',"'").replace(',','').replace("'",''),
+                    'Review Text': review_text.replace('"',"'").replace(',',''),
                     'Sentiment': sentiment['label'],
                     'Score': sentiment['score'],
                     'prod_id': id
@@ -111,18 +97,21 @@ def get_latest_reviews():
              
         return cleaned_reviews
     
-    #insert new reviews into db
-    @task(task_id='update_review_db')
+
     def update_review_database(new_data):
         for review in new_data:
-         
+            print(review['Review Text'])
+            print(review['Score'])
+            print(review['Sentiment'])
+            print(review['Stars'])
+            print(review['Date'])
+            print(review['prod_id'])
             cursor.execute(f"INSERT INTO api_product_reviews (review, sentiment, sentiment_label, rating,date, product_id) VALUES ('{review['Review Text']}',{review['Score']},'{review['Sentiment']}',{review['Stars']},'{review['Date']}',{review['prod_id']});")
             connection.commit()
         #cursor.close()    
         return None
     
-    #call gemini api to generate new summary, then update database.
-    @task(task_id='update_summary')
+
     def update_review_summary(old_product):
         for url, date, product_id in old_product:
             
@@ -131,22 +120,21 @@ def get_latest_reviews():
             new_summaries = []
             for review in result:
                  new_summaries.append({"Review Text":review[0]})
-            summary = summarize(new_summaries).replace('"',"").replace("'","")
-         
+            summary = summarize(new_summaries)
+            print(summary)
             cursor.execute(f"UPDATE api_product_summary SET summary = '{summary}' WHERE product_id = {product_id}" )
             cursor.execute(f"UPDATE api_product_summary SET date = '{dt.datetime.now()}' WHERE product_id = {product_id}" )
             connection.commit()
         cursor.close()
         return summary
 
-    #DAG dependency structure
     old_urls = retrieve_outdated_urls()
     print(old_urls)
     new_data = scrape_new_data(old_urls)
     transformed_data = transform_new_data(new_data)
-    update_review_database(transformed_data) >> update_review_summary(old_urls)
+    update_review_database(transformed_data)
+    update_review_summary(old_urls)
 
-get_latest_reviews()
 
 if __name__ == "__main__":
     get_latest_reviews()
