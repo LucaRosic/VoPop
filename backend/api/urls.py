@@ -13,6 +13,7 @@ urlpatterns = [
     path("product/dashboard/meta/<int:product_id>/", views.GetProductMeta_Dash.as_view(), name='product-dashboard-meta'),
     path("product/dashboard/summ/<int:product_id>/", views.GetProductSum_Dash.as_view(), name='product-dashboard-summ'),
     path("product/newreviews/", views.GetNewRewreviews.as_view(), name='new-reviews'),
+    path("product/newsentiment/", views.GetSentimentNewReviews.as_view(), name='new-sentiment'),
     
     
     # Delete Requests
