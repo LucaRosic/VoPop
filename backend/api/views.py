@@ -213,6 +213,13 @@ class GetNewRewreviews(APIView):
         date = request.GET.get('date')
         return Response(scrape_reviews(url,date))
 
+class GetSentimentNewReviews(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self,request):
+        sent_model = start_model()
+        review = request.GET.get('review')
+        return Response(analyseSentiment(sent_model, review))
   
 #_____________________________________________________________________________________________________________________________
 # DELETE Requests  
