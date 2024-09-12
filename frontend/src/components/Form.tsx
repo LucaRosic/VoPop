@@ -1,7 +1,7 @@
 import { useState } from "react"
 import api from "../api"
 import { useNavigate } from "react-router-dom"
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
+import { ACCESS_TOKEN, REFRESH_TOKEN, USERNAME } from "../constants"
 import "../styles/Form.css" // Import the Form.css stylesheet
 
 interface Props {
@@ -11,6 +11,11 @@ interface Props {
 
 
 export const Form = ({route, method} : Props) => {
+  /*
+    Generic form to be used by either the login or register page.
+
+    Form details filled in by user and is sent to the necessary API endpoint.
+  */
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,11 +28,15 @@ export const Form = ({route, method} : Props) => {
 
     try {
       const res = await api.post(route, {username, password}); // Send username and password to the api endpoint
-      if (method === "login") { // for login
+      if (method === "login") { // For login method
+        console.log(`REFRESH SET TO: ${res.data.refresh}`);
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/"); // Navigate back to home
-      } else { // For register
+        localStorage.setItem(USERNAME, username);
+        console.log("Set the Tokens!")
+        navigate("/dashboard"); // Navigate back to home
+      } else { // For register method
+        // Register method should redirect to login page
         navigate("/login");
       }
 

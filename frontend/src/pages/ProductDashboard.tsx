@@ -1,53 +1,151 @@
 import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
+import NavbarTop from "../components/NavbarTop";
+import Footer from "../components/Footer";
+import { useEffect, useState } from "react";
+import api from "../api";
+import ProductCardLoading from "../components/ProductCardLoading";
 
 export const ProductDashboard = () => {
-  const product1 = {
-    id: 0,
-    title: "Phone Charger",
-    img: "/images/phone_charger_test_img.png",
-  };
-  const product2 = {
-    id: 1,
-    title: "Fart Test",
-    img: "/images/whoopee_cushion_test.png",
-  };
-  const product3 = {
-    id: 2,
-    title: "Tooty",
-    img: "/images/whoopee_cushion_test.png",
-  };
-  const product4 = {
-    id: 3,
-    title: "Diffy Shock",
-    img: "/images/phone_charger_test_img.png",
-  };
-
-  const productsList = [product1, product2, product3, product4];
-
+  /*
+    Page to render the products the user is currently tracking.
+  */
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
-    navigate('/product-info', { state: { product: productsList[prodId], meaning : 'test' } }); 
+    navigate('/product-info', { state: { prodId: prodId} }); 
   }
 
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Get products the user is currently tracking
+  const getProductInfo = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/api/product/home/");
+      console.log(res.data); // REMOVE
+      console.log(`Type of data: ${typeof res.data}`);
+      return res.data // Filled object
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error); // Empty object
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const [productData, setProductData] = useState<any>([]);
+  // On page load get the list of products user is tracking and update the information
+  useEffect(() => { 
+    getProductInfo()
+      .then((res) => {
+        let productDataList:any[] = []; // Change this any to a defined product card object in future
+        res.map((productInfo : any) => productDataList.push(productInfo))
+        setProductData(productDataList);
+      }).catch((error) => {
+        console.log(error)
+        setProductData(null);
+      })
+  }, [])
+
+  // Function to cut of a string at a specific length (for rendering ... at long strings)
+  const stringLimiter = (inString : string, sliceLength : number) => {
+    if (inString.length > sliceLength) {
+      return `${inString.slice(0,sliceLength)}...` // Slice up the string
+    } else {
+      return inString; // No need to slice up the string
+    }
+
+  }
+
+  // Count number of cards currently loading
+  const [waitingCardNumber, setWaitingCardNumber] = useState<number>(0); 
+
+  const addProductCard = async ( scrapeUrl : string ) => {
+   
+    // Increment number of waiting cards to be processed
+    setWaitingCardNumber(waitingCardNumber + 1);
+    // Call the URL scraper API
+    try {
+      const urlData = {url:scrapeUrl};
+      console.log("Sending scraping api");
+      const res = await api.post("/api/product/",urlData);
+      console.log(res.data);
+
+      if (res.data[0] !== undefined) {
+        setProductData((productData : any) => [res.data[0], ...productData]);
+        console.log("Added product information.");
+        console.log(`Added: ${productData}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // Decrement waitng card number -> the card has been processed
+      setWaitingCardNumber(waitingCardNumber => Math.max(waitingCardNumber - 1,0)); // Clamp value to 0
+    }
+  }
+
+  // Render the product card based on information given by backend
+  const renderProductCards = () => {
+    if (loading === true) {
+      return <h3>Page Loading...</h3>
+    } else {
+      console.log(productData);
+      console.log(`Type test 2: ${typeof productData}`)
+      try{
+          return (
+            productData.map((productInfo : any) => {
+              return(
+                <ProductCard
+                  key={productInfo["product"]["id"]}
+                  productTitle={stringLimiter(productInfo["product"]["name"], 20)}
+                  productImg={productInfo["product"]["image"]}
+                  productOverview={stringLimiter(productInfo["overview"], 200)}
+                  lastUpdated={productInfo["date"]}
+                  sentimentScore={productInfo["avg_sentiment"]}
+                  onClick={() => navFunc(productInfo["product"]["id"])}
+                /> 
+              )
+          })
+        )
+      } catch (error) {
+        console.log(error);
+        return (
+          <>
+            <h3>Error Getting Product Info</h3>
+            <a href=".">Retry</a>
+          </>
+          
+        )
+      }
+      
+    }
+  }
+
+  // Render the loading cards (cards with loading icons)
+  const renderLoadingCards = (numCards : number) => {
+    // Function to render numCards loading product cards
+    return [...Array(numCards).keys()].map((key) => {
+      return (<ProductCardLoading key={key} />)
+    })
+  }
+  
+
   return (
-    <>
-      <h1>ProductDashboard</h1>
-      <div className="dashboard-container">
-        {productsList.map((product) => (
-          <ProductCard
-            key={product.title}
-            productTitle={product.title}
-            productImg={product.img}
-            productId={product.id}
-            onClick={() => navFunc(product.id)}
-          />
-        ))}
+    <div className="flex flex-col min-h-[100vh]">
+      <NavbarTop title="VoPop" urlScraperCallback={addProductCard}/>
+      <div className="flex-grow flex flex-col gap-8 bg-[#FBF5F3]">
+        <div 
+          className="flex-grow flex flex-col items-center gap-4 px-32 pt-4"
+        >
+          {/* Render loading card components */}
+          {renderLoadingCards(waitingCardNumber)}
+
+          {/* Render the product cards */}
+          {renderProductCards()}
+        </div>
+        <Footer />
       </div>
-      <p>
-        <a href="/home">Back Home</a>
-      </p>
-    </>
+    </div>
   );
 };

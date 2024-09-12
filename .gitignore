@@ -1,2 +1,7 @@
 .venv
 .DS_Store
+venv/
+.DS_Store
+/backend/api/__pycache__
+*.pyc
+__pycache__/

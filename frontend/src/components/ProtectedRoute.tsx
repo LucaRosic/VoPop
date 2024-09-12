@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 
 interface Props {
@@ -14,7 +14,16 @@ interface Props {
   }
 
 function ProtectedRoute({children} : Props) {
+    /*
+        This is a wrapper component. Wrap other components that require backend authorization with this to 
+        ensure that access is denied if un-authenticated.
+    */
+
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        auth().catch(() => setIsAuthorized(false));
+    }, [])
 
     const refreshToken = async () => {
         // Get refresh token
@@ -23,6 +32,7 @@ function ProtectedRoute({children} : Props) {
         try {
             // Sending refresh (refreshToken) payload to this api end point (dont forget trailing slash)
             // Base URL is already handled (base url for Django server)
+            console.log("Protected Route Refresh Token!")
             const res = await api.post("/api/token/refresh/", {refresh: refreshToken}); // Get response on POST request
             if (res.status === 200) { // Response was success
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
