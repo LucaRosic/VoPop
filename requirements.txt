@@ -13,11 +13,6 @@ torch
 numpy==1.26.4
 pandas
 selenium
-<<<<<<< HEAD
-google-generativeai
-nltk
-lsg_converter
-=======
 webdriver_manager
 google-generativeai
 nltk
@@ -26,4 +21,3 @@ langdetect
 better_profanity
 pymysql
 apache-airflow
->>>>>>> Dev

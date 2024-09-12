@@ -50,16 +50,10 @@ class ProductSumSerializer_HOME(serializers.ModelSerializer):
     
     class Meta:
         model = Product_Summary
-<<<<<<< HEAD
-        fields = ['product', 'summary', 'avg_sentiment', 'date']
-        extra_kwargs = {"product": {"read_only": True}, "summary": {"read_only": True}, \
-            "avg_sentiment": {"read_only": True}, "date": {"read_only": True}}
-=======
         fields = ['product', 'overview', 'avg_sentiment', 'review_count', 'postive_count', 'negative_count', 'date']
         extra_kwargs = {"product": {"read_only": True}, "overview": {"read_only": True}, \
             "avg_sentiment": {"read_only": True}, "review_count": {"read_only": True}, \
                 "postive_count": {"read_only": True}, "negative_count": {"read_only": True}, "date": {"read_only": True}}
->>>>>>> Dev
         
 
 #______________________________________________________________________________________________________
@@ -69,13 +63,8 @@ class SentimentDataSerializer_Dash(serializers.ModelSerializer):
     
     class Meta:
         model = Product_Reviews
-<<<<<<< HEAD
-        fields = ['sentiment', 'sentiment_label', 'date']
-        extra_kwargs = {"sentiment": {"read_only": True}, "sentiment_label": {"read_only": True}, "date": {"read_only": True}}
-=======
         fields = ['sentiment_label', 'date']
         extra_kwargs = {"sentiment_label": {"read_only": True}, "date": {"read_only": True}}
->>>>>>> Dev
   
         
 class ProductSerializer_Dash(serializers.ModelSerializer):

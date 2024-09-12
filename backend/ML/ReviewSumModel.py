@@ -1,12 +1,6 @@
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import nltk
-<<<<<<< HEAD
-#from get_json_reviews import get_review_dict
-import pandas as pd
-
-=======
->>>>>>> Dev
 
 
 
@@ -64,15 +58,6 @@ def batch_summary(model, query_revs):
     query_str = ' || '.join(query_revs)
             
     # try gemini query until successful
-<<<<<<< HEAD
-    while True:
-        try:
-            batch_sum = model.generate_content(f"Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}")
-            break
-        except:
-            ##print('something went wrong. Retrying...')
-            continue
-=======
     fail_counter = 0
     while True:
         try:
@@ -85,7 +70,6 @@ def batch_summary(model, query_revs):
             else:
                 fail_counter += 1
                 continue
->>>>>>> Dev
         
     return batch_sum.text
     
@@ -110,7 +94,7 @@ def summarize(reviews):
     # made for All_Beauty.json atm
     ##for review in reviews['reviewText']:
     for review in reviews:
-        review = review['Review Text']
+        review = review[0]
         
         # get token count
         tokens = nltk.word_tokenize(review)
@@ -133,19 +117,6 @@ def summarize(reviews):
     
     # output the product summary
     if len(batch_sums) > 1:
-<<<<<<< HEAD
-        print('got to this point...')
-        
-        # if multiple summaries are made for a product, combine them
-        query_sum = ' || '.join(batch_sums)
-        while True:
-            try:
-                prod_sum = model.generate_content(f"Can you please combine these summarises for me, I want to understand what customers like and do not like about the product, the summaries are seperated by '||': {query_sum}")
-                break
-            except:
-                ##print('Something went wrong. Retrying...')
-                continue
-=======
         
         # if multiple summaries are made for a product, combine them
         query_sum = ' || '.join(batch_sums)
@@ -161,7 +132,6 @@ def summarize(reviews):
                 else:
                     fail_counter += 1
                     continue
->>>>>>> Dev
         
         return prod_sum.text
                 
@@ -186,14 +156,4 @@ if __name__ == '__main__':
     #for i,v in review_dict.items():
         #review_list += v
     
-<<<<<<< HEAD
     #print(summarize(review_list))
-
-    
-    
-    
-    
-    
-=======
-    #print(summarize(review_list))
->>>>>>> Dev

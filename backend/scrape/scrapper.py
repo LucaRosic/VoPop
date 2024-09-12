@@ -2,14 +2,6 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-<<<<<<< HEAD
-import pandas as pd
-import time
-from urllib.parse import urlparse
-import json
-from selenium import webdriver
-
-=======
 from datetime import datetime
 import re
 import time
@@ -18,7 +10,6 @@ from selenium import webdriver
 
 # from airflow.decorators import dag, task
 
->>>>>>> Dev
 def is_valid_url(url):
     try:
         result = urlparse(url)
@@ -29,31 +20,6 @@ def is_valid_url(url):
 def get_site(url):
     if 'amazon' in url:
         return 'amazon'
-<<<<<<< HEAD
-    elif 'etsy' in url:
-        return 'etsy'
-    elif 'alibaba' in url:
-        return 'alibaba'
-    else:
-        return None
-
-def scrape_amazon_reviews(url):
-    count=0
-    def clean_url(url):
-        if "/product-reviews/" in url:
-            url = url.replace("/product-reviews/", "/dp/")
-        elif "/dp/" in url:
-            parts = url.split("/dp/")
-            if "/ref" in parts[1]:
-                clean_part = parts[1].split("/ref")[0]
-            else:
-                clean_part = parts[1].split("?")[0]
-            url = parts[0] + "/dp/" + clean_part, clean_part
-        return url 
-        
-    
-
-=======
     elif 'aliexpress' in url:
         return 'aliexpress'
     else:
@@ -107,7 +73,6 @@ def convert_date(date_str):
 
 def scrape_amazon_reviews(url,date_filter=None):
     count=0 
->>>>>>> Dev
     print("Amazon detected")
     start_time = time.time()
 
@@ -118,11 +83,7 @@ def scrape_amazon_reviews(url,date_filter=None):
     options = webdriver.FirefoxOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
-<<<<<<< HEAD
-    options.add_argument('--headless')
-=======
     #options.add_argument('--headless') 
->>>>>>> Dev
 
     # Initialize FirefoxDriver service
     service = Service(gecko_driver_path)
@@ -137,28 +98,6 @@ def scrape_amazon_reviews(url,date_filter=None):
     # Initialize an empty list to store reviews
     reviews_list = []
 
-<<<<<<< HEAD
-    try:
-        # Scrape product details
-        product_name = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'productTitle'))
-        ).text
-
-        product_image = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'landingImage'))
-        ).get_attribute('src')
-
-        try:
-            product_brand = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="productOverview_feature_div"]/div/table/tbody/tr[1]/td[2]/span'))
-            ).text
-        except:
-            product_brand = "NA"
-
-        # Click on the "See more reviews" link if present
-        try:
-            see_more_reviews = WebDriverWait(driver, 3).until(
-=======
     if date_filter is None:
         try:
             print('Looking for product name')
@@ -211,18 +150,11 @@ def scrape_amazon_reviews(url,date_filter=None):
         try:
             print("searching.....more reviews")
             see_more_reviews = WebDriverWait(driver, 5).until(
->>>>>>> Dev
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
             )
             see_more_reviews.click()
         except Exception as e:
             print("See more reviews link not found or error:", e)
-<<<<<<< HEAD
-
-        while True:
-            # Extract review elements
-            review_elements = WebDriverWait(driver, 3).until(
-=======
         try:
             product_brand = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'a-size-base a-link-normal'))
@@ -258,7 +190,6 @@ def scrape_amazon_reviews(url,date_filter=None):
         while True:
             # Extract review elements
             review_elements = WebDriverWait(driver, 10).until(
->>>>>>> Dev
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.a-section.review'))
             )
 
@@ -270,9 +201,6 @@ def scrape_amazon_reviews(url,date_filter=None):
                     review_text = review.find_element(By.CSS_SELECTOR, '.review-text-content').text
                     # Extract review date
                     review_date = review.find_element(By.CSS_SELECTOR, '.review-date').text
-<<<<<<< HEAD
-                    # Extract star rating
-=======
 
                     try:
                         review_date = convert_date(review_date)
@@ -288,7 +216,6 @@ def scrape_amazon_reviews(url,date_filter=None):
                         print(f"Skipping review from {review_date} due to date filter: {date_filter}")
                         continue
 
->>>>>>> Dev
                     review_stars = review.find_element(By.CSS_SELECTOR, '.a-icon-alt').get_attribute('textContent')
                     count+=1
                     # Append the extracted data to the reviews list
@@ -320,23 +247,6 @@ def scrape_amazon_reviews(url,date_filter=None):
         # Close the WebDriver
         driver.quit()
 
-<<<<<<< HEAD
-    # Create a product details dictionary
-    product_details = {
-        'Product Name': product_name,
-        'Product Image': product_image,
-        'Unique Key': unique_key,
-        'Brand': product_brand,
-        'Reviews': reviews_list
-    }
-
-    # Save product details as a JSON file
-    with open('amazon_product_details.json', 'w') as file:
-        json.dump(product_details, file, indent=4)
-
-    end_time = time.time()  # End the timer
-    elapsed_time = end_time - start_time  # Calculate elapsed time
-=======
     if date_filter:
         return reviews_list
 
@@ -354,20 +264,12 @@ def scrape_amazon_reviews(url,date_filter=None):
 
     end_time = time.time()
     elapsed_time = end_time - start_time
->>>>>>> Dev
     print(f"Scraping completed in {elapsed_time:.2f} seconds")
 
     return product_details
 
 
 def scrape_ali_express_reviews(url):
-<<<<<<< HEAD
-    print("AliExpress detected")
-    # Implement Alibaba scraping herev
-    pass
-
-def scrape_reviews(url):
-=======
     
     print("AliExpress detected")
 
@@ -552,38 +454,22 @@ def scrape_reviews(url):
     return reviews_list
 
 def scrape_reviews(url, date=None):
->>>>>>> Dev
     if not is_valid_url(url):
         print("Invalid URL")
         return None
 
     site = get_site(url)
-<<<<<<< HEAD
-    if site == 'amazon':
-        return scrape_amazon_reviews(url)
-    elif site == 'etsy':
-        return scrape_etsy_reviews(url)
-=======
 
     if site == 'amazon':
         return scrape_amazon_reviews(url, date)
     elif site == 'etsy':
         return scrape_ali_express_reviews(url)
->>>>>>> Dev
     elif site == 'aliexpress':
         return scrape_ali_express_reviews(url)
     else:
         print("Unsupported site")
         return None
 
-<<<<<<< HEAD
-# Example usage
-if __name__ == "__main__":
-    # url = "https://www.etsy.com/au/listing/1518307138/personalized-travel-jewelry-box-small?click_key=e840c0f4cb9842b5b33c7993184a9c63c837c426%3A1518307138&click_sum=dd8b8e24&ref=hp_prn-1&pro=1&sts=1"
-    # url = "https://www.alibaba.com/product-detail/2020-Innovation-Smart-Watch-Band-Fitness_62471952214.html?spm=a27aq.27039648.4955574140.39.19db3ccf02rzO0 "
-    url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
-    reviews_df = scrape_reviews(url)
-=======
 
 if __name__ == "__main__":
 
@@ -593,4 +479,3 @@ if __name__ == "__main__":
         url='https://www.amazon.com/Apple-Smartwatch-Starlight-Aluminum-Detection/product-reviews/B0CHX7R6WJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
         date = datetime(day=2,month=7, year=2024)
         reviews_df = scrape_reviews(url)
->>>>>>> Dev

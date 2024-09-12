@@ -1,35 +1,25 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics, status
-<<<<<<< HEAD
-from .serializers import UserSerializer, ProductSerializer, UserProductSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
-=======
 from .serializers import UserSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
->>>>>>> Dev
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Product, User_Products, Product_Summary, Product_Reviews
+from .models import Product, User_Products, Product_Summary, Product_Reviews, Product_Data_Source
 from rest_framework.response import Response
 from rest_framework.views import APIView
-<<<<<<< HEAD
-from scrape.scrapper import scrape_reviews
-from ML.ReviewSumModel import summarize
-from ML.sentiment import analyseSentiment, start_model
-from Clean.Transform import clean_transform_data
-import datetime
-import nltk 
-=======
 from rest_framework_simplejwt.tokens import RefreshToken
-from scrape.scrapper import scrape_reviews, clean_url
+from scrape.scrapper import scrape_reviews, clean_url, get_site, is_valid_url
 from ML.ReviewSumModel import summarize
 from ML.sentiment import analyseSentiment, start_model
 from Clean.Transform import clean_transform_data
 from datetime import datetime, timedelta
 import pandas as pd
+from django.db import connection
+from django.db.models import Q
+
 
 
 #_____________________________________________________________________________________________________________________________
 # USER Requests 
->>>>>>> Dev
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -45,9 +35,6 @@ class CreateUserView(generics.CreateAPIView):
     
     
     
-<<<<<<< HEAD
-class CreateProduct(generics.ListCreateAPIView):
-=======
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -60,7 +47,6 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)  
->>>>>>> Dev
     
     
 
@@ -70,156 +56,344 @@ class LogoutView(APIView):
 
 class CreateProduct(APIView):
     
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
-<<<<<<< HEAD
-    # creates everything 
-    def perform_create(self, serializer):
+    
+    ### THINGS TO DO ###
+    # - add user to user table p
+    # - make functions for reoccuring parts 
+    # - check user aint already tracking it
+    # - MEGA clean needed to code 
+    # if same link pasted twice (move to link link  situation)
+    
+    def www(self, prod, rows):
         
-        if serializer.is_valid():
+        summary = summarize(rows)
+        overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
+        
+        positive_count = len([ i[1] for i in rows if i[1] == 'Positive'])
+        negative_count = len([ i[1] for i in rows if i[1] == 'Negative'])
+        avg_sentiment = round( (positive_count/len(rows)) - (negative_count/len(rows) ) ,2)
+        
+        ratings = [ i[2] for i in rows ]
+        avg_rating = sum(ratings)/len(ratings)
+        
+        prod_sum = Product_Summary(product=prod, summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating, review_count=len(rows), \
+                postive_count=positive_count, negative_count=negative_count)
+        prod_sum.save()
+        
+        serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=prod), many=True)
+        
+        return serializer
             
-            # If product is already in database, only add to user_product table
-            if Product.objects.filter(url=serializer.validated_data['url']).exists():
-                
-                if User_Products.objects.filter(user=User.objects.get(pk=2), product=Product.objects.get(url=serializer.validated_data['url'])).exists():
-                    return  Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-                
-                user_prod = User_Products(user=User.objects.get(pk=1), product=Product.objects.get(url=serializer.validated_data['url']))
-                user_prod.save()
-                serializer = ProductSerializer(Product.objects.get(url=serializer.validated_data['url']))
-                return Response(data=serializer.data, status=status.HTTP_100_CONTINUE)
-            else:
-                # scrape and clean data 
-                scraped = (scrape_reviews(serializer.validated_data['url']))  
-                cleaned = clean_transform_data(scraped)
-                
-                # add to product table          
-                serializer.save(name=scraped['Product Name'], category='amazon', brand=cleaned['Brand'], image=cleaned['Product Image'])
-                
-                # adds to user_product table
-                user_prod = User_Products(user=User.objects.get(pk=2), product=Product.objects.get(pk=serializer.data['id']))
-                user_prod.save() 
-                
-                avg_sentiment = 0
-                avg_rating = 0
-                ##month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
-                sent_model = start_model()
-                for review in cleaned['Reviews']:
-                    
-                    # date = review['Date'].split('on ')[-1].split(' ')
-                    sentiment = analyseSentiment(sent_model, review['Review Text'])
-                    # rating = float(review['Stars'].split(' ')[0])
-                    avg_rating += review['Stars']
-                    avg_sentiment += sentiment
-                    if sentiment >= 0.5:
-                        sentiment_label = 'Positive'
-                    elif sentiment <= -0.5:
-                        sentiment_label = 'Negative'
-                    else: 
-                        sentiment_label = 'Neutral'
-                    
-                    # if date[0].isdigit():
-                    prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                        sentiment=sentiment, sentiment_label=sentiment_label, rating=review['Stars'], date=datetime.date(review['Date'][-1], review['Date'][1], review['Date'][0]) )
-                    # else:
-                    #     prod_rev = Product_Reviews(product=Product.objects.get(pk=serializer.data['id']), review=review['Review Text'], \
-                    #         sentiment=sentiment, sentiment_label=sentiment_label, rating=rating, date=datetime.date(int(date[-1]), month_dict[date[0]], int(date[1].replace(',',''))))
-                    prod_rev.save()
-                    
-                avg_sentiment = round(avg_sentiment/len(cleaned['Reviews']),2)
-                avg_rating = round(avg_rating/len(cleaned['Reviews']),2)
-                prod_sum = Product_Summary(product=Product.objects.get(pk=serializer.data['id']), summary=summarize(cleaned['Reviews']), avg_sentiment=avg_sentiment, avg_rating=avg_rating)
-                prod_sum.save()
-                
-=======
+    def ddd(self, url):
+        
+        scraped = (scrape_reviews(url[0]))  
+        cleaned = clean_transform_data(scraped)
+        sent_model = start_model()
+        
+        product_meta = [cleaned['Product Name'], cleaned['Brand'], cleaned['Product Image']]
+        
+        for review in cleaned['Reviews']:
+        
+            # Sentiment
+            sentiment = analyseSentiment(sent_model, review['Review Text']) 
+            prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
+                sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+            prod_rev.save()
+            
+        return product_meta
+        
+        
+    
     def post(self, request):
         
-        # Check if product is in DB
-        cleaned_url, unique_code = clean_url(request.data['url'])
-        
-        # Product is already in database
-        if Product.objects.filter(unique_code=unique_code).exists():
+        if len(request.data) == 2:
             
-            # User is already tracking product
-            if User_Products.objects.filter(user=self.request.user, product=Product.objects.get(url=cleaned_url)).exists():
-                return Response(status=status.HTTP_208_ALREADY_REPORTED)
+            # clean urls and get unique code     
+            clean_urls = [clean_url(url) for url in request.data.values()]
             
             
-            # Connect product to user
-            user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=unique_code))
-            user_prod.save()
+            # check links are valid 
+            for i in clean_urls:
+                if get_site(i[0]) is None:
+                    print('here1')
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                
+                if is_valid_url(i[0]) is False:
+                    print('here2')
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                    
+            
+            # checking if product is in db            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT ds1.product_id as product_id, ds1.source as source_1, ds2.source as source_2 
+                                FROM api_product_data_source ds1, api_product_data_source ds2 
+                                Where ds1.product_id = ds2.product_id 
+                                AND ds1.id != ds2.id
+                                AND ds1.source = %s 
+                                AND ds2.source = %s""", [clean_urls[0][0], clean_urls[1][0]])
+                row = cursor.fetchall()   
+            
+            # product exists
+            if len(row) == 1:
+                product_id = row[0][0]
+                #user_prod = User_Products(user=self.request.user, product=Product.objects.get(id=product_id))
+                if User_Products.objects.filter(user=User.objects.get(id=2), product=Product.objects.get(id=product_id)).exists():
+                    return Response(status.HTTP_208_ALREADY_REPORTED)
+                
+                user_prod = User_Products(user=User.objects.get(id=2), product=Product.objects.get(id=product_id))
+                
+                user_prod.save()
+                serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(id=product_id)), many=True)
+                return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+            
+            # check if url links are in db
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT DISTINCT source
+                            FROM api_product_data_source
+                            WHERE source = %s
+                            OR source = %s""", [clean_urls[0][0], clean_urls[1][0]])
+                rows = cursor.fetchall()   
             
             
-            # Return Product card details to frontend
-            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=unique_code)), many=True)
-            return Response(status=status.HTTP_201_CREATED, data=serializer.data)
-        
->>>>>>> Dev
-        else:
+            existing_links = [row[0] for row in rows]    
+            product_meta =  [] 
             
-            # scrape data
-            scraped = (scrape_reviews(request.data['url']))  
+            print(existing_links)           
             
+            for url in clean_urls:
+                
+                # scrape link and add reviews to db if link not in db
+                if url[0] not in existing_links:
+                    print('not in:', url)
+                    
+                    product_meta  = self.ddd(url)
+                    
+                        
+                        
+            if len(product_meta) == 0:
+                with connection.cursor() as cursor:
+                    cursor.execute("""
+                                SELECT DISTINCT name, brand, image
+                                FROM api_product_data_source ds
+                                INNER JOIN api_product p
+                                ON ds.product_id = p.id
+                                WHERE source = %s
+                                """, [cleaned_url[0]])
+                    product_meta = cursor.fetchone()
+                
             
-            # URL link is invalid
-            if scraped is None:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            
-            
-            # Clean scraped data
-            cleaned = clean_transform_data(scraped)
-            
-            # Add to product table  
-            prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], unique_code=scraped['Unique Key'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
+            # create table instances
+            prod = Product(name=product_meta[0], brand=product_meta[1], image=product_meta[2])
             prod.save()
             
-            # Connects Product to User
-            user_prod = User_Products(user=request.user, product=Product.objects.get(unique_code=scraped['Unique Key']))
+            user_prod = User_Products(user=User.objects.get(id=2), product=prod)
+            user_prod.save()
+            
+            link1 = Product_Data_Source(source=clean_urls[0][0], unique_code=clean_urls[0][1], product=prod, date=datetime.now())
+            link1.save()
+            
+            link2 = Product_Data_Source(source=clean_urls[1][0], unique_code=clean_urls[1][1], product=prod, date=datetime.now())
+            link2.save()
+            
+            # collect all reviews for product
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT review, sentiment_label, rating
+                            FROM api_product_reviews
+                            WHERE unique_code = %s
+                            OR unique_code = %s""", [clean_urls[0][1], clean_urls[1][1]])
+                rows = cursor.fetchall()  
+            
+            
+            
+            # create product summary instance  
+            
+            serializer = self.www(prod, rows)
+            
+            
+            return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+
+        
+        #________________________________________________________________________________________
+        
+        
+        
+        ### 1 link given
+        else:
+            
+            # get unicdoe and clean url
+            cleaned_url  = clean_url(request.data['url1'])
+            
+            # check link is valid (combine into one if) 
+            if get_site(cleaned_url[0]) is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+                
+            if is_valid_url(cleaned_url[0]) is False:
+                return Response(status=status.HTTP_400_BAD_REQUEST) 
+            
+            
+            # check if product exists already 
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT Distinct ds1.product_id 
+                                FROM api_product_data_source ds1, api_product_data_source ds2 
+                                Where ds1.product_id = ds2.product_id 
+                                AND ds1.id != ds2.id
+                                AND ds1.source = %s 
+                                """, [cleaned_url[0]])
+                prod_ids = cursor.fetchall()   
+            
+            print(prod_ids, cleaned_url[0])    
+            for prod_id in prod_ids:
+                with connection.cursor() as cursor:
+                    cursor.execute("""
+                                SELECT source 
+                                    FROM api_product_data_source 
+                                    Where product_id = %s 
+                                    AND source != %s 
+                                    """, [prod_id[0], cleaned_url[0]])
+                    prod_exists = cursor.fetchall() 
+                
+                if len(prod_exists) == 0:
+                    
+                    if User_Products.objects.filter(user=User.objects.get(id=2), product=Product.objects.get(id=product_id)).exists():
+                        return Response(status.HTTP_208_ALREADY_REPORTED)
+                    
+                    user_prod = User_Products(user=self.request.user, product=Product.objects.get(id=prod_id))
+                    user_prod.save()
+                    serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(id=prod_id)), many=True)
+                    return Response(status.HTTP_208_ALREADY_REPORTED, data=serializer.data)
+                    
+            # check if link is in db (for combined link prod)
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT DISTINCT source
+                            FROM api_product_data_source
+                            WHERE source = %s
+                            """, [cleaned_url[0]])
+                row = cursor.fetchall()      
+            
+            # if not scrape
+            if len(row) == 0:
+                print('not in:', cleaned_url[0]) 
+                product_meta  = self.ddd(cleaned_url)
+            
+            # if link in  db, just collect product meta data
+            else:
+                with connection.cursor() as cursor:
+                    cursor.execute("""
+                                SELECT DISTINCT name, brand, image
+                                FROM api_product_data_source ds
+                                INNER JOIN api_product p
+                                ON ds.product_id = p.id
+                                WHERE source = %s
+                                """, [cleaned_url[0]])
+                    product_meta = cursor.fetchone()
+                
+            
+            # create table instances
+            prod = Product(name=product_meta[0], brand=product_meta[1], image=product_meta[2])
+            prod.save()
+            
+            user_prod = User_Products(user=User.objects.get(id=2), product=prod)
             user_prod.save() 
             
+            link1 = Product_Data_Source(source=cleaned_url[0], unique_code=cleaned_url[1], product=prod, date=datetime.now())
+            link1.save()   
             
             
-            postive_count = 0
-            negative_count = 0
-            sent_model = start_model()
+            # collect all the reviews    
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT review, sentiment_label, rating
+                            FROM api_product_reviews
+                            WHERE unique_code = %s
+                            """, [cleaned_url[1]])
+                rows = cursor.fetchall()
             
-            for review in cleaned['Reviews']:
-                
-                # Sentiment
-                sentiment = analyseSentiment(sent_model, review['Review Text'])
-                
-                # Count positive and negative reviews
-                if sentiment['label'] == 'Positive':
-                    postive_count += 1
-                elif sentiment['label'] == 'Negative':
-                    negative_count += 1
-                
-                
-                # Add product reviews
-                prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
-                    sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
-                prod_rev.save()
-                   
-            # Calculate avg. sentiment (NPS) for Product       
-            avg_sentiment = round( (postive_count/len(cleaned['Reviews'])) - (negative_count/len(cleaned['Reviews']) ) ,2)
+            # create product summary instance, self.www(prod, rows)
             
-            # Gemini Review Summary Model
-            summary=summarize(scraped['Reviews'])
+            serializer = self.www(prod, rows) 
             
-            # Overivew for frontend product cards
-            overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
-            
-            # avg_rating = float(scraped['Average Star'].split(' ')[0])
-            
-            
-            # Add product summary
-            prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, review_count=len(cleaned['Reviews']), \
-                postive_count=postive_count, negative_count=negative_count, avg_rating=cleaned['Average Stars'])
-            prod_sum.save()
-            
-            # Return product card data to frontend
-            serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=Product.objects.get(unique_code=scraped['Unique Key'])), many=True)
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+        
+        
+            # scraped = (scrape_reviews(url[0]))  
+                    # cleaned = clean_transform_data(scraped)
+                    # sent_model = start_model()
+                    
+                    # product_meta = [cleaned['Product Name'], cleaned['Brand'], cleaned['Product Image']]
+                    
+                    # for review in cleaned['Reviews']:
+                    
+                    #     # Sentiment
+                    #     sentiment = analyseSentiment(sent_model, review['Review Text']) 
+                    #     prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
+                    #         sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+                    #     prod_rev.save()
+            
+            #___________________#
+
+            # summary = summarize(rows)
+            # overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
+            
+            # positive_count = len([ i[1] for i in rows if i[1] == 'Positive'])
+            # negative_count = len([ i[1] for i in rows if i[1] == 'Negative'])
+            # avg_sentiment = round( (positive_count/len(rows)) - (negative_count/len(rows) ) ,2)
+            
+            # ratings = [ i[2] for i in rows ]
+            # avg_rating = sum(ratings)/len(ratings)
+            
+            # prod_sum = Product_Summary(product=prod, summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating, review_count=len(rows), \
+            #         postive_count=positive_count, negative_count=negative_count)
+            # prod_sum.save()
+            
+            
+            # serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=prod), many=True)
+            
+            
+            #________________________________________________________________________________________________    
+           
+
+            # scraped = (scrape_reviews(cleaned_url[0]))  
+            #     cleaned = clean_transform_data(scraped)
+            #     sent_model = start_model()
+                
+            #     product_meta = [cleaned['Product Name'], cleaned['Brand'], cleaned['Product Image']]
+                
+            #     for review in cleaned['Reviews']:
+                
+            #         # Sentiment
+            #         sentiment = analyseSentiment(sent_model, review['Review Text']) 
+            #         prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
+            #             sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+            #         prod_rev.save()
+            
+            #___________________#
+            
+            # summary = summarize(rows)
+            # overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
+            
+            # positive_count = len([ i[1] for i in rows if i[1] == 'Positive'])
+            # negative_count = len([ i[1] for i in rows if i[1] == 'Negative'])
+            # avg_sentiment = round( (positive_count/len(rows)) - (negative_count/len(rows) ) ,2)
+            
+            # ratings = [ i[2] for i in rows ]
+            # avg_rating = sum(ratings)/len(ratings)
+            
+            # prod_sum = Product_Summary(product=prod, summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating, review_count=len(rows), \
+            #         postive_count=positive_count, negative_count=negative_count)
+            # prod_sum.save()
+            
+            
+            # serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=prod), many=True)
+                
+                    
+        
     
     
 
@@ -246,7 +420,21 @@ class GetReviewSent_Dash(APIView):
     
     def get(self, request, product_id):
         
-        serializer = SentimentDataSerializer_Dash(Product_Reviews.objects.filter(product=product_id), many=True)
+        with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT DISTINCT unique_code
+                            FROM api_product_data_source
+                            WHERE product_id = %s
+                            """, [product_id])
+                unique_codes = cursor.fetchall() 
+        
+        print(unique_codes)
+        
+        if len(unique_codes) == 2:
+            serializer = SentimentDataSerializer_Dash(Product_Reviews.objects.filter(Q(unique_code=unique_codes[0][0]) |  Q(unique_code=unique_codes[1][0])), many=True)
+        else: 
+            serializer = SentimentDataSerializer_Dash(Product_Reviews.objects.filter(unique_code=unique_codes[0][0]), many=True)
+        
         datalist = pd.DataFrame(serializer.data)
         datalist['date'] = pd.to_datetime(datalist['date'], yearfirst=True)
         datalist['month'] = datalist['date'].dt.month
@@ -298,118 +486,55 @@ class GetSentimentNewReviews(APIView):
     def get(self,request):
         sent_model = start_model()
         review = request.GET.get('review')
-        return Response(analyseSentiment(sent_model, review))
-  
+        return Response(analyseSentiment(sent_model, review))      
+      
 #_____________________________________________________________________________________________________________________________
 # DELETE Requests  
 
+# class ProductDelete(APIView):
+    
+#     permission_classes  = [IsAuthenticated]
+    
+#     def delete(self, request, product_id):
+
+#         # Delete for user table, not whole product
+#         User_Products.objects.filter(user=self.request.user,product=product_id).delete()
+        
+#         # Delete product if no user is tracking (no point storing irrelevant data)
+#         if User_Products.objects.filter(product=product_id).exists() == False:
+#             Product.objects.filter(pk=product_id).delete()
+
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ProductDelete(APIView):
     
-<<<<<<< HEAD
-    
-class GetProds(generics.RetrieveAPIView):
-    
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
-    
-    
-class GetUProds(generics.RetrieveAPIView):
-    
-    lookup_field = 'product_id'
-    queryset = User_Products.objects.all()
-    serializer_class = UserProductSerializer
-    permission_classes = [AllowAny]
-    
-#_____________________________________________________________________________________________________________________________
-# POST Stuff
-
-## most promising so far    
-class GetProductDetails(APIView):
-    
     permission_classes  = [AllowAny]
-    
-    def get(self, request, product_id):
-        
-        serializer = ProductSerializer(Product.objects.filter(id=product_id), many=True)
-        
-        print(serializer.data[0]['url'])
-        
-        return Response(serializer.data)
-    
-    def delete(self, request, product_id):
-
-        # delete for user table, not whole product
-        Product.objects.filter(id=product_id).delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
-## GET STUFF
-
-# WORKING REQUESTS
-#__________________________________________________________________________________________________________________________
-# INFO FOR HOME
-class GetUserProduct_HomePage(generics.ListAPIView):
-    serializer_class = ProductSumSerializer_HOME
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        
-        product_ids = User_Products.objects.filter(user=self.request.user).values_list('product', flat=True)
-                
-        return Product_Summary.objects.filter(product__in=product_ids)
-    
-
-# INFO FOR DASH
-class GetReviewSent_Dash(APIView):
-    
-    permission_classes  = [AllowAny]
-    
-    def get(self, request, product_id):
-        
-        serializer = SentimentDataSerializer_Dash(Product_Reviews.objects.filter(product=product_id), many=True)
-        
-        return Response(serializer.data)
-        
-   
-class GetProductMeta_Dash(APIView):
-    permission_classes = [AllowAny]
-    
-    def get(self, request, product_id):
-                
-        serializer = ProductSerializer_Dash(Product.objects.filter(pk=product_id), many=True)
-        
-        return Response(serializer.data)
-
-class GetProductSum_Dash(APIView):
-    permission_classes = [AllowAny]
-    
-    def get(self, request, product_id):
-                
-        serializer = ProductSumSerializer_Dash(Product_Summary.objects.filter(product=product_id), many=True)
-        
-        return Response(serializer.data)
-    
-
-    
-   
-        
-                               
-        
-        
-=======
-    permission_classes  = [IsAuthenticated]
     
     def delete(self, request, product_id):
 
         # Delete for user table, not whole product
-        User_Products.objects.filter(user=self.request.user,product=product_id).delete()
+        # User_Products.objects.filter(user=self.request.user,product=product_id).delete()
+        User_Products.objects.filter(user=User.objects.get(id=2),product=product_id).delete()
         
         # Delete product if no user is tracking (no point storing irrelevant data)
         if User_Products.objects.filter(product=product_id).exists() == False:
+            
+            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT DISTINCT unique_code
+                            FROM api_product_data_source 
+                            WHERE product_id = %s
+                            """, [product_id])
+                unique_codes = cursor.fetchall()
+                
             Product.objects.filter(pk=product_id).delete()
+                
+            for unique_code in unique_codes:
+                if Product_Data_Source.objects.filter(unique_code=unique_code[0]).exists() == False:
+                    Product_Reviews.objects.filter(unique_code=unique_code[0]).delete()
+            
 
         return Response(status=status.HTTP_204_NO_CONTENT)
      
->>>>>>> Dev
