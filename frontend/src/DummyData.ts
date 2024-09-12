@@ -1,3 +1,10 @@
+/*
+
+  File to simulate dummy data (this is when testing frontend application independent
+  of the backend server running)
+
+*/
+
 const product1 = {
   id: 0,
   title: "Dummy Product 1",

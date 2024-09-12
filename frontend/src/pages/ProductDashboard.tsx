@@ -7,16 +7,18 @@ import api from "../api";
 import ProductCardLoading from "../components/ProductCardLoading";
 
 export const ProductDashboard = () => {
+  /*
+    Page to render the products the user is currently tracking.
+  */
   const navigate = useNavigate();
 
   const navFunc = (prodId : number) => {
     navigate('/product-info', { state: { prodId: prodId} }); 
   }
-  
-  // First do an API request to get product info
 
   const [loading, setLoading] = useState<boolean>(false);
 
+  // Get products the user is currently tracking
   const getProductInfo = async () => {
     setLoading(true);
     try {
@@ -33,7 +35,8 @@ export const ProductDashboard = () => {
   }
 
   const [productData, setProductData] = useState<any>([]);
-  useEffect(() => { // On page load setProductData
+  // On page load get the list of products user is tracking and update the information
+  useEffect(() => { 
     getProductInfo()
       .then((res) => {
         let productDataList:any[] = []; // Change this any to a defined product card object in future
@@ -45,6 +48,7 @@ export const ProductDashboard = () => {
       })
   }, [])
 
+  // Function to cut of a string at a specific length (for rendering ... at long strings)
   const stringLimiter = (inString : string, sliceLength : number) => {
     if (inString.length > sliceLength) {
       return `${inString.slice(0,sliceLength)}...` // Slice up the string
@@ -67,7 +71,7 @@ export const ProductDashboard = () => {
       console.log("Sending scraping api");
       const res = await api.post("/api/product/",urlData);
       console.log(res.data);
-      // setProductData((productData : any) => [...productData, res.data[0]]);
+
       if (res.data[0] !== undefined) {
         setProductData((productData : any) => [res.data[0], ...productData]);
         console.log("Added product information.");
@@ -81,6 +85,7 @@ export const ProductDashboard = () => {
     }
   }
 
+  // Render the product card based on information given by backend
   const renderProductCards = () => {
     if (loading === true) {
       return <h3>Page Loading...</h3>
@@ -117,6 +122,7 @@ export const ProductDashboard = () => {
     }
   }
 
+  // Render the loading cards (cards with loading icons)
   const renderLoadingCards = (numCards : number) => {
     // Function to render numCards loading product cards
     return [...Array(numCards).keys()].map((key) => {

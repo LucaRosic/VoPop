@@ -6,6 +6,12 @@ import 'bootstrap/dist/css/bootstrap.css'; // Bootstrap
 import { BrowserRouter } from 'react-router-dom';
 import { StyledEngineProvider } from '@mui/material';
 
+/*
+
+  This is just the main file that starts up and renders our web application
+
+*/
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   
   <React.StrictMode>
@@ -14,6 +20,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <App />
       </StyledEngineProvider>
     </BrowserRouter>
-    
   </React.StrictMode>,
 )

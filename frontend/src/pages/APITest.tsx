@@ -1,9 +1,15 @@
 import api from "../api"
 import { REFRESH_TOKEN } from "../constants";
-// import { data } from "../components/BarGraph"
+
+/*
+
+  File to test specific api calls with buttons.
+
+*/
 
 const APITest = () => {
 
+  // Logout API call function
   const sendLogout = async () => {
     console.log("Logging out");
 
@@ -17,6 +23,7 @@ const APITest = () => {
     }
   }
 
+  // Sentiment data API call function
   const getData = async () => {
     console.log("retrieving data")
     try {
@@ -28,6 +35,7 @@ const APITest = () => {
     }
   }
 
+  // Product dashboard API call function
   const getProduct = async () => {
     console.log("Testing Django");
     try {
@@ -40,6 +48,7 @@ const APITest = () => {
     }
   }
 
+  // Web scrape API call function
   const sendUrl = async () => {
     console.log("Sending URL api");
     try {
@@ -53,11 +62,13 @@ const APITest = () => {
     }
   }
 
+  // Clear local storage cache of application
   const clearCache = () => {
     console.log("Cleared the cache!");
     localStorage.clear();
   }
 
+  // Return buttons that call above functions
   return (
     <div className="flex flex-col justify-center items-center p-16">
       <h1 className="mb-20">API Test</h1>

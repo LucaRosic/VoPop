@@ -28,23 +28,25 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
   const convertSentimentscoreToEmoji = (score : number) => {
     /*
-      - <= 0.75 ( *vomit* )
-      - <= 0.8 ( :c )
-      - <= 0.85 ( :/ )
-      - <= 0.9 ( :) )
-      - <= 0.95 ( *sunglasses* )
+      These emoji thresholds were made subjectively
+
+      - <= -0.2 ( *vomit* )
+      - <= 0.0 ( :c )
+      - <= 0.3 ( :/ )
+      - <= 0.7 ( :) )
+      - <= else ( *sunglasses* )
     */
 
     let emoji = "🤷"
-    if (score <= 0.75) {
+    if (score <= -0.2) {
       emoji = "🤮";
-    } else if (score <= 0.8) {
+    } else if (score <= 0) {
       emoji = "😒";
-    } else if (score <= 0.85) {
+    } else if (score <= 0.3) {
       emoji = "😐";
-    } else if (score <= 0.9) {
+    } else if (score <= 0.7) {
       emoji = "😊";
-    } else if (score <= 0.95) {
+    } else {
       emoji = "😎";
     }
 
