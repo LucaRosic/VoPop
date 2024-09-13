@@ -5,7 +5,7 @@ To get set up for running the frontend server on local machine you will need two
 - Node
 - NPM
 
-You can download these CLI you can do so through this guide: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+To download these CLI you can do so through this guide: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
 Once installed, `cd` into the `frontend` folder. You want to run `npm install` command to install all the React dependencies for the application (you only need to do this once).
 
