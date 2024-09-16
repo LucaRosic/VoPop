@@ -8,6 +8,7 @@ from langdetect import detect
 from better_profanity import profanity
 import re
 import os
+import psycopg2
 os.environ['NO_PROXY'] = '*'
 
 #need to fix imports
@@ -40,14 +41,15 @@ dag_id='update_reviews'
 def get_latest_reviews():
 
     #adjust db connection
-    connection = sqlite3.connect("/opt/airflow/backend/db.sqlite3")
+    connection = psycopg2.connect(database="airflow", user='airflow', password='airflow', host='host.docker.internal', port= '5432')
     cursor = connection.cursor()
 
     #get urls and summary dates for each product
     @task(task_id='retrieve_urls')
     def retrieve_outdated_urls():
-        
-        result = cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id")
+        tablenames = cursor.execute("SELECT table_name FROM information_schema.tables;")
+        print(tablenames)
+        result = cursor.execute("SELECT url,date,product_id FROM product_summary ps JOIN roduct p ON ps.product_id = p.id")
         return result.fetchall()
     
     #check if last summary date older than a month. If yes, scrape new reviews using backend api.
