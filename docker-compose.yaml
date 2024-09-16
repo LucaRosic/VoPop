@@ -88,6 +88,20 @@ x-airflow-common:
 
 services:
 
+  vopop-frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /usr/src/app
+      - /usr/src/app/node_modules
+    ports: 
+    - "3000:3000"
+    depends_on:
+      vopop-backend:
+        condition: service_started
+
   vopop-backend:
     build:
       context: ./backend
@@ -97,19 +111,13 @@ services:
         target: /usr/src/app
     ports: 
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_started
 
 
-  vopop-frontend:
-    build:
-      context: ./frontend
-    volumes:
-      - type: bind
-        source: ./frontend
-        target: /usr/src/app
-      - /usr/src/app/node_modules
-        
-    ports: 
-    - "3000:3000"
+ 
+
 
   postgres:
     image: postgres:13
@@ -128,7 +136,7 @@ services:
       start_period: 5s
     restart: always
     ports:
-      - "5432:5432"
+    - "5432:5432"
 
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change
