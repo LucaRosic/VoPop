@@ -301,23 +301,31 @@ def scrape_ali_express_reviews(url):
         # Open the product page
         driver.get(cleaned_url)
         time.sleep(2)  # Wait for the page to load
+        try:
+            product_name = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'title--wrap--UUHae_g'))
+            ).text
+            print("Product name")
+        except:
+            product_name = "NA"
+        time.sleep(1)
         
-        product_name = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'title--wrap--UUHae_g'))
-        ).text
-        print("Product name")
+        try:
+            product_image = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[1]/div/div[1]/div[1]/div[1]/div/div/div[2]/div[1]/div/img'))
+            ).get_attribute('src')
+            print("Image")
+        except:
+            product_image = "NA"
         time.sleep(1)
 
-        product_image = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[1]/div/div[1]/div[1]/div[1]/div/div/div[2]/div[1]/div/img'))
-        ).get_attribute('src')
-        print("Image")
-        time.sleep(1)
-
-        avg_star = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-review > div:nth-child(2) > div.header--wrap--BgjROgu > div > div.header--blockWrap1--S_r1OlE > div > div.header--num--XJ6wKJ5'))
-        ).text
-        print("Star")
+        try:
+            avg_star = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-review > div:nth-child(2) > div.header--wrap--BgjROgu > div > div.header--blockWrap1--S_r1OlE > div > div.header--num--XJ6wKJ5'))
+            ).text
+            print("Star")
+        except:
+            avg_star = "NA"
         time.sleep(1)
 
         try:
