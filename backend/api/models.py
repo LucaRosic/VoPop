@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import backend.settings
 
 # Create your models here.
 
@@ -43,6 +42,9 @@ class Product_Summary(models.Model):
     summary = models.CharField(max_length=8000)
     overview = models.CharField(max_length=1000)
     avg_sentiment = models.DecimalField(max_digits=3, decimal_places=2)
+    review_count = models.DecimalField(max_digits=5, decimal_places=0)
+    postive_count = models.DecimalField(max_digits=5, decimal_places=0)
+    negative_count = models.DecimalField(max_digits=5, decimal_places=0)
     avg_rating = models.DecimalField(max_digits=4, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
     

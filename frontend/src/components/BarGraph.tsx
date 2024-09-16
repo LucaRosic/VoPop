@@ -13,7 +13,6 @@ interface Props {
 }
 
 const BarGraph = ({productId=61} : Props) => {
-  // ============================
 
   const getData = async (prodId : number = 61) => {
 
@@ -133,13 +132,7 @@ const BarGraph = ({productId=61} : Props) => {
       setData(getGraphData(res));
     })
   }, [])
-  // useEffect(() => {
-  //   getGraphData().then((value) => setData(value));
-  //   calculateLineData().then((value) => setLineData(value));
-  // }, [])
-
-
-
+ 
   const graphStyle = {
     minHeight: '20rem',
     minWidth: '600px',

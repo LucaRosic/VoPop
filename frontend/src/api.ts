@@ -1,17 +1,15 @@
-// Interceptor -> intercepts any requests you are going 
-// send. Automatically add headers
-
-// Axios interceptor -> Check you have access
-
 import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 import { refreshAuth } from "./tokenManager";
 
 
+// Create an axios api object
+// This is the object to be used for authorized access API endpoint calls
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL // From the .env file!
 });
 
+// Interceptor -> intercepts any requests you are going send. Automatically add headers
 api.interceptors.request.use(
     (config) => { // request config
         const token = localStorage.getItem(ACCESS_TOKEN);
@@ -31,8 +29,7 @@ api.interceptors.request.use(
 )
 
 // Solution for response interceptor by: https://medium.com/@velja/token-refresh-with-axios-interceptors-for-a-seamless-authentication-experience-854b06064bde
-// This is to attempt to automatically refresh the access token
-
+// This is to attempt to automatically refresh the access token when api call fails
 api.interceptors.response.use(
     (response) => { return response }, // Return response if no error
     async (error) => {
@@ -45,12 +42,10 @@ api.interceptors.response.use(
                 console.log("SENDING REQUEST (api.ts)");
                 const accessToken = await refreshAuth();
                 if (accessToken !== null) {
-                    // api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
                     console.log(`Sending through request ${JSON.stringify(originalRequest)}`);
                     return api(originalRequest); // Send original request again
                 } else {
                     localStorage.clear(); // Clear local storage
-                    // window.location.href = '/login'
                     return Promise.reject(error);
                 }
             } catch (error) {

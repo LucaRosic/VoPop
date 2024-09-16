@@ -1,6 +1,10 @@
 import { Skeleton } from "@mui/material";
 
 const ProductCardLoading = () => {
+  /*
+    Component to create a loading product card. This is for optimistic updates for the user.
+  */
+
   return (
     <div
       className="product-card bg-slate-100 w-[60vw] h-60 px-8 py-4 flex gap-4 border-2 

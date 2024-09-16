@@ -13,8 +13,6 @@ interface Props {
 }
 
 const LineGraph = ({productId=61} : Props) => {
-  // ============================
-
 
   const getData = async (prodId : number = 61) => {
 

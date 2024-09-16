@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
-import BarGraph from "../components/BarGraph.tsx";
+import BarGraph from "../../components/BarGraph.tsx";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,10 +12,9 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import DummyData, { GetMarkdownReview } from "../DummyData.ts";
+import DummyData, { GetMarkdownReview } from "../../DummyData.ts";
 import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -29,6 +28,11 @@ ChartJS.register(
 );
 
 export const ProductInfoPage_dummy = () => {
+  /*
+    This is a product information dummy page. This page is to work without
+    needing any established connection with the backend server.
+  */
+
   const { state } = useLocation();
   // If state is not given:
   if (state === null) {
@@ -84,7 +88,6 @@ export const ProductInfoPage_dummy = () => {
           </div>
 
           {/* Review Summary */}
-          {/* <div className="text-white">{markdownReview}</div> */}
           <ReactMarkdown children={markdownReview} className="text-white text-sm px-2 mt-4" />
         </div>
       </div>

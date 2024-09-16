@@ -6,6 +6,10 @@ interface Props {
 }
 
 const AddProductBtn = ( {urlScraperCallback} : Props ) => {
+  /*
+    React Component for the add product button. When button pressed, a box is 
+    opened allowing user to enter in a url
+  */
   const [url, setUrl] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {

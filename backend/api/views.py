@@ -131,11 +131,12 @@ class CreateProduct(APIView):
             # Overivew for frontend product cards
             overview = summary.split('Overall:')[-1].replace('*', '').replace("\n", '')
             
-            avg_rating = float(scraped['Average Star'].split(' ')[0])
+            # avg_rating = float(scraped['Average Star'].split(' ')[0])
             
             
             # Add product summary
-            prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating)
+            prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, review_count=len(cleaned['Reviews']), \
+                postive_count=postive_count, negative_count=negative_count, avg_rating=cleaned['Average Stars'])
             prod_sum.save()
             
             # Return product card data to frontend

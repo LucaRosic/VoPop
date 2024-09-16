@@ -11,8 +11,14 @@ interface Props {
 }
 
 const NavbarTop = ({ title, urlScraperCallback }: Props) => {
+  /*
+    Navbar top component. This is to have the vopop logo, add product button, user logged in information,
+    and lastly the logout option.
+  */
 
- const logout = async () => {
+  // Logout function -> Send logout request to the API endpoint and remove local storage
+  // TODO: put this functionality in a generic function?
+  const logout = async () => {
     console.log("Logging out");
     try {
       await api.post("/api/logout/", {refresh_token: localStorage.getItem(REFRESH_TOKEN)});
@@ -33,7 +39,6 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
 
 
   return (
-    // <nav className="flex bg-gradient-to-r from-slate-700 to-slate-900 text-white h-12 justify-between items-center px-4 sticky top-0 z-50 border-b-2 border-slate-400">
     <nav className="bg-[rgba(19,58,63)] text-white h-14 flex justify-between items-center px-4 sticky top-0 z-50 border-b-4 border-x-0 border-gray-900">  
       <div className="flex gap-8 items-center">
         <span className="text-2xl">{title}</span>

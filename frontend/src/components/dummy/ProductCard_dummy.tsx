@@ -1,5 +1,4 @@
-import "./css/product-card.css";
-import DummyData from "../DummyData";
+import DummyData from "../../DummyData";
 
 //--------------
 // MUI ui stuff:
