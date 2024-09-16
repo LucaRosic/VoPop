@@ -92,7 +92,9 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend:/usr/src/backend
+      - type: bind
+        source: ./backend
+        target: /usr/src/app
     ports: 
       - "8000:8000"
 
@@ -101,8 +103,11 @@ services:
     build:
       context: ./frontend
     volumes:
-      - ./frontend:/usr/src/frontend
-      - /usr/src/frontend/node_modules
+      - type: bind
+        source: ./frontend
+        target: /usr/src/app
+      - /usr/src/app/node_modules
+        
     ports: 
     - "3000:3000"
 
@@ -308,6 +313,7 @@ services:
 
 volumes:
   postgres-db-volume:
+
 
 
   
