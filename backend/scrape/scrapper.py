@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from selenium import webdriver
 
 # from airflow.decorators import dag, task
+# peepeepoopoo this is a test comment
 
 def is_valid_url(url):
     try:
@@ -319,10 +320,13 @@ def scrape_ali_express_reviews(url):
         print("Star")
         time.sleep(1)
 
-        product_brand = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-specification > ul > li:nth-child(3) > div:nth-child(2) > div.specification--desc--Dxx6W0W'))
-        ).text
-        print("Product brand")
+        try:
+            product_brand = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#nav-specification > ul > li:nth-child(3) > div:nth-child(2) > div.specification--desc--Dxx6W0W'))
+            ).text
+            print("Product brand success")   
+        except:
+            product_brand = "NA"
         time.sleep(1)
         # Click the reviews section to open the pop-up window
         reviews_button = WebDriverWait(driver, 10).until(
@@ -384,6 +388,7 @@ def scrape_ali_express_reviews(url):
                 try:
                     review_date_xpath = review_xpath.replace("div[1]/div[3]", "div[2]/div[1]")
                     review_date = pop_out_window.find_element(By.XPATH, review_date_xpath).text
+                    review_date = convert_date(review_date)  # Convert to datetime object
                 except Exception as e:
                     review_date = "Date not found"
                     print("Error finding review date:", e)
@@ -435,6 +440,7 @@ def scrape_ali_express_reviews(url):
         # Close the WebDriver
         driver.quit()
     # Create a product details dictionary
+    print(f"Test product_brand: {product_brand}")
     product_details = {
         'Category': 'AliExpress',
         'Product Name': product_name,
@@ -445,13 +451,13 @@ def scrape_ali_express_reviews(url):
         'Average Star': avg_star,
         'Reviews': reviews_list
     }
-    # Save product details as a JSON file
-    with open('aliexpress_product_details.json', 'w') as file:
-        json.dump(product_details, file, indent=4)
+    # # Save product details as a JSON file
+    # with open('aliexpress_product_details.json', 'w') as file:
+    #     json.dump(product_details, file, indent=4)
 
     print(f"Scraped {len(reviews_list)} reviews from AliExpress")
 
-    return reviews_list
+    return product_details
 
 def scrape_reviews(url, date=None):
     if not is_valid_url(url):

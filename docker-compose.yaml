@@ -92,7 +92,9 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend:/usr/src/backend
+      - type: bind
+        source: ./backend
+        target: /usr/src/app
     ports: 
       - "8000:8000"
 
@@ -101,13 +103,18 @@ services:
     build:
       context: ./frontend
     volumes:
-      - ./frontend:/usr/src/frontend
-      - /usr/src/frontend/node_modules
+      - type: bind
+        source: ./frontend
+        target: /usr/src/app
+      - /usr/src/app/node_modules
+        
     ports: 
     - "3000:3000"
 
   postgres:
     image: postgres:13
+    expose: 
+      - 5432
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -120,6 +127,8 @@ services:
       retries: 5
       start_period: 5s
     restart: always
+    ports:
+      - "5432:5432"
 
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change
@@ -308,6 +317,7 @@ services:
 
 volumes:
   postgres-db-volume:
+
 
 
   

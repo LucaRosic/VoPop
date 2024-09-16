@@ -106,6 +106,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "airflow",
+#         "USER": "airflow",
+#         "PASSWORD": "airflow",
+#         "HOST": "host.docker.internal",
+#         "PORT": "5432",
+#     }
+# }
+
 
 ## postgres database
 # DATABASES = {

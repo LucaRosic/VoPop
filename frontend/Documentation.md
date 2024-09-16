@@ -11,7 +11,7 @@ Once installed, `cd` into the `frontend` folder. You want to run `npm install` c
 
 ## Starting up frontend server
 It is very simple to start up the frontend server. 
-- `cd` into `frrontend` folder.
+- `cd` into `frontend` folder.
 - Run the command `npm run dev`
 
 Bing Bang Boom the server should be running now. In the command terminal, the server address should be shown and you can access the website using this (it should be localhost:3000).

@@ -59,7 +59,7 @@ def get_latest_reviews():
      
             if dt.datetime.strptime(date,"%Y-%m-%d %H:%M:%S.%f") < dt.datetime.now(): #- dt.timedelta(days=31):
                payload = {'url':url,'date':str(date.split()[0])}
-               fresh_reviews = requests.get('http://localhost:8000/api/product/newreviews/', params=payload)
+               fresh_reviews = requests.get('http://host.docker.internal:8000/api/product/newreviews/', params=payload)
                new_reviews[product_id] = fresh_reviews.text
              
         return new_reviews
@@ -91,7 +91,7 @@ def get_latest_reviews():
                 if review_rating:
                     review_rating = clean_rate(review_rating)
                 # Sentiment
-                sentiment = json.loads(requests.get('http://localhost:8000/api/product/newsentiment/',{'review':review_text}).text)
+                sentiment = json.loads(requests.get('http://host.docker.internal:8000/api/product/newsentiment/',{'review':review_text}).text)
                 
                 cleaned_review = {
                     'Date': review_date.split('T')[0],
