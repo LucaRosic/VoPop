@@ -89,14 +89,20 @@ x-airflow-common:
 services:
 
   vopop-backend:
+    depends_on:
+      postgres:
+        condition: service_healthy
     build:
       context: ./backend
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - type: bind
         source: ./backend
         target: /usr/src/app
     ports: 
       - "8000:8000"
+    
+    
 
 
   vopop-frontend:
