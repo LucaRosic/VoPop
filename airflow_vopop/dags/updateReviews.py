@@ -8,6 +8,8 @@ from langdetect import detect
 from better_profanity import profanity
 import re
 import os
+import psycopg2
+import pytz
 os.environ['NO_PROXY'] = '*'
 
 #need to fix imports
@@ -40,15 +42,15 @@ dag_id='update_reviews'
 def get_latest_reviews():
 
     #adjust db connection
-    connection = sqlite3.connect("/opt/airflow/backend/db.sqlite3")
+    connection = psycopg2.connect(database="airflow", user='airflow', password='airflow', host='host.docker.internal', port= '5432')
     cursor = connection.cursor()
 
     #get urls and summary dates for each product
     @task(task_id='retrieve_urls')
     def retrieve_outdated_urls():
         
-        result = cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id")
-        return result.fetchall()
+        cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id")
+        return cursor.fetchall()
     
     #check if last summary date older than a month. If yes, scrape new reviews using backend api.
     @task(task_id='scrape')
@@ -56,9 +58,11 @@ def get_latest_reviews():
         
         new_reviews ={}
         for url, date, product_id in product_list:
-     
-            if dt.datetime.strptime(date,"%Y-%m-%d %H:%M:%S.%f") < dt.datetime.now(): #- dt.timedelta(days=31):
-               payload = {'url':url,'date':str(date.split()[0])}
+            utc=pytz.UTC
+            datenow= utc.localize(dt.datetime.now())
+            #challenge.datetime_end = utc.localize(challenge.datetime_end)
+            if date < datenow: #- dt.timedelta(days=31):
+               payload = {'url':url,'date':date.strftime('%Y-%m-%d')}
                fresh_reviews = requests.get('http://host.docker.internal:8000/api/product/newreviews/', params=payload)
                new_reviews[product_id] = fresh_reviews.text
              
@@ -121,10 +125,10 @@ def get_latest_reviews():
     def update_review_summary(old_product):
         for url, date, product_id in old_product:
             
-            result = cursor.execute(f"SELECT review FROM api_product_reviews WHERE product_id={product_id}").fetchall()
+            cursor.execute(f"SELECT review FROM api_product_reviews WHERE product_id={product_id}")
 
             new_summaries = []
-            for review in result:
+            for review in cursor.fetchall():
                  new_summaries.append({"Review Text":review[0]})
             summary = summarize(new_summaries).replace('"',"").replace("'","")
          
@@ -132,6 +136,7 @@ def get_latest_reviews():
             cursor.execute(f"UPDATE api_product_summary SET date = '{dt.datetime.now()}' WHERE product_id = {product_id}" )
             connection.commit()
         cursor.close()
+        connection.close()
         return summary
 
     #DAG dependency structure

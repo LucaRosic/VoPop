@@ -88,23 +88,6 @@ x-airflow-common:
 
 services:
 
-  vopop-backend:
-    depends_on:
-      postgres:
-        condition: service_healthy
-    build:
-      context: ./backend
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - type: bind
-        source: ./backend
-        target: /usr/src/app
-    ports: 
-      - "8000:8000"
-    
-    
-
-
   vopop-frontend:
     build:
       context: ./frontend
@@ -113,9 +96,30 @@ services:
         source: ./frontend
         target: /usr/src/app
       - /usr/src/app/node_modules
-        
     ports: 
     - "3000:3000"
+    depends_on:
+      vopop-backend:
+        condition: service_started
+
+  vopop-backend:
+    build:
+      context: ./backend
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /usr/src/app
+    ports: 
+      - "8000:8000"
+    
+    
+    depends_on:
+      postgres:
+        condition: service_started
+
+
+ 
+
 
   postgres:
     image: postgres:13
@@ -134,7 +138,7 @@ services:
       start_period: 5s
     restart: always
     ports:
-      - "5432:5432"
+    - "5432:5432"
 
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change
