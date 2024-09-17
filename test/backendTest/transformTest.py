@@ -20,12 +20,12 @@ class TestCleanTransformData(unittest.TestCase):
             "Average Star": "4.5 out of 5 stars",
             "Brand": "Coodoo",
             "Reviews": [
-                {"Review Text": "Great product!", "Date": "2023-09-10", "Stars": "5.0 out of 5"},
+                {"Review Text": "Granddaughter loves these very colorful magnetic tiles. At first her buildings were very simple but as time goes by she\u2019s building more sophisticated designs, expanding into multiple layers. It\u2019s very interesting to see the increasing sophistication in her building..", "Date": "2023-09-10", "Stars": "5.0 out of 5"},
                 {"Review Text": "Produit incroyable!", "Date": "2023-09-08", "Stars": "5.0 sur 5"},
-                {"Review Text": "This is sh*t", "Date": "2023-09-07", "Stars": "4.0 out of 5"},
+                {"Review Text": "This item is sh*t", "Date": "2023-09-07", "Stars": "4.0 out of 5"},
                 {"Review Text": "Not good", "Date": "2023-09-06", "Stars": None},
                 {"Review Text": "", "Date": "2023-09-05", "Stars": "3.0 out of 5"},
-                {"Review Text": "Average quality", "Date": "2023-09-04", "Stars": "Three stars"}
+                {"Review Text": "Average quality for a toy", "Date": "2023-09-04", "Stars": "Three stars"}
             ]
         }
     
@@ -34,17 +34,16 @@ class TestCleanTransformData(unittest.TestCase):
         cleaned_data = clean_transform_data(self.sample_data)
         reviews = cleaned_data['Reviews']
         # Only English reviews should remain
-        self.assertEqual(len(reviews), 2)  
+        self.assertEqual(len(reviews), 3)  
         texts = [review['Review Text'] for review in reviews]
         
         self.assertNotIn('Produit incroyable!', texts)
-        self.assertNotIn('', texts) #Empty text should not ne in reviews
+        #Empty text should not be in reviews
+        self.assertNotIn('', texts) 
         
         
-        
-    
     def test_profanity_filtering(self):
-        print("testing for profanity_filtering-->")
+        print("testing for profanity_filtering--->")
         cleaned_data = clean_transform_data(self.sample_data)
         reviews = cleaned_data['Reviews']
         profane_review = next((r for r in reviews if '****' in r['Review Text']), None)
@@ -82,7 +81,8 @@ class TestCleanTransformData(unittest.TestCase):
         reviews = cleaned_data['Reviews']
         texts = [review['Review Text'] for review in reviews]
         
-        self.assertNotIn('', texts)  # Review with empty text should be removed
+        # Review with empty text should be removed
+        self.assertNotIn('', texts)  
         # Check if 'Stars' is None for the appropriate review
         for review in reviews:
             if review['Review Text'] == 'Not good':
