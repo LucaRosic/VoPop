@@ -23,10 +23,14 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run Python tests
+      - name: Run scraper tests
         run: |
           python -m unittest test/backendTest/scrapperTest.py 
 
+      - name: Run transform tests
+        run: |
+          python -m unittest test/backendTest/transformTest.py 
+  
   deploy:
     needs: test
     if: success()
