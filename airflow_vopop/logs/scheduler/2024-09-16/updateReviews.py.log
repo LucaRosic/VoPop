@@ -1169,3 +1169,747 @@
 [2024-09-16T05:13:07.391+0000] {logging_mixin.py:190} INFO - [2024-09-16T05:13:07.391+0000] {dag.py:3229} INFO - Sync 1 DAGs
 [2024-09-16T05:13:07.412+0000] {logging_mixin.py:190} INFO - [2024-09-16T05:13:07.412+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-16 00:00:00+00:00, run_after=2024-09-17 00:00:00+00:00
 [2024-09-16T05:13:07.435+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.703 seconds
+[2024-09-16T07:10:20.797+0000] {processor.py:186} INFO - Started process (PID=65) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:10:20.802+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:10:20.810+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:10:20.809+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:10:24.488+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:10:24.503+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:10:24.632+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:10:24.631+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:10:24.889+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:10:24.888+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:10:24.941+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 4.183 seconds
+[2024-09-16T07:10:55.974+0000] {processor.py:186} INFO - Started process (PID=72) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:10:55.981+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:10:56.027+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:10:56.016+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:11:00.680+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:11:00.697+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:11:00.760+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:11:00.760+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:11:00.821+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:11:00.820+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:11:00.856+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 4.945 seconds
+[2024-09-16T07:11:31.262+0000] {processor.py:186} INFO - Started process (PID=79) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:11:31.264+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:11:31.268+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:11:31.268+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:11:32.643+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:11:32.651+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:11:32.691+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:11:32.690+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:11:32.725+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:11:32.725+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:11:32.755+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.515 seconds
+[2024-09-16T07:12:03.147+0000] {processor.py:186} INFO - Started process (PID=86) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:03.149+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:12:03.155+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:03.154+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:04.252+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:12:04.263+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:04.306+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:04.305+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:12:04.347+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:04.346+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:12:04.376+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.244 seconds
+[2024-09-16T07:12:34.560+0000] {processor.py:186} INFO - Started process (PID=93) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:34.563+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:12:34.573+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:34.571+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:36.567+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:12:36.574+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:12:36.616+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:36.615+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:12:36.649+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:12:36.649+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:12:36.679+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.153 seconds
+[2024-09-16T07:13:06.914+0000] {processor.py:186} INFO - Started process (PID=100) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:06.917+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:13:06.922+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:06.921+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:08.257+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:13:08.266+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:08.310+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:08.309+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:13:08.356+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:08.355+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:13:08.387+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.485 seconds
+[2024-09-16T07:13:38.455+0000] {processor.py:186} INFO - Started process (PID=107) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:38.457+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:13:38.461+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:38.460+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:39.491+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:13:39.498+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:13:39.539+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:39.538+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:13:39.573+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:13:39.573+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:13:39.601+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.156 seconds
+[2024-09-16T07:14:10.499+0000] {processor.py:186} INFO - Started process (PID=114) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:10.502+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:14:10.511+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:10.510+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:12.054+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:14:12.065+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:12.112+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:12.111+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:14:12.149+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:12.148+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:14:12.178+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.700 seconds
+[2024-09-16T07:14:42.543+0000] {processor.py:186} INFO - Started process (PID=121) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:42.545+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:14:42.550+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:42.549+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:43.836+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:14:43.844+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:14:43.891+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:43.890+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:14:43.942+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:14:43.942+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:14:43.984+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.453 seconds
+[2024-09-16T07:15:14.360+0000] {processor.py:186} INFO - Started process (PID=134) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:14.363+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:15:14.370+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:14.369+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:16.814+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:15:16.822+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:16.866+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:16.865+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:15:16.906+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:16.906+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:15:16.933+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.591 seconds
+[2024-09-16T07:15:47.581+0000] {processor.py:186} INFO - Started process (PID=141) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:47.584+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:15:47.600+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:47.591+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:48.684+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:15:48.691+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:15:48.732+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:48.731+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:15:48.772+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:15:48.772+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:15:48.801+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.239 seconds
+[2024-09-16T07:16:18.909+0000] {processor.py:186} INFO - Started process (PID=148) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:18.912+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:16:18.916+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:18.916+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:19.916+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:16:19.923+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:19.964+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:19.963+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:16:20.001+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:20.001+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:16:20.027+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.128 seconds
+[2024-09-16T07:16:50.381+0000] {processor.py:186} INFO - Started process (PID=155) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:50.383+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:16:50.389+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:50.388+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:51.790+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:16:51.797+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:16:51.842+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:51.841+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:16:51.882+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:16:51.881+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:16:51.913+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.547 seconds
+[2024-09-16T07:17:22.026+0000] {processor.py:186} INFO - Started process (PID=162) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:22.029+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:17:22.039+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:22.038+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:23.299+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:17:23.305+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:23.341+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:23.341+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:17:23.377+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:23.376+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:17:23.403+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.428 seconds
+[2024-09-16T07:17:53.849+0000] {processor.py:186} INFO - Started process (PID=169) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:53.852+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:17:53.863+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:53.863+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:55.983+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:17:55.991+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:17:56.031+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:56.030+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:17:56.066+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:17:56.066+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:17:56.095+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.263 seconds
+[2024-09-16T07:18:26.212+0000] {processor.py:186} INFO - Started process (PID=176) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:18:26.214+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:18:26.221+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:18:26.220+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:18:28.192+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:18:28.204+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:18:28.271+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:18:28.271+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:18:28.328+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:18:28.328+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:18:28.364+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.165 seconds
+[2024-09-16T07:18:58.569+0000] {processor.py:186} INFO - Started process (PID=183) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:18:58.571+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:18:58.583+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:18:58.582+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:19:00.256+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:19:00.267+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:19:00.325+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:19:00.323+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:19:00.375+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:19:00.375+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:19:00.412+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.858 seconds
+[2024-09-16T07:19:30.901+0000] {processor.py:186} INFO - Started process (PID=190) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:19:30.903+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:19:30.909+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:19:30.908+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:19:32.306+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:19:32.313+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:19:32.356+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:19:32.355+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:19:32.395+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:19:32.395+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:19:32.421+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.537 seconds
+[2024-09-16T07:23:27.310+0000] {processor.py:186} INFO - Started process (PID=65) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:23:27.318+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:23:27.358+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:23:27.354+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:23:31.436+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:23:31.450+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:23:31.743+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:23:31.741+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:23:32.085+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:23:32.084+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:23:32.164+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 4.874 seconds
+[2024-09-16T07:24:02.567+0000] {processor.py:186} INFO - Started process (PID=72) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:02.570+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:24:02.598+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:02.592+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:06.354+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:24:06.368+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:06.420+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:06.419+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:24:06.459+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:06.459+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:24:06.489+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 3.955 seconds
+[2024-09-16T07:24:37.154+0000] {processor.py:186} INFO - Started process (PID=79) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:37.156+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T07:24:37.163+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:37.162+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:39.065+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T07:24:39.075+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T07:24:39.120+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:39.120+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T07:24:39.157+0000] {logging_mixin.py:190} INFO - [2024-09-16T07:24:39.157+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T07:24:39.188+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.048 seconds
+[2024-09-16T23:02:25.526+0000] {processor.py:186} INFO - Started process (PID=64) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:02:25.533+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:02:25.554+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:02:25.549+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:02:31.819+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:02:31.984+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:02:32.265+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:02:32.253+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:02:32.385+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:02:32.384+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:02:32.571+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 7.071 seconds
+[2024-09-16T23:03:03.379+0000] {processor.py:186} INFO - Started process (PID=77) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:03.383+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:03:03.473+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:03.452+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:21.864+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:03:21.888+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:22.017+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:22.015+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:03:22.098+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:22.097+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:03:22.147+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 18.844 seconds
+[2024-09-16T23:03:52.971+0000] {processor.py:186} INFO - Started process (PID=84) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:52.978+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:03:53.042+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:53.039+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:55.862+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:03:55.876+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:03:55.943+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:55.942+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:03:56.001+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:03:56.001+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:03:56.035+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 3.185 seconds
+[2024-09-16T23:04:26.759+0000] {processor.py:186} INFO - Started process (PID=91) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:26.762+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:04:26.774+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:26.773+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:28.072+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:04:28.084+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:28.134+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:28.133+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:04:28.174+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:28.174+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:04:28.210+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.476 seconds
+[2024-09-16T23:04:58.563+0000] {processor.py:186} INFO - Started process (PID=98) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:58.564+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:04:58.569+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:58.569+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:59.572+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:04:59.579+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:04:59.616+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:59.615+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:04:59.651+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:04:59.651+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:04:59.677+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.125 seconds
+[2024-09-16T23:05:29.893+0000] {processor.py:186} INFO - Started process (PID=105) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:05:29.895+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:05:29.899+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:05:29.899+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:05:30.883+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:05:30.892+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:05:30.928+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:05:30.927+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:05:30.967+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:05:30.967+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:05:30.994+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.111 seconds
+[2024-09-16T23:06:01.314+0000] {processor.py:186} INFO - Started process (PID=112) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:01.315+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:06:01.319+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:01.318+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:02.122+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:06:02.131+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:02.173+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:02.172+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:06:02.214+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:02.213+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:06:02.243+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.940 seconds
+[2024-09-16T23:06:32.617+0000] {processor.py:186} INFO - Started process (PID=125) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:32.619+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:06:32.623+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:32.623+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:33.567+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:06:33.575+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:06:33.619+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:33.618+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:06:33.659+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:06:33.659+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:06:33.691+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.086 seconds
+[2024-09-16T23:07:03.872+0000] {processor.py:186} INFO - Started process (PID=132) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:03.874+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:07:03.879+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:03.879+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:04.740+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:07:04.748+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:04.795+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:04.795+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:07:04.841+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:04.841+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:07:04.875+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.015 seconds
+[2024-09-16T23:07:35.359+0000] {processor.py:186} INFO - Started process (PID=139) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:35.363+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:07:35.368+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:35.367+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:36.803+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:07:36.820+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:07:36.875+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:36.875+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:07:36.926+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:07:36.926+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:07:36.968+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.629 seconds
+[2024-09-16T23:08:07.051+0000] {processor.py:186} INFO - Started process (PID=146) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:07.052+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:08:07.066+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:07.064+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:08.163+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:08:08.171+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:08.219+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:08.219+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:08:08.275+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:08.274+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:08:08.311+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.280 seconds
+[2024-09-16T23:08:38.571+0000] {processor.py:186} INFO - Started process (PID=153) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:38.572+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:08:38.577+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:38.577+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:39.637+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:08:39.645+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:08:39.707+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:39.705+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:08:39.809+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:08:39.808+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:08:39.849+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.291 seconds
+[2024-09-16T23:09:09.982+0000] {processor.py:186} INFO - Started process (PID=160) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:09.985+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:09:09.993+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:09.990+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:12.663+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:09:12.694+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:12.880+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:12.879+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:09:12.956+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:12.955+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:09:13.023+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 3.064 seconds
+[2024-09-16T23:09:43.347+0000] {processor.py:186} INFO - Started process (PID=167) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:43.348+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:09:43.354+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:43.352+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:44.790+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:09:44.817+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:09:44.897+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:44.896+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:09:44.949+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:09:44.949+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:09:44.987+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.659 seconds
+[2024-09-16T23:10:15.647+0000] {processor.py:186} INFO - Started process (PID=174) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:15.649+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:10:15.654+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:15.653+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:16.923+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:10:16.937+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:16.993+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:16.993+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:10:17.039+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:17.039+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:10:17.071+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.439 seconds
+[2024-09-16T23:10:47.437+0000] {processor.py:186} INFO - Started process (PID=181) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:47.439+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:10:47.443+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:47.442+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:48.299+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:10:48.310+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:10:48.355+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:48.354+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:10:48.398+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:10:48.398+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:10:48.429+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.003 seconds
+[2024-09-16T23:11:18.815+0000] {processor.py:186} INFO - Started process (PID=188) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:18.817+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:11:18.822+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:18.822+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:19.697+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:11:19.705+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:19.752+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:19.752+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:11:19.793+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:19.793+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:11:19.827+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.022 seconds
+[2024-09-16T23:11:50.425+0000] {processor.py:186} INFO - Started process (PID=195) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:50.428+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:11:50.435+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:50.434+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:51.489+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:11:51.500+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:11:51.554+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:51.554+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:11:51.643+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:11:51.642+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:11:51.677+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.269 seconds
+[2024-09-16T23:12:22.235+0000] {processor.py:186} INFO - Started process (PID=203) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:22.238+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:12:22.257+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:22.255+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:24.391+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:12:24.406+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:24.481+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:24.480+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:12:24.532+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:24.532+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:12:24.568+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.356 seconds
+[2024-09-16T23:12:54.645+0000] {processor.py:186} INFO - Started process (PID=210) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:54.649+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:12:54.656+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:54.653+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:56.416+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:12:56.436+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:12:56.559+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:56.558+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:12:56.606+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:12:56.605+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:12:56.642+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.021 seconds
+[2024-09-16T23:13:27.023+0000] {processor.py:186} INFO - Started process (PID=217) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:13:27.026+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:13:27.034+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:13:27.032+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:13:29.210+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:13:29.263+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:13:29.388+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:13:29.386+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:13:29.455+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:13:29.455+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:13:29.504+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.511 seconds
+[2024-09-16T23:14:00.001+0000] {processor.py:186} INFO - Started process (PID=224) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:00.004+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:14:00.009+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:00.009+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:01.255+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:14:01.273+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:01.338+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:01.337+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:14:01.384+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:01.384+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:14:01.416+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.430 seconds
+[2024-09-16T23:14:31.840+0000] {processor.py:186} INFO - Started process (PID=231) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:31.842+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:14:31.847+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:31.846+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:33.622+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:14:33.640+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:14:33.695+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:33.694+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:14:33.739+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:14:33.738+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:14:33.771+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.944 seconds
+[2024-09-16T23:15:04.132+0000] {processor.py:186} INFO - Started process (PID=238) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:04.134+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:15:04.140+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:04.139+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:05.270+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:15:05.281+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:05.346+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:05.345+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:15:05.459+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:05.459+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:15:05.533+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.415 seconds
+[2024-09-16T23:15:35.889+0000] {processor.py:186} INFO - Started process (PID=251) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:35.891+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:15:35.896+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:35.895+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:36.693+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:15:36.701+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:15:36.748+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:36.747+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:15:36.791+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:15:36.790+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:15:36.821+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.944 seconds
+[2024-09-16T23:16:07.184+0000] {processor.py:186} INFO - Started process (PID=258) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:07.186+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:16:07.190+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:07.190+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:08.095+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:16:08.104+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:08.152+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:08.151+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:16:08.196+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:08.196+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:16:08.226+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.056 seconds
+[2024-09-16T23:16:38.607+0000] {processor.py:186} INFO - Started process (PID=265) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:38.609+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:16:38.613+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:38.612+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:39.383+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:16:39.391+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:16:39.432+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:39.432+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:16:39.475+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:16:39.475+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:16:39.504+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.907 seconds
+[2024-09-16T23:17:09.865+0000] {processor.py:186} INFO - Started process (PID=272) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:09.867+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:17:09.872+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:09.871+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:10.649+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:17:10.657+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:10.699+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:10.698+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:17:10.748+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:10.747+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:17:10.788+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.933 seconds
+[2024-09-16T23:17:41.171+0000] {processor.py:186} INFO - Started process (PID=279) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:41.173+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:17:41.177+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:41.177+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:41.973+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:17:41.985+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:17:42.032+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:42.031+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:17:42.073+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:17:42.072+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:17:42.105+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.945 seconds
+[2024-09-16T23:18:12.469+0000] {processor.py:186} INFO - Started process (PID=286) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:12.471+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:18:12.475+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:12.474+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:13.254+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:18:13.261+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:13.303+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:13.302+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:18:13.342+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:13.341+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:18:13.371+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.912 seconds
+[2024-09-16T23:18:43.870+0000] {processor.py:186} INFO - Started process (PID=293) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:43.872+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:18:43.877+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:43.876+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:44.673+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:18:44.681+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:18:44.726+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:44.725+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:18:44.768+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:18:44.768+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:18:44.798+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.939 seconds
+[2024-09-16T23:19:15.192+0000] {processor.py:186} INFO - Started process (PID=300) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:15.194+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:19:15.199+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:15.198+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:16.102+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:19:16.112+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:16.168+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:16.167+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:19:16.236+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:16.235+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:19:16.270+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.091 seconds
+[2024-09-16T23:19:46.711+0000] {processor.py:186} INFO - Started process (PID=307) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:46.713+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:19:46.719+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:46.718+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:47.721+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:19:47.732+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:19:47.788+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:47.787+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:19:47.838+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:19:47.838+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:19:47.876+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.180 seconds
+[2024-09-16T23:20:18.450+0000] {processor.py:186} INFO - Started process (PID=314) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:20:18.452+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:20:18.459+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:20:18.458+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:20:19.322+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:20:19.331+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:20:19.382+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:20:19.381+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:20:19.426+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:20:19.426+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:20:19.461+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.017 seconds
+[2024-09-16T23:39:54.628+0000] {processor.py:186} INFO - Started process (PID=321) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:39:54.640+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:39:54.707+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:39:54.705+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:40:01.711+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:40:01.734+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:40:02.200+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:40:02.198+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:40:02.420+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:40:02.420+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:40:02.489+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 7.980 seconds
+[2024-09-16T23:40:33.298+0000] {processor.py:186} INFO - Started process (PID=328) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:40:33.323+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:40:33.353+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:40:33.352+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:40:34.372+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:40:34.388+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:40:34.462+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:40:34.461+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:40:34.515+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:40:34.514+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:40:34.551+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.269 seconds
+[2024-09-16T23:41:04.712+0000] {processor.py:186} INFO - Started process (PID=335) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:04.716+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:41:04.727+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:04.726+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:05.680+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:41:05.696+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:05.771+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:05.770+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:41:05.824+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:05.823+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:41:05.867+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.175 seconds
+[2024-09-16T23:41:36.221+0000] {processor.py:186} INFO - Started process (PID=342) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:36.222+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:41:36.226+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:36.226+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:37.083+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:41:37.091+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:41:37.138+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:37.137+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:41:37.180+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:41:37.179+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:41:37.211+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.000 seconds
+[2024-09-16T23:42:07.563+0000] {processor.py:186} INFO - Started process (PID=348) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:07.565+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:42:07.570+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:07.570+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:08.330+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:42:08.337+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:08.379+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:08.379+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:42:08.418+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:08.418+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:42:08.449+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.895 seconds
+[2024-09-16T23:42:38.850+0000] {processor.py:186} INFO - Started process (PID=355) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:38.852+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:42:38.856+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:38.855+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:39.702+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:42:39.710+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:42:39.754+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:39.753+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:42:39.795+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:42:39.794+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:42:39.824+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.984 seconds
+[2024-09-16T23:43:10.245+0000] {processor.py:186} INFO - Started process (PID=363) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:10.250+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:43:10.255+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:10.254+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:11.342+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:43:11.351+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:11.401+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:11.400+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:43:11.445+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:11.445+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:43:11.482+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.250 seconds
+[2024-09-16T23:43:41.830+0000] {processor.py:186} INFO - Started process (PID=370) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:41.832+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:43:41.843+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:41.842+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:43.693+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:43:43.719+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:43:43.794+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:43.793+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:43:43.879+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:43:43.878+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:43:43.946+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.137 seconds
+[2024-09-16T23:44:14.573+0000] {processor.py:186} INFO - Started process (PID=377) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:14.576+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:44:14.580+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:14.580+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:15.630+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:44:15.651+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:15.739+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:15.738+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:44:15.787+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:15.787+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:44:15.819+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.259 seconds
+[2024-09-16T23:44:46.012+0000] {processor.py:186} INFO - Started process (PID=384) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:46.014+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:44:46.018+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:46.017+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:46.843+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:44:46.851+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:44:46.893+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:46.892+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:44:46.936+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:44:46.936+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:44:46.970+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.967 seconds
+[2024-09-16T23:45:17.402+0000] {processor.py:186} INFO - Started process (PID=391) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:17.404+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:45:17.408+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:17.407+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:18.316+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:45:18.326+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:18.382+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:18.381+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:45:18.431+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:18.431+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:45:18.469+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.078 seconds
+[2024-09-16T23:45:48.808+0000] {processor.py:186} INFO - Started process (PID=397) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:48.810+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:45:48.814+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:48.813+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:49.684+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:45:49.693+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:45:49.735+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:49.734+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:45:49.776+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:45:49.776+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:45:49.813+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.016 seconds
+[2024-09-16T23:46:20.307+0000] {processor.py:186} INFO - Started process (PID=404) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:20.310+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:46:20.317+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:20.316+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:22.066+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:46:22.075+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:22.148+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:22.147+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:46:22.311+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:22.311+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:46:22.366+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.086 seconds
+[2024-09-16T23:46:52.827+0000] {processor.py:186} INFO - Started process (PID=411) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:52.829+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:46:52.834+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:52.833+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:53.864+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:46:53.873+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:46:53.927+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:53.926+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:46:53.982+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:46:53.982+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:46:54.025+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.211 seconds
+[2024-09-16T23:47:24.166+0000] {processor.py:186} INFO - Started process (PID=418) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:24.167+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:47:24.171+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:24.171+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:24.994+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:47:25.002+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:25.047+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:25.046+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:47:25.087+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:25.087+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:47:25.240+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.085 seconds
+[2024-09-16T23:47:55.655+0000] {processor.py:186} INFO - Started process (PID=425) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:55.657+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:47:55.662+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:55.661+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:56.585+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:47:56.594+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:47:56.676+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:56.675+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:47:56.730+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:47:56.730+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:47:56.771+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.127 seconds
+[2024-09-16T23:48:27.073+0000] {processor.py:186} INFO - Started process (PID=438) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:27.075+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:48:27.079+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:27.078+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:27.969+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:48:27.977+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:28.023+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:28.022+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:48:28.066+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:28.066+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:48:28.116+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.054 seconds
+[2024-09-16T23:48:58.528+0000] {processor.py:186} INFO - Started process (PID=445) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:58.529+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:48:58.533+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:58.532+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:59.387+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:48:59.394+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:48:59.438+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:59.437+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:48:59.484+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:48:59.483+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:48:59.513+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.997 seconds
+[2024-09-16T23:49:29.995+0000] {processor.py:186} INFO - Started process (PID=452) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:49:29.997+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:49:30.004+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:49:30.003+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:49:31.403+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:49:31.416+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:49:31.493+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:49:31.492+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:49:31.559+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:49:31.559+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:49:31.609+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.632 seconds
+[2024-09-16T23:50:02.104+0000] {processor.py:186} INFO - Started process (PID=459) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:02.106+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:50:02.109+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:02.109+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:02.964+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:50:02.971+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:03.012+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:03.011+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:50:03.052+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:03.051+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:50:03.080+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.986 seconds
+[2024-09-16T23:50:33.603+0000] {processor.py:186} INFO - Started process (PID=466) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:33.615+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:50:33.633+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:33.630+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:35.400+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:50:35.410+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:50:35.482+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:35.481+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:50:35.538+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:50:35.537+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:50:35.578+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.018 seconds
+[2024-09-16T23:51:06.511+0000] {processor.py:186} INFO - Started process (PID=473) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:06.520+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:51:06.535+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:06.531+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:08.073+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:51:08.082+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:08.139+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:08.138+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:51:08.201+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:08.201+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:51:08.247+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.767 seconds
+[2024-09-16T23:51:38.677+0000] {processor.py:186} INFO - Started process (PID=480) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:38.679+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:51:38.684+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:38.683+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:40.061+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:51:40.072+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:51:40.143+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:40.142+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:51:40.249+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:51:40.247+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:51:40.319+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.653 seconds
+[2024-09-16T23:52:10.895+0000] {processor.py:186} INFO - Started process (PID=487) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:10.900+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:52:10.906+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:10.905+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:11.972+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:52:11.983+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:12.160+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:12.158+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:52:12.239+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:12.238+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:52:12.316+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.439 seconds
+[2024-09-16T23:52:42.794+0000] {processor.py:186} INFO - Started process (PID=494) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:42.796+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:52:42.802+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:42.801+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:43.612+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:52:43.620+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:52:43.663+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:43.662+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:52:43.704+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:52:43.703+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:52:43.742+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.958 seconds
+[2024-09-16T23:53:14.123+0000] {processor.py:186} INFO - Started process (PID=501) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:14.125+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:53:14.129+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:14.128+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:14.921+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:53:14.929+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:14.975+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:14.974+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:53:15.017+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:15.016+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:53:15.047+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.934 seconds
+[2024-09-16T23:53:45.387+0000] {processor.py:186} INFO - Started process (PID=508) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:45.389+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:53:45.392+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:45.392+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:46.183+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:53:46.191+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:53:46.235+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:46.234+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:53:46.274+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:53:46.274+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:53:46.304+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.927 seconds
+[2024-09-16T23:54:16.645+0000] {processor.py:186} INFO - Started process (PID=515) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:16.647+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:54:16.651+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:16.650+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:17.439+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:54:17.447+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:17.491+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:17.490+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:54:17.533+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:17.532+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:54:17.562+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.928 seconds
+[2024-09-16T23:54:47.610+0000] {processor.py:186} INFO - Started process (PID=521) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:47.612+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:54:47.616+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:47.615+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:48.414+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:54:48.422+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:54:48.466+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:48.465+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:54:48.505+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:54:48.505+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:54:48.546+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.946 seconds
+[2024-09-16T23:55:19.071+0000] {processor.py:186} INFO - Started process (PID=528) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:19.085+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:55:19.373+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:19.366+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:21.038+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:55:21.055+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:21.134+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:21.132+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:55:21.214+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:21.213+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:55:21.269+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 2.223 seconds
+[2024-09-16T23:55:51.401+0000] {processor.py:186} INFO - Started process (PID=535) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:51.402+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:55:51.406+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:51.406+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:52.277+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:55:52.285+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:55:52.356+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:52.355+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:55:52.409+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:55:52.408+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:55:52.448+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.058 seconds
+[2024-09-16T23:56:22.771+0000] {processor.py:186} INFO - Started process (PID=542) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:22.772+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:56:22.776+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:22.776+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:23.612+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:56:23.621+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:23.663+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:23.662+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:56:23.703+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:23.703+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:56:23.734+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.973 seconds
+[2024-09-16T23:56:54.142+0000] {processor.py:186} INFO - Started process (PID=549) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:54.143+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:56:54.147+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:54.147+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:55.092+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:56:55.100+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:56:55.146+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:55.146+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:56:55.188+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:56:55.188+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:56:55.220+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.094 seconds
+[2024-09-16T23:57:25.621+0000] {processor.py:186} INFO - Started process (PID=556) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:57:25.631+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:57:25.640+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:57:25.640+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:57:27.314+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:57:27.326+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:57:27.392+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:57:27.391+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:57:31.249+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:57:31.249+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:57:31.278+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 5.677 seconds
+[2024-09-16T23:58:01.637+0000] {processor.py:186} INFO - Started process (PID=569) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:01.639+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:58:01.643+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:01.642+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:02.443+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:58:02.451+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:02.496+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:02.496+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:58:02.545+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:02.544+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:58:02.574+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.948 seconds
+[2024-09-16T23:58:32.942+0000] {processor.py:186} INFO - Started process (PID=576) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:32.944+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:58:32.950+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:32.949+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:33.775+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:58:33.783+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:58:33.828+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:33.827+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:58:33.869+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:58:33.869+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:58:33.898+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.966 seconds
+[2024-09-16T23:59:04.319+0000] {processor.py:186} INFO - Started process (PID=583) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:04.321+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:59:04.325+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:04.324+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:05.162+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:59:05.171+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:05.216+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:05.215+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:59:05.257+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:05.257+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:59:05.291+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 0.985 seconds
+[2024-09-16T23:59:35.659+0000] {processor.py:186} INFO - Started process (PID=590) to work on /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:35.660+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/updateReviews.py for tasks to queue
+[2024-09-16T23:59:35.665+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:35.664+0000] {dagbag.py:587} INFO - Filling up the DagBag from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:36.468+0000] {logging_mixin.py:190} INFO - {{ task_instance.xcom_pull(task_ids='retrieve_urls', dag_id='update_reviews', key='return_value') }}
+[2024-09-16T23:59:36.476+0000] {processor.py:925} INFO - DAG(s) 'update_reviews' retrieved from /opt/airflow/dags/updateReviews.py
+[2024-09-16T23:59:36.518+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:36.518+0000] {dag.py:3229} INFO - Sync 1 DAGs
+[2024-09-16T23:59:36.763+0000] {logging_mixin.py:190} INFO - [2024-09-16T23:59:36.763+0000] {dag.py:4156} INFO - Setting next_dagrun for update_reviews to 2024-09-15 00:00:00+00:00, run_after=2024-09-16 00:00:00+00:00
+[2024-09-16T23:59:36.791+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/updateReviews.py took 1.144 seconds

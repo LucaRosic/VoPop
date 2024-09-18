@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 
 interface Props {
   title: string;
-  urlScraperCallback : (url: string) => void;
+  urlScraperCallback : (url: string, secondaryUrl: string) => void;
 }
 
 const NavbarTop = ({ title, urlScraperCallback }: Props) => {

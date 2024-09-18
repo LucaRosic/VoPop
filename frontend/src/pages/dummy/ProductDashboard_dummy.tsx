@@ -19,7 +19,7 @@ export const ProductDashboard_dummy = () => {
 
   return (
     <>
-      <NavbarTop title="VoPop" urlScraperCallback={(arg:string) => (console.log(arg))}/>
+      <NavbarTop title="VoPop" urlScraperCallback={(arg:string, arg2:string) => (console.log(arg, arg2))}/>
       <div className="flex flex-col gap-8 bg-[#FBF5F3]">
         <div 
           className="flex flex-col items-center gap-4 px-32 pt-4"
