@@ -61,7 +61,7 @@ def get_latest_reviews():
             utc=pytz.UTC
             datenow= utc.localize(dt.datetime.now())
             #challenge.datetime_end = utc.localize(challenge.datetime_end)
-            if date < datenow: #- dt.timedelta(days=31):
+            if date < datenow - dt.timedelta(days=31):
                payload = {'url':url,'date':date.strftime('%Y-%m-%d')}
                fresh_reviews = requests.get('http://host.docker.internal:8000/api/product/newreviews/', params=payload)
                new_reviews[product_id] = fresh_reviews.text
@@ -74,6 +74,7 @@ def get_latest_reviews():
         
         profanity.load_censor_words()
         cleaned_reviews = []
+        texts = []
         for id in new_data.keys():
             for review in json.loads(new_data[id]):
                 
@@ -91,31 +92,40 @@ def get_latest_reviews():
 
                 # Filter out profanity
                 review_text = profanity.censor(review_text)
-                
+                texts.append(review_text.replace('"',"").replace(',','').replace("'",''))
                 if review_rating:
                     review_rating = clean_rate(review_rating)
-                # Sentiment
-                sentiment = json.loads(requests.get('http://host.docker.internal:8000/api/product/newsentiment/',{'review':review_text}).text)
+                
                 
                 cleaned_review = {
                     'Date': review_date.split('T')[0],
                     'Stars': review_rating,
                     'Review Text': review_text.replace('"',"'").replace(',','').replace("'",''),
-                    'Sentiment': sentiment['label'],
-                    'Score': sentiment['score'],
+                    'Sentiment': None, #sentiment['label'],
+                    'Score': None, #sentiment['score'],
                     'prod_id': id
                 }
                 cleaned_reviews.append(cleaned_review)
 
-             
-        return cleaned_reviews
+        # Sentiment
+      
+
+        sentiment = json.loads(requests.post('http://host.docker.internal:8000/api/product/newsentiment/',{'review':texts}).text)
+        i=0
+        sentiment_reviews = []
+        for review in cleaned_reviews:
+            review['Sentiment'] = sentiment[str(i)]['label']
+            review['Score'] = sentiment[str(i)]['score']
+            i+=1
+            sentiment_reviews.append(review)
+        return sentiment_reviews
     
     #insert new reviews into db
     @task(task_id='update_review_db')
     def update_review_database(new_data):
         for review in new_data:
          
-            cursor.execute(f"INSERT INTO api_product_reviews (review, sentiment, sentiment_label, rating,date, product_id) VALUES ('{review['Review Text']}',{review['Score']},'{review['Sentiment']}',{review['Stars']},'{review['Date']}',{review['prod_id']});")
+            cursor.execute(f"""INSERT INTO api_product_reviews (review, sentiment, sentiment_label, rating,date, product_id) VALUES ('{review['Review Text']}',{review['Score']},'{review['Sentiment']}',{review['Stars']},'{review['Date']}',{review['prod_id']});""")
             connection.commit()
         #cursor.close()    
         return None
@@ -132,7 +142,7 @@ def get_latest_reviews():
                  new_summaries.append({"Review Text":review[0]})
             summary = summarize(new_summaries).replace('"',"").replace("'","")
          
-            cursor.execute(f"UPDATE api_product_summary SET summary = '{summary}' WHERE product_id = {product_id}" )
+            cursor.execute(f"""UPDATE api_product_summary SET summary = '{summary}' WHERE product_id = {product_id}""" )
             cursor.execute(f"UPDATE api_product_summary SET date = '{dt.datetime.now()}' WHERE product_id = {product_id}" )
             connection.commit()
         cursor.close()
@@ -148,5 +158,5 @@ def get_latest_reviews():
 
 get_latest_reviews()
 
-if __name__ == "__main__":
-    get_latest_reviews()
+#if __name__ == "__main__":
+#    get_latest_reviews()
