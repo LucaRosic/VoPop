@@ -58,7 +58,7 @@ class CreateProduct(APIView):
     def post(self, request):
         
         # Check if product is in DB
-        cleaned_url, unique_code = clean_url(request.data['url'])
+        cleaned_url, unique_code = clean_url(request.data['url'][0])
         
         # Product is already in database
         if Product.objects.filter(unique_code=unique_code).exists():

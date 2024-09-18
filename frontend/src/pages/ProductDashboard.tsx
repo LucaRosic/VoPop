@@ -61,14 +61,15 @@ export const ProductDashboard = () => {
   // Count number of cards currently loading
   const [waitingCardNumber, setWaitingCardNumber] = useState<number>(0); 
 
-  const addProductCard = async ( scrapeUrl : string ) => {
+  const addProductCard = async ( scrapeUrl : string, scrapeSecondaryUrl: string ) => {
    
     // Increment number of waiting cards to be processed
     setWaitingCardNumber(waitingCardNumber + 1);
     // Call the URL scraper API
     try {
-      const urlData = {url:scrapeUrl};
+      const urlData = {url:[scrapeUrl, scrapeSecondaryUrl]};
       console.log("Sending scraping api");
+      console.log(`Scraping: ${scrapeUrl} & ${scrapeSecondaryUrl}`)
       const res = await api.post("/api/product/",urlData);
       console.log(res.data);
 
