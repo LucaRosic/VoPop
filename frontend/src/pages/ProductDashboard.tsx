@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import api from "../api";
 import ProductCardLoading from "../components/ProductCardLoading";
+import ConfirmBox from "../components/ConfirmBox";
 
 export const ProductDashboard = () => {
   /*
@@ -34,7 +35,7 @@ export const ProductDashboard = () => {
     }
   }
 
-  const [productData, setProductData] = useState<any>([]);
+  const [productData, setProductData] = useState<any[]>([]);
   // On page load get the list of products user is tracking and update the information
   useEffect(() => { 
     getProductInfo()
@@ -44,7 +45,7 @@ export const ProductDashboard = () => {
         setProductData(productDataList);
       }).catch((error) => {
         console.log(error)
-        setProductData(null);
+        setProductData([]);
       })
   }, [])
 
@@ -86,6 +87,32 @@ export const ProductDashboard = () => {
     }
   }
 
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [deleteProdId, setDeleteProdId] = useState<number|null>(null);
+
+  const confirmDeleteCardCallback = async (prodId:number|null) => {
+    const oldProductData = productData; // Save old product data
+    setProductData(prev => prev.filter(element => element["product"]["id"] !== prodId )); // Optimistic deletion
+    setDeleteProdId(null);
+    setDialogOpen(false);
+    try {
+      const res = await api.delete(`/api/product/delete/${prodId}/`);
+      console.log(res.data); // REMOVE
+      console.log("Success for delete request!");
+    } catch (error) {
+      setProductData(oldProductData) // Revert changes
+      console.log(error)
+    }
+    
+  }
+
+  // Delete card callback function
+  const deleteCard = (prodId:number|null) => {
+    console.log(`Sending delete request for product id: ${prodId}`);
+    setDeleteProdId(prodId);
+    setDialogOpen(true);
+  }
+
   // Render the product card based on information given by backend
   const renderProductCards = () => {
     if (loading === true) {
@@ -99,11 +126,13 @@ export const ProductDashboard = () => {
               return(
                 <ProductCard
                   key={productInfo["product"]["id"]}
+                  productId={productInfo["product"]["id"]}
                   productTitle={stringLimiter(productInfo["product"]["name"], 20)}
                   productImg={productInfo["product"]["image"]}
                   productOverview={stringLimiter(productInfo["overview"], 200)}
                   lastUpdated={productInfo["date"]}
                   sentimentScore={productInfo["avg_sentiment"]}
+                  deleteCallback={deleteCard}
                   onClick={() => navFunc(productInfo["product"]["id"])}
                 /> 
               )
@@ -145,6 +174,12 @@ export const ProductDashboard = () => {
           {/* Render the product cards */}
           {renderProductCards()}
         </div>
+        <ConfirmBox
+          open={dialogOpen}
+          handleClose={() => setDialogOpen(false)}
+          productId={deleteProdId}
+          confirmDeleteCallback={confirmDeleteCardCallback}
+        />
         <Footer />
       </div>
     </div>
