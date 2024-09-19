@@ -12,7 +12,7 @@ def clean_transform_data(data):
                 try:
                     # Extract the first floating point number found in the string
                     x = float(re.findall(r'\d+\.\d+', x)[0])
-                    print(x)
+                    #print(x)
                 except (ValueError, IndexError):
                     x = None
             elif isinstance(x, float):
@@ -44,10 +44,10 @@ def clean_transform_data(data):
 
         try:# Remove Non-English reviews
             if detect(review_text) != 'en':
-                print('not good')
+                # print('not good')
                 continue
         except:
-            print("this shit borken")
+            # print("this shit borken")
             continue
 
         # Filter out profanity
