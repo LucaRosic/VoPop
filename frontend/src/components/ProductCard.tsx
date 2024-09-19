@@ -7,18 +7,23 @@ import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
-  productId?: number;
+  productId?: number | null;
   productTitle: string;
   productImg: string;
   productOverview: string;
   lastUpdated: string;
   sentimentScore: number;
+  deleteCallback?: (arg0:number|null) => void;
   onClick?: () => void;
 }
 
 // Look into MUI typography for better text
 
-export const ProductCard = ({ productTitle, productImg, productOverview, lastUpdated, sentimentScore, onClick = () => null }: Props) => {
+export const ProductCard = ({ productTitle, productImg, productOverview, lastUpdated, sentimentScore,
+  productId = null,
+  deleteCallback = (_arg0) => console.log("Default request"), 
+  onClick = () => null }: Props) => {
+
 
   // Style arrow icon
   const StyledArrowForwardIcon = styled(ArrowForwardIcon)(() => ({
@@ -101,7 +106,10 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2"
-          onClick={() => null}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent the below element's onClick method
+            deleteCallback(productId);
+          }}
         >
           <DeleteIcon></DeleteIcon>
         </div>
