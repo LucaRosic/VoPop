@@ -111,8 +111,7 @@ services:
         target: /usr/src/app
     ports: 
       - "8000:8000"
-    
-    
+    command: bash -c "python manage.py makemigrations api && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       postgres:
         condition: service_started
