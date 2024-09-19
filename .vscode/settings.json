@@ -1,5 +1,7 @@
 {
     "python.analysis.extraPaths": [
-        "./backend/scrape"
+        "./backend/scrape",
+        "./backend/Clean",
+        "./backend/ML"
     ]
 }
