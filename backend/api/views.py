@@ -80,7 +80,7 @@ class CreateProduct(APIView):
         else:
             
             # scrape data
-            scraped = (scrape_reviews(request.data['url']))  
+            scraped = (scrape_reviews(request.data['url'][0]))  
             
             
             # URL link is invalid
