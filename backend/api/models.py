@@ -30,7 +30,7 @@ class Product_Reviews(models.Model):
     review = models.CharField(max_length=8000)
     sentiment = models.DecimalField(max_digits=3, decimal_places=2)
     sentiment_label = models.CharField(max_length=10)
-    rating = models.DecimalField(max_digits=2, decimal_places=0)
+    rating = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
     date = models.DateField()
 
     def __str__(self):
