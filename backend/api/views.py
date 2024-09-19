@@ -58,7 +58,12 @@ class CreateProduct(APIView):
     def post(self, request):
         
         # Check if product is in DB
-        cleaned_url, unique_code = clean_url(request.data['url'][0])
+        if request.data['url'][0] == '':
+            url = request.data['url'][1]
+        else:
+            url = request.data['url'][0]
+            
+        cleaned_url, unique_code = clean_url(url)
         
         # Product is already in database
         if Product.objects.filter(unique_code=unique_code).exists():
@@ -80,7 +85,7 @@ class CreateProduct(APIView):
         else:
             
             # scrape data
-            scraped = (scrape_reviews(request.data['url'][0]))  
+            scraped = (scrape_reviews(url))  
             
             
             # URL link is invalid
@@ -116,14 +121,25 @@ class CreateProduct(APIView):
                 elif sentiment['label'] == 'Negative':
                     negative_count += 1
                 
+                if review['Stars'] == '':
+                    review['Stars'] = 0
                 
                 # Add product reviews
                 prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
                     sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                 prod_rev.save()
                    
-            # Calculate avg. sentiment (NPS) for Product       
-            avg_sentiment = round( (postive_count/len(cleaned['Reviews'])) - (negative_count/len(cleaned['Reviews']) ) ,2)
+            # Calculate avg. sentiment (NPS) for Product   
+            if postive_count == 0:
+                avg_pos = 0
+            else:
+                avg_pos =  postive_count/len(cleaned['Reviews'])  
+                
+            if negative_count == 0:
+                avg_neg = 0
+            else:
+                avg_neg = negative_count/len(cleaned['Reviews']) 
+            avg_sentiment = round( avg_pos - avg_neg,2)
             
             # Gemini Review Summary Model
             summary=summarize(scraped['Reviews'])
