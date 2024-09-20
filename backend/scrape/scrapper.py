@@ -485,26 +485,29 @@ def scrape_ali_express_reviews(url):
                     review_date = "Date not found"
                     print("Error finding review date:", e)
                 
-                ## star count for aliexpress non functional at this stage nor needed, leaving in for future iterations so not starting from scratch
-                # try:
-                #     # Find the star box using the class name relative to the review element
-                #     star_box = review_element.find_element(By.CLASS_NAME, "comet-icon-starreviewfilled")
+                
+                try:
+                    # Use an explicit wait to ensure the element is present before proceeding
+                    review_star_xpath = review_xpath.replace("div[1]/div[3]", "div[1]/div[1]")
+                    star_box = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, review_star_xpath))
+                    )
                     
-                #     # Find all filled stars within the star box
-                #     filled_stars = review_element.find_elements(By.CLASS_NAME, "comet-icon-starreviewfilled")
+                    # Find all filled stars within the star box
+                    filled_stars = star_box.find_elements(By.CSS_SELECTOR, ".comet-icon-starreviewfilled")
                     
-                #     # Count the number of filled stars
-                #     review_stars = len(filled_stars)
+                    # Count the number of filled stars
+                    review_stars = len(filled_stars)
                     
-                #     print(f"{review_stars} total stars for the review.")
-                # except Exception as e:
-                #     print(f"An error occurred while finding stars: {e}")
-                #     review_stars = 0
+                    print(f"{review_stars} total stars for the review.")
+                except Exception as e:
+                    print(f"An error occurred while finding stars: {e}")
+                    review_stars = 0
       
                 # Append the extracted data to the reviews list
                 reviews_list.append({
                     'Date': review_date,
-                    # 'Stars': review_stars,
+                    'Stars': review_stars,
                     'Review Text': review_text
                 })
                 
@@ -552,9 +555,8 @@ def scrape_ali_express_reviews(url):
 
 if __name__ == "__main__":
 
-    # url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
-    
+    url = "https://www.aliexpress.com/item/1005007003675009.html?spm=a2g0o.tm1000008910.d0.1.1fd970c8Z8cI5p&pvid=74441cc0-f36e-477d-ba29-a50ec039cc9a&pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22list_id%22:286001,%22sku_id%22:%2212000039016093172%22%7D&scm=1007.25281.317569.0&scm-url=1007.25281.317569.0&scm_id=1007.25281.317569.0&pdp_npi=4%40dis%21AUD%21AU%20%2410.23%21AU%20%241.50%21%21%2148.14%217.06%21%402101ec1f17241139124465114edd7d%2112000039016093172%21gdf%21AU%21%21X&aecmd=true"
     # url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/product-reviews/B0BVVF6V1S/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
-        url='https://www.amazon.com/Apple-Smartwatch-Starlight-Aluminum-Detection/product-reviews/B0CHX7R6WJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
-        date = datetime(day=2,month=7, year=2024)
-        reviews_df = scrape_reviews(url)
+    #url='https://www.amazon.com/Apple-Smartwatch-Starlight-Aluminum-Detection/product-reviews/B0CHX7R6WJ/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
+    date = datetime(day=2,month=7, year=2024)
+    reviews_df = scrape_reviews(url)

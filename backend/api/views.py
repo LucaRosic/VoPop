@@ -121,12 +121,15 @@ class CreateProduct(APIView):
                 elif sentiment['label'] == 'Negative':
                     negative_count += 1
                 
-                if review['Stars'] == '':
-                    review['Stars'] = 0
+                print(review['Stars'])
+                if review['Stars'] == None:
+                    prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
+                    sentiment=sentiment['score'], sentiment_label=sentiment['label'], date=review['Date'] )
+                 
+                else:
+                    prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
+                        sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                 
-                # Add product reviews
-                prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
-                    sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
                 prod_rev.save()
                    
             # Calculate avg. sentiment (NPS) for Product   
