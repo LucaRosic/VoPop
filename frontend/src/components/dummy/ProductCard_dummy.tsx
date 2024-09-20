@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 
 interface Props {
   productId: number;
+  deleteCallback?: (arg0:number) => void;
   onClick?: () => void;
 }
 
@@ -16,6 +17,7 @@ interface Props {
 
 export const ProductCard_dummy = ({
   productId,
+  deleteCallback = (_arg0:number) => console.log("Default request"),
   onClick = () => null,
 }: Props) => {
   const productInfo = DummyData(productId);
@@ -72,7 +74,10 @@ export const ProductCard_dummy = ({
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2"
-          onClick={() => null}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent below onClick from activating
+            deleteCallback(productId); // This will probably have to be a callback function
+          }}
         >
           <DeleteIcon></DeleteIcon>
         </div>

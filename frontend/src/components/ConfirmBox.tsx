@@ -1,10 +1,12 @@
 import { Dialog, DialogContent } from "@mui/material"
+
 interface Props {
   open: boolean,
   handleClose: () => void,
   productId: number|null,
   confirmDeleteCallback: (arge0:number|null) => void,
 }
+
 const ConfirmBox = ({open, handleClose, productId, confirmDeleteCallback} : Props) => {
   return (
     <Dialog
@@ -13,8 +15,14 @@ const ConfirmBox = ({open, handleClose, productId, confirmDeleteCallback} : Prop
       onClose={handleClose}
       maxWidth="xs"
       scroll="body"
+      sx={{
+        // No rounded corners
+        "& .MuiDialog-paper": {
+          borderRadius: "0",
+        },
+      }}
     >
-      <DialogContent>
+      <DialogContent className="bg-gray-900 text-white border-2 border-[rgba(35,106,114)]">
         <div className="flex flex-col items-center gap-3">
           <div className="font-bold">
             Are you sure you want to remove?
@@ -30,4 +38,5 @@ const ConfirmBox = ({open, handleClose, productId, confirmDeleteCallback} : Prop
     </Dialog>
   )
 }
+
 export default ConfirmBox

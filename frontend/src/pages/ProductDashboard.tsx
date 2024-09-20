@@ -89,6 +89,7 @@ export const ProductDashboard = () => {
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [deleteProdId, setDeleteProdId] = useState<number|null>(null);
+
   const confirmDeleteCardCallback = async (prodId:number|null) => {
     const oldProductData = productData; // Save old product data
     setProductData(prev => prev.filter(element => element["product"]["id"] !== prodId )); // Optimistic deletion
@@ -104,6 +105,7 @@ export const ProductDashboard = () => {
     }
     
   }
+
   // Delete card callback function
   const deleteCard = (prodId:number|null) => {
     console.log(`Sending delete request for product id: ${prodId}`);

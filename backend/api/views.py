@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from scrape.scrapper import scrape_reviews, clean_url, get_site, is_valid_url
 from ML.ReviewSumModel import summarize
-from ML.sentiment import analyseSentiment, start_model
+from ML.sentiment import analyseSentiment, start_model,analyseMultiple
 from Clean.Transform import clean_transform_data
 from datetime import datetime, timedelta
 import pandas as pd
@@ -507,11 +507,11 @@ class GetNewRewreviews(APIView):
 class GetSentimentNewReviews(APIView):
     permission_classes = [AllowAny]
 
-    def get(self,request):
-        sent_model = start_model()
-        review = request.GET.get('review')
-        return Response(analyseSentiment(sent_model, review))      
-      
+    def post(self,request):
+        review = request.POST.getlist('review')
+    
+        return Response(analyseMultiple(review))
+  
 #_____________________________________________________________________________________________________________________________
 # DELETE Requests  
 

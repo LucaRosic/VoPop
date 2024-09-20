@@ -24,7 +24,6 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
   deleteCallback = (_arg0) => console.log("Default request"), 
   onClick = () => null }: Props) => {
 
-
   // Style arrow icon
   const StyledArrowForwardIcon = styled(ArrowForwardIcon)(() => ({
     fontSize: "2rem", // Adjust the size as needed

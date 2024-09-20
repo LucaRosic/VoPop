@@ -15,13 +15,13 @@ const AddProductBtn = ( {urlScraperCallback} : Props ) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page from reloading
-    console.log(`URL Sent: ${url}`);
     console.log(`Secondary URL Sent: ${secondaryUrl}`)
     urlScraperCallback(url, secondaryUrl); // Send the url
     setUrl(""); // Clear url field
-    setSecondaryUrl(""); // Clear secondary field 
+    setSecondaryUrl(""); // Clear secondary field
     setShowForm(false); // Close the form box
   }
+
 
   const popupBoxRef = useRef<HTMLDivElement>(null);
 
@@ -38,10 +38,11 @@ const AddProductBtn = ( {urlScraperCallback} : Props ) => {
           value={url}
           onChange={(e) => {setUrl(e.target.value)}}
           placeholder="Enter URL of Product:"
-          />
+        />
           {/* Secondary url */}
            <input 
           className="bg-slate-100 w-[350px] h-[40px] px-2 border-2 border-slate-200 border-solid text-black placeholder-gray-900 placeholder:italic"
+          type="text"
           value={secondaryUrl}
           onChange={(e) => {setSecondaryUrl(e.target.value)}}
           placeholder="Add Additional URL:"
@@ -52,22 +53,26 @@ const AddProductBtn = ( {urlScraperCallback} : Props ) => {
     )
   }
 
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const toggleState = () => {setShowForm(!showForm)};
+
+  
+  
+
   // Handle clicking outside of popupbox
   const handleClick = (event: MouseEvent) => {
     if (popupBoxRef.current && !popupBoxRef.current.contains(event.target as HTMLElement)) {
       setShowForm(false); // Close the popupbox
     }
   }
+
   useEffect(() => {
     window.addEventListener('click', handleClick);
+
     return () => {
       window.removeEventListener('click', handleClick);
     }
   }, [])
-
-
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const toggleState = () => {setShowForm(!showForm)};
 
   return(
     <div ref={popupBoxRef} className="flex flex-col">
