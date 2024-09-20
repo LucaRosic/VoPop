@@ -106,7 +106,7 @@ class CreateProduct(APIView):
             
             
             
-            postive_count = 0
+            positive_count = 0
             negative_count = 0
             sent_model = start_model()
             
@@ -123,7 +123,7 @@ class CreateProduct(APIView):
                 
                 # Count positive and negative reviews
                 if sentiment['label'] == 'Positive':
-                    postive_count += 1
+                    positive_count += 1
                 elif sentiment['label'] == 'Negative':
                     negative_count += 1
                 
@@ -139,10 +139,10 @@ class CreateProduct(APIView):
                 prod_rev.save()
                    
             # Calculate avg. sentiment (NPS) for Product   
-            if postive_count == 0:
+            if positive_count == 0:
                 avg_pos = 0
             else:
-                avg_pos =  postive_count/len(cleaned['Reviews'])  
+                avg_pos =  positive_count/len(cleaned['Reviews'])  
                 
             if negative_count == 0:
                 avg_neg = 0
@@ -161,7 +161,7 @@ class CreateProduct(APIView):
             
             # Add product summary
             prod_sum = Product_Summary(product=Product.objects.get(unique_code=scraped['Unique Key']), summary=summary, overview=overview, avg_sentiment=avg_sentiment, review_count=len(cleaned['Reviews']), \
-                postive_count=postive_count, negative_count=negative_count, avg_rating=cleaned['Average Stars'])
+                positive_count=positive_count, negative_count=negative_count, avg_rating=cleaned['Average Stars'])
             prod_sum.save()
             
             # Return product card data to frontend

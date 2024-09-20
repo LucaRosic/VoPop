@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import BarGraph from "../../components/BarGraph.tsx";
 import {
@@ -50,6 +50,11 @@ export const ProductInfoPage_dummy = () => {
 
   const markdownReview = GetMarkdownReview();
 
+  const navigate = useNavigate();
+  const backToDashboard = () => {
+    navigate("/dummy")
+  }
+
   return (
     <div className="flex h-[100vh]">
       {/* Sidebar left */}
@@ -59,7 +64,7 @@ export const ProductInfoPage_dummy = () => {
             className="rounded-none bg-black shadow-none"
             variant="contained"
             startIcon={<ArrowBackIosNewIcon />}
-            href="/dummy"
+            onClick={backToDashboard}
           >
             Dashboard
           </Button>

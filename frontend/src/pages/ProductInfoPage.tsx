@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BarGraph from "../components/BarGraph.tsx";
 import {
   Chart as ChartJS,
@@ -95,6 +95,13 @@ export const ProductInfoPage = () => {
       - Emoji sentiment (along with average sentiment score)
   */
 
+  const navigate = useNavigate();
+  // Using react router -> States will persist I think!
+  const backToDashboard = () => {
+    console.log("Going back to Dashboard!");
+    navigate("/dashboard")
+  }
+
   return (
     // =========================
     <div className="flex h-[100vh]">
@@ -107,7 +114,7 @@ export const ProductInfoPage = () => {
             className="rounded-none bg-black shadow-none"
             variant="contained"
             startIcon={<ArrowBackIosNewIcon />}
-            href="/dashboard"
+            onClick={backToDashboard}
           >
             Dashboard
           </Button>

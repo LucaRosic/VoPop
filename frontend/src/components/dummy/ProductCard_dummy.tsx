@@ -4,6 +4,8 @@ import DummyData from "../../DummyData";
 // MUI ui stuff:
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { styled } from "@mui/material/styles";
 //--------------
 
@@ -54,6 +56,7 @@ export const ProductCard_dummy = ({
       <div className="cx-info-brief flex flex-col justify-between w-[70%]">
         <div className="flex justify-center items-center">
           <div className="bg-gray-900 text-white text-center flex items-center p-1 w-full justify-center">
+            <span className="whitespace-pre"><ThumbUpIcon /> 300    <ThumbDownIcon /> 400    </span>  
             <span className="text-lg">Customer Sentiment </span>
             <StyledArrowForwardIcon fontSize="large"></StyledArrowForwardIcon>
             <span className="text-5xl mb-1">{productInfo.sentimoji}</span>

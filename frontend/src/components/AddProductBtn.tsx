@@ -77,7 +77,7 @@ const AddProductBtn = ( {urlScraperCallback} : Props ) => {
   return(
     <div ref={popupBoxRef} className="flex flex-col">
       <div 
-        className="bg-green-700 hover:bg-green-800 p-1 cursor-pointer w-36 text-center select-none"
+        className="bg-[#2a808b] hover:bg-green-700 p-1 cursor-pointer w-36 text-center select-none"
         onClick={toggleState}
       >
       <span><AddIcon /></span>  Add Product

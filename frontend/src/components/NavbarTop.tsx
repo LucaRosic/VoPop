@@ -6,11 +6,10 @@ import api from "../api";
 import { AxiosError } from "axios";
 
 interface Props {
-  title: string;
   urlScraperCallback : (url: string, secondaryUrl: string) => void;
 }
 
-const NavbarTop = ({ title, urlScraperCallback }: Props) => {
+const NavbarTop = ({ urlScraperCallback }: Props) => {
   /*
     Navbar top component. This is to have the vopop logo, add product button, user logged in information,
     and lastly the logout option.

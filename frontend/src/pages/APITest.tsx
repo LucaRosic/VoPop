@@ -68,6 +68,25 @@ const APITest = () => {
     localStorage.clear();
   }
 
+  const delay = (delayInms : number) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+  };
+
+  
+  const worker = new Worker("workerScriptTest.ts");
+
+  const persistantFunction = async () => {
+    console.log("Sending persistant request...");
+    worker.postMessage("PERSISTENT");
+    
+  }
+
+  const ping = () => {
+    console.log(`Bing Bong Ping Pong! ${localStorage.getItem("TEST")}`);
+    worker.postMessage("Poking the worker!");
+    localStorage.setItem("TEST", "State 0");
+  }
+
   // Return buttons that call above functions
   return (
     <div className="flex flex-col justify-center items-center p-16">
@@ -112,8 +131,27 @@ const APITest = () => {
       >
         Get chart data test
       </button>
+
+      <br></br>
+      <button 
+      onClick={ping}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Ping
+      </button>
+      <br></br>
+
+      <br></br>
+      <button 
+      onClick={persistantFunction}
+      className="bg-gray-600 rounded-lg p-2 text-white"
+      >
+        Persistent
+      </button>
+      <br></br>
+
     </div>
-    
+
   )
 }
 
