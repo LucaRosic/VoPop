@@ -40,8 +40,9 @@ const NavbarTop = ({ title, urlScraperCallback }: Props) => {
 
   return (
     <nav className="bg-[rgba(19,58,63)] text-white h-14 flex justify-between items-center px-4 sticky top-0 z-50 border-b-4 border-x-0 border-gray-900">  
-      <div className="flex gap-8 items-center">
-        <span className="text-2xl">{title}</span>
+      <div className="flex gap-4 items-center">
+        {/* <span className="text-2xl">{title}</span> */}
+        <img src="/images/vopop_logo.png" className="h-8 pb-1" />
         <AddProductBtn urlScraperCallback={urlScraperCallback}/>
       </div>
 
