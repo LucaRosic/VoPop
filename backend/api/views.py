@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics, status
-from .serializers import UserSerializer, ProductSumSerializer_HOME, SentimentDataSerializer_Dash, ProductSumSerializer_Dash, ProductSerializer_Dash
+from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Product, User_Products, Product_Summary, Product_Reviews, Product_Data_Source
+from .models import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -14,9 +14,6 @@ from Clean.Transform import clean_transform_data
 from datetime import datetime, timedelta
 import pandas as pd
 from django.db import connection
-from django.db.models import Q
-import sys
-
 
 #_____________________________________________________________________________________________________________________________
 # USER Requests 
@@ -36,6 +33,7 @@ class CreateUserView(generics.CreateAPIView):
     
     
 class LogoutView(APIView):
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -89,7 +87,11 @@ class CreateProduct(APIView):
         avg_sentiment = round( avg_pos - avg_neg, 2)
         
         ratings = [ i[2] for i in rows ]
-        avg_rating = sum(ratings)/len(ratings)
+        
+        if sum(ratings) == 0:
+            avg_rating = 0
+        else:
+            avg_rating = sum(ratings)/len(ratings)
         
         prod_sum = Product_Summary(product=prod, summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating, review_count=len(rows), \
                 postive_count=positive_count, negative_count=negative_count)
@@ -115,19 +117,28 @@ class CreateProduct(APIView):
         
         print('adding reviews to database')
         for review in cleaned['Reviews']:
-        
-            # Sentiment
+            
             sentiment = analyseSentiment(sent_model, review['Review Text']) 
-            prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
-                sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+            
+            if review['Stars'] == '' or review['Stars'] == None:
+                prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
+                sentiment=sentiment['score'], sentiment_label=sentiment['label'], date=review['Date'] )
+            
+            else:
+                prod_rev = Product_Reviews(unique_code=scraped['Unique Key'], review=review['Review Text'], \
+                    sentiment=sentiment['score'], sentiment_label=sentiment['label'], rating=review['Stars'], date=review['Date'] )
+            
             prod_rev.save()
+        
+        source_date = Source_date(source=url[0], date=datetime.now())
+        source_date.save()
             
         return product_meta
         
         
     def post(self, request): 
         
-        print('adding product...', end=' ')
+        print('adding product...')
         # get and clean links to match up
         links = self.request.data['url']  
         links = [link for link in links if link != '' ]
@@ -246,7 +257,7 @@ class CreateProduct(APIView):
         
             for link in cleaned_urls:
                 print(' created data_source instance for', link[1])
-                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod, date=datetime.now())
+                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod)
                 link.save()
 
             with connection.cursor() as cursor:
@@ -384,11 +395,11 @@ class AddLink(APIView):
         
             for link in links:
                 print(' created data_source instance for', link[1])
-                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod, date=datetime.now())
+                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod)
                 link.save()
             
             print(' created data_source instance for', clean_url(url)[1])
-            link = Product_Data_Source(source=clean_url(url)[0], unique_code=clean_url(url)[1], product=prod, date=datetime.now())
+            link = Product_Data_Source(source=clean_url(url)[0], unique_code=clean_url(url)[1], product=prod)
             link.save()
             
             # delete product/ user connection to product
@@ -511,8 +522,8 @@ class ProductDelete(APIView):
     def delete(self, request, product_id):
 
         # Delete for user table, not whole product
-        #User_Products.objects.filter(user=self.request.user,product=product_id).delete()
-        User_Products.objects.filter(user=User.objects.get(id=2),product=product_id).delete()
+        User_Products.objects.filter(user=self.request.user,product=product_id).delete()
+        #User_Products.objects.filter(user=User.objects.get(id=2),product=product_id).delete()
         
         # Delete product if no user is tracking (no point storing irrelevant data)
         if User_Products.objects.filter(product=product_id).exists() == False:
@@ -520,17 +531,19 @@ class ProductDelete(APIView):
             
             with connection.cursor() as cursor:
                 cursor.execute("""
-                            SELECT DISTINCT unique_code
+                            SELECT DISTINCT unique_code, source
                             FROM api_product_data_source 
                             WHERE product_id = %s
                             """, [product_id])
-                unique_codes = cursor.fetchall()
+                links = cursor.fetchall()
                 
             Product.objects.filter(pk=product_id).delete()
                 
-            for unique_code in unique_codes:
-                if Product_Data_Source.objects.filter(unique_code=unique_code[0]).exists() == False:
-                    Product_Reviews.objects.filter(unique_code=unique_code[0]).delete()
+            for link in links:
+                print(link)
+                if Product_Data_Source.objects.filter(unique_code=link[0]).exists() == False:
+                    Product_Reviews.objects.filter(unique_code=link[0]).delete()
+                    Source_date.objects.filter(source=link[1]).delete()
             
 
         return Response(status=status.HTTP_204_NO_CONTENT)
