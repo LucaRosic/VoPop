@@ -14,16 +14,20 @@ def clean_rate(rate):
     Returns:
         float or None: The cleaned rating as a float, or `None` if it cannot be extracted.
     """
+
     if isinstance(rate, str):
         try:
-            # Extract the first floating point number found in the string
-            rate = float(re.findall(r'\d+\.\d+', rate)[0])
-            ####print(rate)
+            # Amazon 
+            match = re.findall(r'\d+\.\d+|\d+', rate)  
+            if match:
+                rate = float(match[0])  
+            else:
+                rate = None
         except (ValueError, IndexError):
-            rate = None
-    elif isinstance(rate, float):
-        # If it's already a float, we just pass
-        pass
+            rate = None        
+    elif isinstance(rate, (float, int)):
+        # AliExpress
+        rate = float(rate)
     else:
         rate = None
     return rate
@@ -120,3 +124,26 @@ def clean_transform_data(data):
     }
 
 
+if __name__ == "__main__":
+    file = {
+    "Category": "Amazon",
+    "Product Name": "100PCS Magnetic Tiles STEM Building Toys Set with 2 Cars, Sensory Stacking Magnetic Blocks for Toddlers & Kids, Ideal for Preschool Montessori Toys Christmas Birthday Gifts for Boys & Girls Ages 3+",
+    "Product Image": "https://m.media-amazon.com/images/I/91UUewlD7BL._AC_SX679_.jpg",
+    "Unique Key": "B0BVVF6V1S",
+    "Clean URL": "https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S",
+    "Brand": "Brand: Coodoo",
+    "Average Star": "4.8 out of 5",
+    "Reviews": [
+        {
+            "Date": "28 August 2024",
+            "Stars": "4",
+            "Review Text": "I don't usually write reviews, but this ine deserves one.\nMonths back i bought a knock off product (from another site), which were smaller tiles, only sides, and one magned per side. Recently my 5 year old started playing with them and really enjoyed it. I thought I'll upgrade, and it was the best decision! Blocks are amazing in a sense theatre you can build on top of each other without them toppling over! We'll, rest is upto your - *cough cough* I mean to your little one's imagination \ud83d\ude09\nOh, it even comes with small balconies for your castle!"
+        },
+        {
+            "Date": "29 August 2024",
+            "Stars": "5.0 out of 5 stars",
+            "Review Text": "My son loves magnatiles but the packs are so small and pricey. These work the same, and he has so many more to play with! 10/10"
+        }
+    ]
+}
+    print(clean_transform_data(file))
