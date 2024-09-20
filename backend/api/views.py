@@ -92,10 +92,10 @@ class CreateProduct(APIView):
             if scraped is None:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             
-            
+            ##print('scrape:', len(scraped['Reviews']))
             # Clean scraped data
             cleaned = clean_transform_data(scraped)
-            
+            ##print('clean:', len(cleaned['Reviews']))
             # Add to product table  
             prod = Product(name=scraped['Product Name'], url=scraped['Clean URL'], unique_code=scraped['Unique Key'], category=scraped['Category'], brand=scraped['Brand'], image=scraped['Product Image'])        
             prod.save()
@@ -110,6 +110,12 @@ class CreateProduct(APIView):
             negative_count = 0
             sent_model = start_model()
             
+            #print(cleaned['Reviews'])
+            
+            if (cleaned['Reviews'] == []) or (cleaned['Reviews'] == {}):
+                print('no links bruv')
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+            
             for review in cleaned['Reviews']:
                 
                 # Sentiment
@@ -122,7 +128,7 @@ class CreateProduct(APIView):
                     negative_count += 1
                 
                 print(review['Stars'])
-                if review['Stars'] == None:
+                if (review['Stars'] == None) or (review['Stars'] == ''):
                     prod_rev = Product_Reviews(product=Product.objects.get(unique_code=scraped['Unique Key']), review=review['Review Text'], \
                     sentiment=sentiment['score'], sentiment_label=sentiment['label'], date=review['Date'] )
                  
