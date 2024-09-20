@@ -94,7 +94,7 @@ class CreateProduct(APIView):
             avg_rating = sum(ratings)/len(ratings)
         
         prod_sum = Product_Summary(product=prod, summary=summary, overview=overview, avg_sentiment=avg_sentiment, avg_rating=avg_rating, review_count=len(rows), \
-                postive_count=positive_count, negative_count=negative_count)
+                positive_count=positive_count, negative_count=negative_count)
         prod_sum.save()
         
         serializer = ProductSumSerializer_HOME(Product_Summary.objects.filter(product=prod), many=True)
@@ -176,25 +176,32 @@ class CreateProduct(APIView):
                             """.format(cleaned_links, length))
             row = cursor.fetchall() 
             # this aint right, row into next query
+        
+        if len(row) != 0:
+        
+            prod_ids = [r[0] for r in row]    
+            if len(prod_ids) == 1:
+                prod_ids.append(prod_ids[0])
+            prod_ids = tuple(prod_ids)
+                    
+            print('prods:', prod_ids)
             
+            # check if product exists
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                            SELECT product_id, count(unique_code) 
+                                FROM api_product_data_source 
+                                WHERE product_id IN {0}
+                                GROUP BY product_id
+                                HAVING count(unique_code) = {1} 
+                                """.format(prod_ids, length))
+                prods = cursor.fetchall() 
         
-        prod_ids = [r[0] for r in row]    
-        if len(prod_ids) == 1:
-            prod_ids.append(prod_ids[0])
-        prod_ids = tuple(prod_ids)
-                 
-        
-        # check if product exists
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                        SELECT product_id, count(unique_code) 
-                            FROM api_product_data_source 
-                            WHERE product_id IN {0}
-                            GROUP BY product_id
-                            HAVING count(unique_code) = {1} 
-                            """.format(prod_ids, length))
-            prods = cursor.fetchall() 
-        
+        else: 
+            prods = []
+            print('no prod in db exemption...', end=' ')
+            
+            
         # product exists
         if len(prods) > 0:
             print('product exists!!\n Product: %s' % prods[0][0])
