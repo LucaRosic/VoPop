@@ -3,22 +3,30 @@ import "./css/product-card.css";
 // MUI ui stuff:
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { styled } from "@mui/material/styles";
 //--------------
 
 interface Props {
-  productId?: number;
+  productId?: number | null;
   productTitle: string;
   productImg: string;
   productOverview: string;
   lastUpdated: string;
   sentimentScore: number;
+  positiveCount: number;
+  negativeCount: number;
+  deleteCallback?: (arg0:number|null) => void;
   onClick?: () => void;
 }
 
 // Look into MUI typography for better text
 
-export const ProductCard = ({ productTitle, productImg, productOverview, lastUpdated, sentimentScore, onClick = () => null }: Props) => {
+export const ProductCard = ({ productTitle, productImg, productOverview, lastUpdated, sentimentScore, positiveCount, negativeCount,
+  productId = null,
+  deleteCallback = (_arg0) => console.log("Default request"), 
+  onClick = () => null }: Props) => {
 
   // Style arrow icon
   const StyledArrowForwardIcon = styled(ArrowForwardIcon)(() => ({
@@ -28,23 +36,25 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
 
   const convertSentimentscoreToEmoji = (score : number) => {
     /*
-      - <= 0.75 ( *vomit* )
-      - <= 0.8 ( :c )
-      - <= 0.85 ( :/ )
-      - <= 0.9 ( :) )
-      - <= 0.95 ( *sunglasses* )
+      These emoji thresholds were made subjectively
+
+      - <= -0.2 ( *vomit* )
+      - <= 0.0 ( :c )
+      - <= 0.3 ( :/ )
+      - <= 0.7 ( :) )
+      - <= else ( *sunglasses* )
     */
 
     let emoji = "🤷"
-    if (score <= 0.75) {
+    if (score <= -0.2) {
       emoji = "🤮";
-    } else if (score <= 0.8) {
+    } else if (score <= 0) {
       emoji = "😒";
-    } else if (score <= 0.85) {
+    } else if (score <= 0.3) {
       emoji = "😐";
-    } else if (score <= 0.9) {
+    } else if (score <= 0.7) {
       emoji = "😊";
-    } else if (score <= 0.95) {
+    } else {
       emoji = "😎";
     }
 
@@ -79,6 +89,7 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
       <div className="cx-info-brief flex flex-col justify-between w-[70%]">
         <div className="flex justify-center items-center">
           <div className="bg-gray-900 text-white text-center flex items-center p-1 w-full justify-center">
+            <span className="whitespace-pre"><ThumbUpIcon /> {positiveCount}    <ThumbDownIcon /> {negativeCount}    </span>
             <span className="text-lg">Customer Sentiment </span>
             <StyledArrowForwardIcon fontSize="large"></StyledArrowForwardIcon>
             <span className="text-5xl mb-1">{convertSentimentscoreToEmoji(sentimentScore)}</span>
@@ -99,7 +110,10 @@ export const ProductCard = ({ productTitle, productImg, productOverview, lastUpd
         </p>
         <div
           className="bg-red-600 border-2 hover:bg-red-800 border-red-800 p-2"
-          onClick={() => null}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent the below element's onClick method
+            deleteCallback(productId);
+          }}
         >
           <DeleteIcon></DeleteIcon>
         </div>

@@ -4,13 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../tokenManager";
 
 export const Register = () => {
+  /*
+    Component for register form. This is to allow users to register an account.
+  */
 
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-
+  // On page load check if user is already logged in
   useEffect(() => {
     setLoading(true); // Set loading to try whilst confirming
+    // Check if user is already logged in -> if so, then don't allow them on this page.
     isLoggedIn().then((res) => {
       if (res) {
         navigate("/dashboard");

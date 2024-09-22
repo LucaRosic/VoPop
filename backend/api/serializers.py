@@ -50,9 +50,10 @@ class ProductSumSerializer_HOME(serializers.ModelSerializer):
     
     class Meta:
         model = Product_Summary
-        fields = ['product', 'overview', 'avg_sentiment', 'date']
+        fields = ['product', 'overview', 'avg_sentiment', 'review_count', 'positive_count', 'negative_count', 'date']
         extra_kwargs = {"product": {"read_only": True}, "overview": {"read_only": True}, \
-            "avg_sentiment": {"read_only": True}, "date": {"read_only": True}}
+            "avg_sentiment": {"read_only": True}, "review_count": {"read_only": True}, \
+                "positive_count": {"read_only": True}, "negative_count": {"read_only": True}, "date": {"read_only": True}}
         
 
 #______________________________________________________________________________________________________

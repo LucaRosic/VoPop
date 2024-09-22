@@ -1,4 +1,8 @@
 const Footer = () => {
+  /*
+    Footer component for the Vopop web application
+  */
+
   return (
     <footer className="bg-slate-300 shadow dark:bg-gray-800">
       <div className="w-full mx-auto max-w-screen-xl md:flex md:items-center md:justify-between">

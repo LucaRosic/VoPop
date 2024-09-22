@@ -14,6 +14,11 @@ interface Props {
   }
 
 function ProtectedRoute({children} : Props) {
+    /*
+        This is a wrapper component. Wrap other components that require backend authorization with this to 
+        ensure that access is denied if un-authenticated.
+    */
+
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
     useEffect(() => {
