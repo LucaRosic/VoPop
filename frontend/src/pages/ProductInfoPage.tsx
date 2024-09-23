@@ -12,7 +12,12 @@ import {
   Filler,
 } from "chart.js";
 import { Button } from "@mui/material";
+// MUI ICONS -------------------
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarHalfIcon from '@mui/icons-material/StarHalf';
+import StarIcon from '@mui/icons-material/Star';
+// ---------------
 import api from "../api.ts";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -53,6 +58,7 @@ export const ProductInfoPage = () => {
   const { prodId } = state;
   const [productSummary, setProductSummary] = useState<string>("");
   const [productData, setProductData] = useState<any>({});
+  const [productRating, setProductRating] = useState<number>(0);
 
   const getProductInformation = async () => {
     // API calls with product id
@@ -66,6 +72,7 @@ export const ProductInfoPage = () => {
     console.log("Calling META api:");
     try {
       const res = await api.get(`/api/product/dashboard/meta/${prodId}/`);
+      console.log("Obtaining META:")
       console.log(res.data);
       setProductData(res.data[0]);
     } catch (error) {
@@ -77,6 +84,7 @@ export const ProductInfoPage = () => {
       const res = await api.get(`/api/product/dashboard/summ/${prodId}/`);
       console.log(res.data);
       setProductSummary(res.data[0]["summary"]);
+      setProductRating(Number(res.data[0]["avg_rating"]))
     } catch (error) {
       console.log(error);
     }
@@ -102,13 +110,29 @@ export const ProductInfoPage = () => {
     navigate("/dashboard")
   }
 
+
+  const renderStars = (productRating : number) => {
+    
+    const numFullStars = Math.trunc(productRating);
+    const remainder = productRating % 1;
+    const numHalfStars = remainder >= 0.5 ? 1 : 0; // If decimal remainder is above or equal 0.5, you have half star
+    const numEmptyStars = 5 - numFullStars - numHalfStars; // Fill the rest out
+
+    return (
+      <>
+      {[...Array(numFullStars).keys()].map(key => <StarIcon key={key}/>)}
+      {[...Array(numHalfStars).keys()].map(key => <StarHalfIcon key={key}/>)}
+      {[...Array(numEmptyStars).keys()].map(key => <StarBorderIcon key={key}/>)}
+      </>
+    )
+  }
   return (
     // =========================
     <div className="flex h-[100vh]">
       
       {/* Sidebar left */}
       {/* ------ */}
-      <div className="w-1/3 bg-[#FBF5F3] border-2 border-gray-900 flex flex-col items-center gap-4 py-4">
+      <div className="w-1/3 bg-[#FBF5F3] border-2 border-gray-900 flex flex-col items-center gap-4 py-4 overflow-y-auto">
         <div className="self-start ml-2">
           <Button
             className="rounded-none bg-black shadow-none"
@@ -128,6 +152,12 @@ export const ProductInfoPage = () => {
             src={productData["image"]}
           ></img>
         </div>
+
+        {/* Star rating */}
+        <div>
+          {renderStars(productRating)}
+        </div>
+
       </div>
       {/* ------ */}
 
