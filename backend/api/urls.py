@@ -6,6 +6,8 @@ urlpatterns = [
     # Post Request
     
     path("product/", views.CreateProduct.as_view(), name='create-product'),
+    path("product/addlink/", views.AddLink.as_view(), name='add-to-product'),
+    
     
     # Get Requests
     path("product/home/", views.GetUserProduct_Home.as_view(), name='product-home'),

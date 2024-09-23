@@ -18,7 +18,7 @@ def start_gemini():
     
 
     generation_config = {
-    "temperature": 1,
+    "temperature": 0.75,
     "top_p": 0.95,
     "top_k": 64,
     "max_output_tokens": 8192,
@@ -61,7 +61,12 @@ def batch_summary(model, query_revs):
     fail_counter = 0
     while True:
         try:
-            batch_sum = model.generate_content(f"Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}. Can you give the review summary with this format: Likes:, Dislikes: and Overall:. Make sure the Overall section is only a sentence (max 200 characters).")
+            batch_sum = model.generate_content(f"""Can you please summarise these reviews for me, I want to understand what customers like and do not like about the product, the reviews are seperated by '||': {query_str}. Can you give the review summary in this markdown format:
+                                                                                                                                                                                                                                                                                        ## [Product name] Summary
+                                                                                                                                                                                                                                                                                        ### Likes: (give list of likes)
+                                                                                                                                                                                                                                                                                        ### Dislikes: (give list of dislikes)
+                                                                                                                                                                                                                                                                                        ### Overall:   
+                                                                                                                                                                                                                                                                                        Make sure the Overall section is only a sentence (max 200 characters).""")
             break
         except:
             if fail_counter == 4:
@@ -94,7 +99,7 @@ def summarize(reviews):
     # made for All_Beauty.json atm
     ##for review in reviews['reviewText']:
     for review in reviews:
-        review = review['Review Text']
+        review = review[0]
         
         # get token count
         tokens = nltk.word_tokenize(review)
@@ -123,7 +128,12 @@ def summarize(reviews):
         fail_counter = 0
         while True:
             try:
-                prod_sum = model.generate_content(f"Can you please combine these summarises for me, I want to understand what customers like and do not like about the product, the summaries are seperated by '||': {query_sum} . Can you give the review summary with this format: Likes:, Dislikes: and Overall:. Make sure the Overall section is only a sentence (max 200 characters).")
+                prod_sum = model.generate_content(f"""Can you please combine these summarises for me, I want to understand what customers like and do not like about the product, the summaries are seperated by '||': {query_sum} . Can you give the review summary in this markdown format:
+                                                                                                                                                                                                                                                                                                ## [Product name] Summary
+                                                                                                                                                                                                                                                                                                ### Likes: (give list of likes)
+                                                                                                                                                                                                                                                                                                ### Dislikes: (give list of dislikes)
+                                                                                                                                                                                                                                                                                                ### Overall:   
+                                                                                                                                                                                                                                                                                                Make sure the Overall section is only a sentence (max 200 characters).""")
                 break
             except:
                 if fail_counter == 4:

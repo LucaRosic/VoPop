@@ -5,14 +5,11 @@ from django.contrib.auth.models import User
 
 class Product(models.Model):
     name = models.CharField("Name", max_length=240)
-    category = models.CharField("Category", max_length=240)
-    url = models.CharField("URL", max_length=500)
-    unique_code = models.CharField("unique_code", max_length=50)
     brand = models.CharField("Brand", max_length=240)
     image = models.CharField("Image", max_length=240)
     
     def __str__(self):
-        return self.name
+        return "%s %s" %(self.pk, self.name)
     
     
 class User_Products(models.Model):
@@ -23,10 +20,26 @@ class User_Products(models.Model):
         return "%s - %s" %(self.user, self.product.name)
 
 
-# product_reviews table   
-
-class Product_Reviews(models.Model):
+class Product_Data_Source(models.Model):
+    source =  models.CharField("URL", max_length=500)
+    unique_code = models.CharField("unique_code", max_length=50)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
+    
+    def __str__(self):
+        return "%s - %s" %(self.product.pk, self.unique_code)
+
+
+class Source_date(models.Model):
+    source =  models.CharField("URL", max_length=500)
+    date = models.DateTimeField()
+    
+    def __str__(self):
+        return self.source
+            
+            
+class Product_Reviews(models.Model):
+    unique_code = models.CharField("unique_code", max_length=50)
     review = models.CharField(max_length=8000)
     sentiment = models.DecimalField(max_digits=3, decimal_places=2)
     sentiment_label = models.CharField(max_length=10)
@@ -34,7 +47,7 @@ class Product_Reviews(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return "%s - %s - %s" %(self.pk,self.sentiment_label, self.product.name)
+        return "%s - %s - %s" %(self.pk,self.sentiment_label, self.unique_code)
  
     
 class Product_Summary(models.Model):
