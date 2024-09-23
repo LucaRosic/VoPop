@@ -70,8 +70,8 @@ class SentimentDataSerializer_Dash(serializers.ModelSerializer):
 class ProductSerializer_Dash(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["name", "image", 'brand']
-        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "brand": {"read_only": True}}
+        fields = ["name", "image", 'brand', 'category']
+        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "brand": {"read_only": True}, "category": {"read_only": True}}
 
 class ProductSumSerializer_Dash(serializers.ModelSerializer):
     

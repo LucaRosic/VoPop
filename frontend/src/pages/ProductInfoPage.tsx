@@ -34,6 +34,8 @@ ChartJS.register(
   Filler
 );
 
+ChartJS.defaults.color = "#fff";
+
 export const ProductInfoPage = () => {
   /*
     Page to render more in-depth information about the product.
@@ -126,6 +128,15 @@ export const ProductInfoPage = () => {
       </>
     )
   }
+
+  const renderSourceLogo = (category: string) => {
+    if (category === "Amazon") {
+      return <img className="h-[50px]" src="/images/amazon_icon.png" />
+    } else if (category === "AliExpress") {
+      return <img className="h-[50px]" src="/images/aliexpress_icon.png" />
+    }
+  }
+
   return (
     // =========================
     <div className="flex h-[100vh]">
@@ -158,24 +169,31 @@ export const ProductInfoPage = () => {
           {renderStars(productRating)}
         </div>
 
+        {/* Source logo */}
+        <div className="flex flex-row items-center gap-4">
+          <span className="font-bold">SOURCE:</span> {renderSourceLogo(productData["category"])}
+        </div>
+
       </div>
       {/* ------ */}
 
       {/* Sidebar right */}
       {/* ------ */}
       <div className="w-2/3 bg-[rgba(35,106,114)] flex flex-col gap-4 p-4 items-center overflow-y-auto border-4 border-gray-900">
-        <div className="bg-gray-900 flex flex-col items-center border-2 border-gray-900 justify-between shadow-[10px_10px_0px_0px_rgba(251,245,243)] gap-1">
+        <div className="bg-gray-900 pb-4 w-[80%] flex flex-col items-center border-2 border-gray-900 justify-between shadow-[10px_10px_0px_0px_rgba(251,245,243)] gap-1">
           <h1 className="text-xl bg-gray-900 text-white">
-            <button className="hover:bg-gray-800 p-1">Product Sentiment</button>
+            <button className="hover:bg-gray-800 p-1 text-3xl">Product Sentiment</button>
           </h1>
 
           {/* Sentiment Graph */}
-          <div className="bg-slate-100">
+          <div className="bg-gray-900 w-[100%] flex flex-col items-center">
             <BarGraph productId={prodId} />
             <LineGraph productId={prodId} />
           </div>
+        </div>
+        
+        <div className="bg-gray-900 py-2 px-8 pb-4 w-[80%] flex flex-col items-center border-2 border-gray-900 justify-between shadow-[10px_10px_0px_0px_rgba(251,245,243)] gap-1">
           
-
           {/* Review Summary */}
           <ReactMarkdown children={productSummary} className="text-white text-sm px-2 mt-4" />
         </div>
