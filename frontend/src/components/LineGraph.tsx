@@ -110,7 +110,7 @@ const LineGraph = ({productId=61} : Props) => {
             label: "NPS",
             data: month_shift(nps),
             backgroundColor: '#286c74',
-            borderColor: '#286c74',
+            borderColor: '#3ab1be',
             tension: 0.1
 
           }, 
