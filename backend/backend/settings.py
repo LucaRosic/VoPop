@@ -112,7 +112,7 @@ DATABASES = {
         "NAME": "airflow",
         "USER": "airflow",
         "PASSWORD": "airflow",
-        "HOST": "host.docker.internal",
+        "HOST": "172.17.0.1",
         "PORT": "5432",
     }
 }
