@@ -104,7 +104,6 @@ def summarize(reviews):
         # get token count
         tokens = nltk.word_tokenize(review)
         token_count += len(tokens)
-        print()
     
         # check if token count over the limit when review tokens added
         if token_count >= 1000000: # actual limit is (1,048,576)

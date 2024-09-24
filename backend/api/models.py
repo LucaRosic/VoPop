@@ -22,6 +22,7 @@ class User_Products(models.Model):
 
 class Product_Data_Source(models.Model):
     source =  models.CharField("URL", max_length=500)
+    category = models.CharField('category', max_length=50)
     unique_code = models.CharField("unique_code", max_length=50)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     

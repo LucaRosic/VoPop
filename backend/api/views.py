@@ -264,7 +264,11 @@ class CreateProduct(APIView):
         
             for link in cleaned_urls:
                 print(' created data_source instance for', link[1])
-                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod)
+                if 'amazon' in link[0]:
+                    category = 'Amazon'
+                elif 'aliexpress' in link[0]:
+                    category = 'AliExpress'
+                link = Product_Data_Source(source=link[0], unique_code=link[1], product=prod, category=category)
                 link.save()
 
             with connection.cursor() as cursor:
@@ -425,8 +429,15 @@ class AddLink(APIView):
             serializer = CreateProduct.www(self,prod, rows)
             
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+    
         
-        
+class GetSentimentNewReviews(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        review = request.POST.getlist('review')
+    
+        return Response(analyseMultiple(review))        
 
 #__________________________________________________________________________________________________________________________
 # GET Requests
@@ -447,9 +458,10 @@ class GetUserProduct_Home(generics.ListAPIView):
 # INFO FOR DASH
 class GetReviewSent_Dash(APIView):
     
-    permission_classes  = [AllowAny]
+    permission_classes  = [IsAuthenticated]
     
     def get(self, request, product_id):
+        
         print(product_id)
         
         with connection.cursor() as cursor:
@@ -460,7 +472,6 @@ class GetReviewSent_Dash(APIView):
                             """, [product_id])
                 unique_codes = cursor.fetchall() 
         
-        print(unique_codes)
         unique_codes = [uni_code[0] for uni_code in unique_codes]
         
     
@@ -474,7 +485,7 @@ class GetReviewSent_Dash(APIView):
         agg_datalist = filtered_datalist.groupby(['month','sentiment_label'])['sentiment_label'].count().reset_index(name='sentiment_count')
         chart_data = [[0]*12 for num in range(3)]
 
-        for index, row in agg_datalist.iterrows():
+        for _, row in agg_datalist.iterrows():
             if row['sentiment_label'] == 'Positive':
                 chart_data[0][row['month']-1] = row['sentiment_count']
             elif row['sentiment_label'] == 'Negative':
@@ -506,25 +517,28 @@ class GetProductSum_Dash(APIView):
 class GetNewRewreviews(APIView):
     permission_classes = [AllowAny]
 
-    def get(self,request):
+    def get(self, request):
         url = request.GET.get('url')
         date = request.GET.get('date')
         return Response(scrape_reviews(url,date))
-
-class GetSentimentNewReviews(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self,request):
-        review = request.POST.getlist('review')
     
-        return Response(analyseMultiple(review))
+    
+class GetCateogoryData(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, product_id):
+        
+        serializer = Product_Categories_Dash(Product_Data_Source.objects.filter(product_id=product_id), many=True)
+        
+        return Response(serializer.data)
+        
   
 #_____________________________________________________________________________________________________________________________
 # DELETE Requests  
 
 class ProductDelete(APIView):
     
-    permission_classes  = [AllowAny]
+    permission_classes  = [IsAuthenticated]
     
     def delete(self, request, product_id):
 

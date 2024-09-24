@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product, User_Products, Product_Summary, Product_Reviews
+from .models import Product, User_Products, Product_Summary, Product_Reviews, Product_Data_Source
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,13 +66,21 @@ class SentimentDataSerializer_Dash(serializers.ModelSerializer):
         fields = ['sentiment_label', 'date']
         extra_kwargs = {"sentiment_label": {"read_only": True}, "date": {"read_only": True}}
   
+class Product_Categories_Dash(serializers.ModelSerializer):
+    
+    class Meta:
+        model =  Product_Data_Source
+        fields = ["category"]
+        extra_kwargs = {"category": {"read_only": True}}
         
 class ProductSerializer_Dash(serializers.ModelSerializer):
+        
     class Meta:
         model = Product
-        fields = ["name", "image", 'brand', 'category']
-        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "brand": {"read_only": True}, "category": {"read_only": True}}
+        fields = ["name", "image", 'brand']
+        extra_kwargs = {"name": {"read_only": True}, "image": {"read_only": True}, "brand": {"read_only": True}}
 
+        
 class ProductSumSerializer_Dash(serializers.ModelSerializer):
     
     class Meta:
