@@ -29,6 +29,7 @@ jobs:
           docker-compose exec vopop-backend python -m unittest test/backendTest/sentimentTest.py
         
       - name: Display logs
+        if: failure()
         run: |
             docker-compose logs
 
