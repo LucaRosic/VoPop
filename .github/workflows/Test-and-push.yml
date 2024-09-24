@@ -15,7 +15,6 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-          pwd
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
@@ -25,9 +24,9 @@ jobs:
 
       - name: Run tests inside Docker container
         run: |
-          docker-compose exec -T vopop-backend python -m unittest /usr/src/app/vopop/test/backendTest/scrapperTest.py
-          docker-compose exec -T vopop-backend python -m unittest test/backendTest/transformTest.py
-          docker-compose exec -T vopop-backend python -m unittest test/backendTest/sentimentTest.py
+          docker-compose exec -T vopop-backend python -m unittest /home/runner/work/VoPop/VoPop/test/backendTest/scrapperTest.py
+          docker-compose exec -T vopop-backend python -m unittest /home/runner/work/VoPop/VoPop/test/backendTest/transformTest.py
+          docker-compose exec -T vopop-backend python -m unittest /home/runner/work/VoPop/VoPop/test/backendTest/sentimentTest.py
         
       - name: Display logs
         if: failure()
