@@ -24,9 +24,9 @@ jobs:
 
       - name: Run tests inside Docker container
         run: |
-          docker-compose exec vopop-backend "python -m unittest test/backendTest/scrapperTest.py"
-          docker-compose exec vopop-backend "python -m unittest test/backendTest/transformTest.py"
-          docker-compose exec vopop-backend "python -m unittest test/backendTest/sentimentTest.py"
+          docker-compose exec vopop-backend python -m unittest test/backendTest/scrapperTest.py
+          docker-compose exec vopop-backend python -m unittest test/backendTest/transformTest.py
+          docker-compose exec vopop-backend python -m unittest test/backendTest/sentimentTest.py
         
       - name: Shut docker down
         run: |
