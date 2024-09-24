@@ -61,6 +61,7 @@ export const ProductInfoPage = () => {
   const [productSummary, setProductSummary] = useState<string>("");
   const [productData, setProductData] = useState<any>({});
   const [productRating, setProductRating] = useState<number>(0);
+  const [productSources, setProductSources] = useState<string[]>([""])
 
   const getProductInformation = async () => {
     // API calls with product id
@@ -87,6 +88,21 @@ export const ProductInfoPage = () => {
       console.log(res.data);
       setProductSummary(res.data[0]["summary"]);
       setProductRating(Number(res.data[0]["avg_rating"]))
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log("Calling Sources api:")
+    try {
+      const res = await api.get(`api/product/dashboard/category/${prodId}/`);
+      console.log("SOURCE DATA:");
+      console.log(res.data);
+      const sourceArray = [];
+      for (let entry of res.data) {
+        console.log(`SOURCE: ${entry["category"]}`);
+        sourceArray.push(entry["category"]);
+      }
+      setProductSources(sourceArray);
     } catch (error) {
       console.log(error);
     }
@@ -129,12 +145,18 @@ export const ProductInfoPage = () => {
     )
   }
 
-  const renderSourceLogo = (category: string) => {
-    if (category === "Amazon") {
-      return <img className="h-[50px]" src="/images/amazon_icon.png" />
-    } else if (category === "AliExpress") {
-      return <img className="h-[50px]" src="/images/aliexpress_icon.png" />
-    }
+  const renderSourceLogo = (sources: string[]) => {
+
+    return (
+    sources.map((sourceCategory,index) => {
+      if (sourceCategory === "Amazon") {
+        return <img className="h-[50px]" src="/images/amazon_icon.png" key={index}/>
+      } else if (sourceCategory === "AliExpress") {
+        return <img className="h-[50px]" src="/images/aliexpress_icon.png" key={index} />
+      }
+    })
+    )
+      
   }
 
   return (
@@ -171,7 +193,7 @@ export const ProductInfoPage = () => {
 
         {/* Source logo */}
         <div className="flex flex-row items-center gap-4">
-          <span className="font-bold">SOURCE:</span> {renderSourceLogo(productData["category"])}
+          <span className="font-bold">SOURCE:</span> {renderSourceLogo(productSources)}
         </div>
 
       </div>
