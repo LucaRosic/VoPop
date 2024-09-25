@@ -22,11 +22,14 @@ jobs:
         run: |
           docker-compose up -d --build
 
+      - name: Debug container file structure
+        run: docker-compose exec -T vopop-backend bash -c "ls -l /"
+      
       - name: Run tests inside Docker container
         run: |
-          docker-compose exec -T vopop-backend bash -c "cd /app && python -m unittest discover -s test/backendTest -p "*.py"
-          docker-compose exec -T vopop-backend bash -c "cd /app && python -m unittest discover -s test/backendTest -p "*.py"
-          docker-compose exec -T vopop-backend bash -c "cd /app && python -m unittest discover -s test/backendTest -p "*.py"
+          docker-compose exec -T vopop-backend bash -c "cd /VoPop && python -m unittest discover -s test/backendTest -p '*.py'"
+          docker-compose exec -T vopop-backend bash -c "cd /VoPop && python -m unittest discover -s test/backendTest -p '*.py'"
+          docker-compose exec -T vopop-backend bash -c "cd /VoPop && python -m unittest discover -s test/backendTest -p '*.py'"
         
       - name: Display logs
         if: failure()
