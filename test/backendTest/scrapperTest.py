@@ -9,7 +9,7 @@ project_root = os.path.abspath(os.path.join(current_dir, '../../backend/scrape')
 sys.path.insert(0, project_root)
 
 # Importing from the dynamically adjusted path
-from .scrapper import scrape_reviews, clean_url  
+from scrapper import scrape_reviews, clean_url  
 
 class TestScraperFunctions(unittest.TestCase):
     
