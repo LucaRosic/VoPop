@@ -15,6 +15,8 @@ import APITest from "./pages/APITest";
 // Dummy pages --------------
 import { ProductDashboard_dummy } from "./pages/dummy/ProductDashboard_dummy";
 import { ProductInfoPage_dummy } from "./pages/dummy/ProductInfoPage_dummy";
+import { ProductDashboardGlobal } from "./pages/ProductDashboardGlobal";
+import { UserContextProvider } from "./app-context/Store";
 // --------------------------
 
 /*
@@ -37,7 +39,15 @@ const App = () => {
           <ProtectedRoute>
             <ProductDashboard />
           </ProtectedRoute>
-          } /> 
+        } />  
+
+        {/* <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <UserContextProvider>
+              <ProductDashboardGlobal />
+            </UserContextProvider>
+          </ProtectedRoute>
+        } /> */}
         <Route path="/product-info" element={
           <ProtectedRoute>
             <ProductInfoPage />

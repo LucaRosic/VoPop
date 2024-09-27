@@ -2,12 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 import NavbarTop from "../components/NavbarTop";
 import Footer from "../components/Footer";
-import { memo, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../api";
 import ProductCardLoading from "../components/ProductCardLoading";
 import ConfirmBox from "../components/ConfirmBox";
+import { Context } from "../app-context/Store";
 
-export const ProductDashboard = () => {
+export const ProductDashboardGlobal = () => {
   /*
     Page to render the products the user is currently tracking.
   */
@@ -35,19 +36,32 @@ export const ProductDashboard = () => {
     }
   }
 
+  // const [cardState, setCardState] = useContext(Context);
+  // const {cardState, updateCardState} = useContext(Context);
+  const {cards, waitingNum, updateCardState} = useContext(Context);
+  console.log(`Card state: ${JSON.stringify(cards)}`)
+ 
+
   const [productData, setProductData] = useState<any[]>([]);
   // On page load get the list of products user is tracking and update the information
   useEffect(() => { 
+    console.log(`Waiting Num: ${waitingNum}`)
     getProductInfo()
       .then((res) => {
         let productDataList:any[] = []; // Change this any to a defined product card object in future
         res.map((productInfo : any) => productDataList.push(productInfo))
-        setProductData(productDataList);
+        let newCardState = {cards: productDataList}
+        updateCardState(newCardState)
+        // setProductData(cardState.cards);
       }).catch((error) => {
         console.log(error)
         setProductData([]);
       })
   }, [])
+
+  useEffect(() => {
+    console.log("CARD STATE UPDATE DETECTED")
+  }, [cards])
 
   // Function to cut of a string at a specific length (for rendering ... at long strings)
   const stringLimiter = (inString : string, sliceLength : number) => {
@@ -64,9 +78,9 @@ export const ProductDashboard = () => {
   // Set local storage waiting card number
   useEffect(() => {
     // Add event listener to clear sessionStorage when window refreshed:
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.clear();
-    })
+    // window.addEventListener('beforeunload', () => {
+    //   sessionStorage.clear();
+    // })
 
     // Get waiting card number from previous session
     if (sessionStorage.getItem("WAITING_NUMBER") === null) {
@@ -81,13 +95,14 @@ export const ProductDashboard = () => {
 
 
   // TODO:
-  // Redux is the way to go -> NO ITS NOT
+  // Redux is the way to go
 
   const addProductCard = async ( scrapeUrl : string, scrapeSecondaryUrl: string ) => {
    
     // Increment number of waiting cards to be processed
     let waitingNum = Number(sessionStorage.getItem("WAITING_NUMBER"))+1
     sessionStorage.setItem("WAITING_NUMBER", JSON.stringify(waitingNum));
+    updateCardState({waitingNum: 69});
     console.log(`JUST SET WAITING NUM TO ${waitingNum}`);
     setWaitingCardNumber(waitingCardNumber + 1);
     // Call the URL scraper API
@@ -99,21 +114,23 @@ export const ProductDashboard = () => {
       console.log(res.data);
 
       if (res.data[0] !== undefined) {
-        setProductData((productData : any) => [res.data[0], ...productData]);
+        let newCards = {cards: [res.data[0], ...cards]};
+        updateCardState(newCards);
+        // setProductData((productData : any) => [res.data[0], ...productData]);
         console.log("Added product information.");
+        console.log(`New product ${JSON.stringify(cards)}`)
       }
     } catch (error) {
       console.log(error);
     } finally {
       // Decrement waitng card number -> the card has been processed
       setWaitingCardNumber(waitingCardNumber => Math.max(waitingCardNumber - 1,0)); // Clamp value to 0
-      let waitingNum = Number(sessionStorage.getItem("WAITING_NUMBER"))-1 // Decrement the count again
-      waitingNum = Math.max(0,waitingNum); // So value does not go below zero
+      waitingNum -= 1; // Decrement the count again
       sessionStorage.setItem("WAITING_NUMBER", JSON.stringify(waitingNum))
       console.log("URL request has finished processing!");
       console.log(`User location: ${window.location.pathname}`)
       if (window.location.pathname === "/dashboard") {
-        navigate("/"); // Refresh page
+        // window.location.reload();
       }
       
       
@@ -152,10 +169,12 @@ export const ProductDashboard = () => {
       return <h3>Page Loading...</h3>
     } else {
       console.log(productData);
+      console.log(cards)
       console.log(`Type test 2: ${typeof productData}`)
       try{
           return (
-            productData.map((productInfo : any) => {
+            // productData.map((productInfo : any) => {
+              cards.map((productInfo:any) => {
               return(
                 <ProductCard
                   key={productInfo["product"]["id"]}

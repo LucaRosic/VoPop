@@ -1,4 +1,3 @@
-import "./css/product-card.css";
 //--------------
 // MUI ui stuff:
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
