@@ -27,7 +27,7 @@ jobs:
       
       - name: Run tests inside Docker container
         run: |
-          ls -a
+          ls ./ -a
           pwd
           docker-compose exec -T vopop-backend bash -c "cd /home/runner/work/VoPop/VoPop/test/backendTest && python -m unittest -p '*.py'"
         
