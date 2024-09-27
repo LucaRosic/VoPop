@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 import NavbarTop from "../components/NavbarTop";
 import Footer from "../components/Footer";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api";
 import ProductCardLoading from "../components/ProductCardLoading";
 import ConfirmBox from "../components/ConfirmBox";
@@ -63,6 +63,12 @@ export const ProductDashboard = () => {
   const [waitingCardNumber, setWaitingCardNumber] = useState<number>(0); 
   // Set local storage waiting card number
   useEffect(() => {
+    // Add event listener to clear sessionStorage when window refreshed:
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.clear();
+    })
+
+    // Get waiting card number from previous session
     if (sessionStorage.getItem("WAITING_NUMBER") === null) {
       sessionStorage.setItem("WAITING_NUMBER", JSON.stringify(0))
     } else {
@@ -73,6 +79,9 @@ export const ProductDashboard = () => {
 
   },[])
 
+
+  // TODO:
+  // Redux is the way to go
 
   const addProductCard = async ( scrapeUrl : string, scrapeSecondaryUrl: string ) => {
    
@@ -101,7 +110,11 @@ export const ProductDashboard = () => {
       waitingNum -= 1; // Decrement the count again
       sessionStorage.setItem("WAITING_NUMBER", JSON.stringify(waitingNum))
       console.log("URL request has finished processing!");
-      window.location.reload();
+      console.log(`User location: ${window.location.pathname}`)
+      if (window.location.pathname === "/dashboard") {
+        window.location.reload();
+      }
+      
       
     }
   }

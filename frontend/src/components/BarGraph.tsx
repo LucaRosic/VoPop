@@ -40,6 +40,7 @@ const BarGraph = ({productId=61} : Props) => {
       },
       colors: {
         enabled: true,
+
       },
       
       
@@ -47,6 +48,9 @@ const BarGraph = ({productId=61} : Props) => {
     },
     scales: {
       x: {
+        grid: {
+          color: 'rgba(255,255,255,0.3)'
+        },
         display: true,
         stacked: true,
         
@@ -56,6 +60,7 @@ const BarGraph = ({productId=61} : Props) => {
         stacked: true,
         grid: {
           display: true,
+          color: 'rgba(255,255,255,0.3)',
         },
         border: {
           display: true,
@@ -137,9 +142,10 @@ const BarGraph = ({productId=61} : Props) => {
     minHeight: '20rem',
     minWidth: '600px',
     width: '100%',
-    border: '1px solid #C4C4C4',
+    border: '0px solid #C4C4C4',
     borderRadius: '0.375rem',
-    padding: '1rem',
+    padding: '0rem',
+    
   }
 
   console.log(`DATA: ${data}`);

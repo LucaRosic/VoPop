@@ -49,7 +49,11 @@ def get_latest_reviews():
     @task(task_id='retrieve_urls')
     def retrieve_outdated_urls():
         
-        cursor.execute("SELECT url,date,product_id FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id")
+        cursor.execute("SELECT pds.source as url,ps.date,ps.product_id,pds.unique_code\
+                        FROM api_product_summary ps\
+                        JOIN api_product p ON ps.product_id = p.id\
+                        JOIN api_product_data_source pds ON p.id = pds.product_id\
+                        WHERE date < date_trunc('day', NOW() - interval '1 day')")
         return cursor.fetchall()
     
     #check if last summary date older than a month. If yes, scrape new reviews using backend api.
@@ -57,14 +61,14 @@ def get_latest_reviews():
     def scrape_new_data(product_list):
         
         new_reviews ={}
-        for url, date, product_id in product_list:
-            utc=pytz.UTC
-            datenow= utc.localize(dt.datetime.now())
-            #challenge.datetime_end = utc.localize(challenge.datetime_end)
-            if date < datenow - dt.timedelta(days=31):
-               payload = {'url':url,'date':date.strftime('%Y-%m-%d')}
-               fresh_reviews = requests.get('http://host.docker.internal:8000/api/product/newreviews/', params=payload)
-               new_reviews[product_id] = fresh_reviews.text
+        for url, date, product_id, unique_code in product_list:
+            # utc=pytz.UTC
+            # datenow= utc.localize(dt.datetime.now())
+            # #challenge.datetime_end = utc.localize(challenge.datetime_end)
+            # if date < datenow - dt.timedelta(days=31):
+            payload = {'url':url,'date':date.strftime('%Y-%m-%d')}
+            fresh_reviews = requests.get('http://host.docker.internal:8000/api/product/newreviews/', params=payload)
+            new_reviews[unique_code] = fresh_reviews.text
              
         return new_reviews
 
@@ -107,9 +111,8 @@ def get_latest_reviews():
                 }
                 cleaned_reviews.append(cleaned_review)
 
-        # Sentiment
-      
 
+        # Sentiment
         sentiment = json.loads(requests.post('http://host.docker.internal:8000/api/product/newsentiment/',{'review':texts}).text)
         i=0
         sentiment_reviews = []
@@ -125,7 +128,7 @@ def get_latest_reviews():
     def update_review_database(new_data):
         for review in new_data:
          
-            cursor.execute(f"""INSERT INTO api_product_reviews (review, sentiment, sentiment_label, rating,date, product_id) VALUES ('{review['Review Text']}',{review['Score']},'{review['Sentiment']}',{review['Stars']},'{review['Date']}',{review['prod_id']});""")
+            cursor.execute(f"""INSERT INTO api_product_reviews (review, sentiment, sentiment_label, rating,date, unique_code) VALUES ('{review['Review Text']}',{review['Score']},'{review['Sentiment']}',{review['Stars']},'{review['Date']}',{review['prod_id']});""")
             connection.commit()
         #cursor.close()    
         return None
@@ -133,18 +136,21 @@ def get_latest_reviews():
     #call gemini api to generate new summary, then update database.
     @task(task_id='update_summary')
     def update_review_summary(old_product):
-        for url, date, product_id in old_product:
-            
-            cursor.execute(f"SELECT review FROM api_product_reviews WHERE product_id={product_id}")
 
-            new_summaries = []
-            for review in cursor.fetchall():
-                 new_summaries.append({"Review Text":review[0]})
-            summary = summarize(new_summaries).replace('"',"").replace("'","")
-         
-            cursor.execute(f"""UPDATE api_product_summary SET summary = '{summary}' WHERE product_id = {product_id}""" )
-            cursor.execute(f"UPDATE api_product_summary SET date = '{dt.datetime.now()}' WHERE product_id = {product_id}" )
-            connection.commit()
+        updated_id = []
+
+        for url, date, product_id, unique_code in old_product:
+            if product_id not in updated_id:
+                cursor.execute(f"SELECT review FROM api_product_reviews WHERE unique_code in (SELECT pds.unique_code FROM api_product_summary ps JOIN api_product p ON ps.product_id = p.id JOIN api_product_data_source pds ON p.id = pds.product_id WHERE pds.product_id ={product_id} )")
+
+                new_summaries = []
+                for review in cursor.fetchall():
+                    new_summaries.append({"Review Text":review[0]})
+                summary = summarize(new_summaries).replace('"',"").replace("'","")
+                updated_id.append(product_id)
+                cursor.execute(f"""UPDATE api_product_summary SET summary = '{summary}',date = '{dt.datetime.now()}' WHERE product_id = {product_id}""" )
+                #cursor.execute(f"UPDATE api_product_summary SET  WHERE product_id = {product_id}" )
+                connection.commit()
         cursor.close()
         connection.close()
         return summary

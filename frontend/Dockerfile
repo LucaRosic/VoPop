@@ -12,7 +12,7 @@ RUN npm install
 # Copy all the files into docker working directory
 COPY . .
 
-EXPOSE 8080
+EXPOSE 3000
 
 # Start the app using serve command
 CMD [ "npm", "run", "dev" ]

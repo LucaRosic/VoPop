@@ -13,9 +13,11 @@ torch
 numpy==1.26.4
 pandas
 selenium
+webdriver_manager
 google-generativeai
 nltk
 lsg_converter
 langdetect
 better_profanity
 pymysql
+apache-airflow
