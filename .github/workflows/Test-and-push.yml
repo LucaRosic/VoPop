@@ -28,7 +28,7 @@ jobs:
       - name: Run tests inside Docker container
         run: |
           ls ./ -la
-          docker-compose exec -T vopop-backend bash -c "cd /home/runner/work/VoPop//test/backendTest && python -m unittest discover "
+          docker-compose exec -T vopop-backend bash -c "cd /home/runner/work/VoPop/test/backendTest && python -m unittest discover "
         
       - name: Display logs
         if: failure()
