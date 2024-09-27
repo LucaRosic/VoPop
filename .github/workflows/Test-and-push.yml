@@ -27,8 +27,7 @@ jobs:
       
       - name: Run tests inside Docker container
         run: |
-          sudo ls -a /Vopop
-          pwd
+          cd ..
           docker-compose exec -T vopop-backend bash -c "cd /home/runner/work/VoPop/test/ && python -m unittest discover -s test/backendTest -p '*.py'"
         
       - name: Display logs
