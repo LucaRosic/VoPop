@@ -4,7 +4,7 @@ import unittest
 
 # Dynamically add the backend folder to sys.path to import sentiment.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../backend/ML'))
+project_root = os.path.abspath(os.path.join(current_dir, '../../ML'))
 sys.path.insert(0, project_root)
 
 # Import the necessary functions from sentiment.py

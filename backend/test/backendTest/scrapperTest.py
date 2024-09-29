@@ -5,7 +5,8 @@ import time
 
 # Dynamically add the backend folder to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../backend/scrape'))
+project_root = os.path.abspath(os.path.join(current_dir, '../../scrape'))
+print(project_root)
 sys.path.insert(0, project_root)
 
 # Importing from the dynamically adjusted path

@@ -24,17 +24,17 @@ jobs:
 
       - name: Debug container file structure
         run: docker-compose exec -T vopop-backend bash -c "ls -l /"
-      
+
       - name: Run tests inside Docker container
         run: |
           sudo pwd
           ls ./ -la
-          docker-compose exec -T vopop-backend bash -c "ls /usr/src/app/home -la && cd home/runner/work/VoPop/test/backendTest && python -m unittest discover "
-        
+          docker-compose exec -T vopop-backend bash -c "test/backendTest && python -m unittest discover -p '*.py' "
+
       - name: Display logs
         if: failure()
         run: |
-            docker-compose logs
+          docker-compose logs
 
       - name: Shut docker down
         if: always()
@@ -52,21 +52,21 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions@github.com'
-      
+
       - name: Authenticate with GitHub
         run: |
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git   
-      
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/LucaRosic/VoPop.git
+
       - name: Fetch all branches
         run: git fetch --all
-  
+
       - name: Pull latest changes from main
         run: |
           git checkout main
-          git pull origin main           
-    
+          git pull origin main
+
       - name: Push to main
         run: |
-            git checkout -b temp-deploy
-            git merge --no-ff --allow-unrelated-histories -X ours Test
-            git push origin temp-deploy:main
+          git checkout -b temp-deploy
+          git merge --no-ff --allow-unrelated-histories -X ours Test
+          git push origin temp-deploy:main

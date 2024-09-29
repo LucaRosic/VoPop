@@ -4,7 +4,7 @@ import unittest
 
 # Dynamically add the backend folder to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '../../backend/Clean'))
+project_root = os.path.abspath(os.path.join(current_dir, '../../Clean'))
 sys.path.insert(0, project_root)
 
 from Transform import clean_transform_data 
