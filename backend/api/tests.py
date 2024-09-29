@@ -17,12 +17,12 @@ class ProductAPITestCase(APITestCase):
     
     def setUp(self):
         """
-        Create initial test data including a test user and a product.
-        This method runs before every test case in this class.
-        
-        - Creates a test user and logs them in using the API client.
-        - Creates a sample product with actual product data for testing.
-        - Associates the product with the user in User_Products.
+        Sets up the test environment before each test case.
+
+        - Creates a test user and logs them in using a JWT token.
+        - Creates a sample product with actual product data.
+        - Creates a data source for the product.
+        - Associates the product with the user in the User_Products table.
         """
         print("\nSetting up test environment...")
         # Create a test user
@@ -62,7 +62,9 @@ class ProductAPITestCase(APITestCase):
     def test_01_create_product(self):
         """
         Test case for creating a new product via the CreateProduct API.
-        If the product is already tracked, the test should expect a 200 or 208 response.
+        - Sends a POST request to create a product using the provided URL.
+        - If the product is already being tracked by the user, expects a 200 OK or 208 Already Reported response.
+        - If the product is successfully created, expects a 201 Created response.
         """
         print("\nTesting product creation API...")
 
@@ -82,11 +84,11 @@ class ProductAPITestCase(APITestCase):
 
     def test_02_add_link_to_product(self):
         """
-        Test case for adding a link to an existing product via the AddLink API.
+        Test case for adding a new link to an existing product via the AddLink API.
 
-        - Makes a POST request to add a new link to an existing product.
-        - Checks if the API returns HTTP 201 status code if the link was added successfully,
-        or 208 if the user is already tracking the product.
+        - Sends a POST request to add a new link to the specified product.
+        - If the link is added successfully, expects a 201 Created response.
+        - If the product is already being tracked by the user, expects a 208 Already Reported response.
         """
         print("Testing adding link to product API...")
 
@@ -111,8 +113,12 @@ class ProductAPITestCase(APITestCase):
 
     def test_03_get_user_products_home(self):
         """
-        Test case for retrieving the list of products tracked by the user via GetUserProduct_Home API.
-        This ensures that the API returns the correct number of products tracked by the user.
+        Test case for retrieving the list of products tracked by the user via the GetUserProduct_Home API.
+
+        - Sends a GET request to retrieve the products tracked by the logged-in user.
+        - Ensures that the response status is 200 OK.
+        - Verifies the number of products returned based on the user's tracked products.
+        - If the user is not logged in, expects no products to be returned.
         """
         print("\nTesting retrieval of user products for home page...")
 
@@ -138,9 +144,10 @@ class ProductAPITestCase(APITestCase):
         """
         Test case for retrieving sentiment data of a product via GetReviewSent_Dash API.s
         
-        - Creates a Product_Reviews entry with sentiment data.
-        - Sends a GET request to retrieve the sentiment data for the product.
-        - Checks if the API returns HTTP 200 status and verifies that sentiment data is present in the response.
+        - Creates a Product_Reviews entry with sentiment data for the test product.
+        - Sends a GET request to the API to retrieve the sentiment data for the product.
+        - Checks if the API returns HTTP 200 OK 
+        - Verifies that at least one sentiment data is returned in the response.
         """
         print("Testing retrieval of product sentiment data for dashboard...")
         # Create product review with sentiment data
@@ -158,7 +165,9 @@ class ProductAPITestCase(APITestCase):
         
         print(f"GET request sent for product sentiment data. Response status code: {response.status_code}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertGreaterEqual(len(response.data), 1)  # The product should have at least one sentiment entry
+        
+        # The product should have at least one sentiment entry
+        self.assertGreaterEqual(len(response.data), 1) 
         print("Sentiment data retrieval test passed.")
 
 
@@ -168,7 +177,8 @@ class ProductAPITestCase(APITestCase):
         
         - Connects a product to the user by creating a User_Products entry.
         - Sends a DELETE request to remove the product from the user's list.
-        - Verifies that the product is successfully deleted from the User_Products table and the API returns HTTP 204 status.
+        - Verifies that the API returns HTTP 204 No Content.
+        - Ensures the product is successfully removed from the User_Products table.
         """
         print("Testing product deletion API...")
         # Connect user to the product
