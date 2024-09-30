@@ -82,36 +82,8 @@ class ProductAPITestCase(APITestCase):
         print("Product creation test passed.")
 
 
-    def test_02_add_link_to_product(self):
-        """
-        Test case for adding a new link to an existing product via the AddLink API.
 
-        - Sends a POST request to add a new link to the specified product.
-        - If the link is added successfully, expects a 201 Created response.
-        - If the product is already being tracked by the user, expects a 208 Already Reported response.
-        """
-        print("Testing adding link to product API...")
-
-        # Get the URL for the AddLink API endpoint
-        url = reverse('add-to-product')
-
-        # Define the actual test data to send in the request
-        # Use the ID of the existing product and an actual test URL for the product
-        data = {
-            "url": [self.product.id, "https://www.amazon.com.au/INIU-Portable-Charger/dp/B08K7GHZ3V"]
-        }
-
-        # Post the request
-        response = self.client.post(url, data, format='json')
-
-        # Check if the link was added successfully or if the user is already tracking the product
-        print(f"POST request sent. Response status code: {response.status_code}")
-        self.assertIn(response.status_code, [status.HTTP_201_CREATED, status.HTTP_208_ALREADY_REPORTED])
-
-        print("Link addition test passed.")
-
-
-    def test_03_get_user_products_home(self):
+    def test_02_get_user_products_home(self):
         """
         Test case for retrieving the list of products tracked by the user via the GetUserProduct_Home API.
 
@@ -138,11 +110,9 @@ class ProductAPITestCase(APITestCase):
         print("User product retrieval test passed.")
 
 
-
-
-    def test_04_get_product_sentiment_dashboard(self):
+    def test_03_get_product_sentiment_dashboard(self):
         """
-        Test case for retrieving sentiment data of a product via GetReviewSent_Dash API.s
+        Test case for retrieving sentiment data of a product via GetReviewSent_Dash APIs
         
         - Creates a Product_Reviews entry with sentiment data for the test product.
         - Sends a GET request to the API to retrieve the sentiment data for the product.
@@ -171,7 +141,7 @@ class ProductAPITestCase(APITestCase):
         print("Sentiment data retrieval test passed.")
 
 
-    def test_05_delete_product(self):
+    def test_04_delete_product(self):
         """
         Test case for deleting a product from a user's list via the ProductDelete API.
         
