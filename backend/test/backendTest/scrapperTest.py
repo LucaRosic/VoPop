@@ -16,8 +16,8 @@ class TestScraperFunctions(unittest.TestCase):
     
     def setUp(self):
         # Setup URLs to be used in tests
-        self.amazon_url = 'https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
-        self.amazon_cleanurl = "https://www.amazon.com.au/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S"
+        self.amazon_url = 'https://www.amazon.com/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S?pd_rd_w=r3VyS&content-id=amzn1.sym.36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_p=36bbdb86-b7cf-4ece-b220-7744a3b6a603&pf_rd_r=R5DQ8Y1HEGWPJHFZN75Y&pd_rd_wg=bvSWb&pd_rd_r=050d2d1a-56c6-4ad7-9771-fc129c4bd42c&pd_rd_i=B0BVVF6V1S&ref_=pd_hp_d_btf_unk_B0BVVF6V1S'
+        self.amazon_cleanurl = "https://www.amazon.com/Magnetic-Building-Preschool-Montessori-Christmas/dp/B0BVVF6V1S"
         self.amazon_review_url = "https://www.amazon.com/product-reviews/B08J5F3G18/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
         self.expected_amazon_clean_url = "https://www.amazon.com/dp/B08J5F3G18"
         
